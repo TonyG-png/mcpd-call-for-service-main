@@ -110,7 +110,6 @@ export default function ReportsPage() {
   }, [byReportChannel]);
 
   const pctOfCalls = (n: number, d: number) => (d > 0 ? `${((n / d) * 100).toFixed(1)}% of calls` : undefined);
-  const pctValue = (n: number, d: number) => (d > 0 ? `${((n / d) * 100).toFixed(1)}%` : "0.0%");
   const pctOfReportCalls = (n: number, d: number) =>
     d > 0 ? `${((n / d) * 100).toFixed(1)}% of report calls` : undefined;
 
@@ -213,13 +212,7 @@ export default function ReportsPage() {
         </div>
       </ChartCard>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard
-          title="TRU Report Share"
-          value={pctValue(truPatrolStats.tru, truPatrolStats.total)}
-          subtitle={`${truPatrolStats.tru.toLocaleString()} of ${truPatrolStats.total.toLocaleString()} reports`}
-          icon={<FileText className="h-4 w-4" />}
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard
           title="TRU Reports"
           value={truPatrolStats.tru.toLocaleString()}
