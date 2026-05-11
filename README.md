@@ -40,6 +40,8 @@ The dashboard date filters include 7 days, 14 days, 28 days, and YTD. These rang
 
 Response time metrics exclude Telephone Reporting Unit (TRU) calls. TRU calls are identified by call-type codes ending in `T`.
 
+The Operations dashboard excludes `DT-Detail` calls from its cards and charts.
+
 For local RAG search during development, run the API server in a second terminal:
 
 ```sh
