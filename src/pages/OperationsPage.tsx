@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useData } from "@/context/DataContext";
 import ChartCard from "@/components/dashboard/ChartCard";
 import MetricCard from "@/components/dashboard/MetricCard";
+import { getCallTypeCode } from "@/lib/callTypes";
 import * as analytics from "@/lib/analytics";
 import {
   BarChart, Bar, PieChart, Pie, Cell,
@@ -26,7 +27,7 @@ export default function OperationsPage() {
     return {
       byHour: analytics.callsByHour(inc),
       byDow: analytics.callsByDayOfWeek(inc),
-      avgByType: analytics.avgTimeByCallType(inc, 10),
+      avgByType: analytics.avgTimeByCallTypeCode(inc, 10),
       topCallTypes: getTopCallTypeShare(inc),
       categories: analytics.categoryBreakdown(inc),
       weVsWd: analytics.weekendVsWeekday(inc),
@@ -161,7 +162,7 @@ export default function OperationsPage() {
 }
 
 function getTopCallTypeShare(incidents: ReturnType<typeof useData>["filteredIncidents"]) {
-  const topTypes = analytics.topCallTypes(incidents, 5);
+  const topTypes = analytics.topCallTypeCodes(incidents, 5);
   const totalCalls = incidents.length;
 
   return topTypes.map((row) => ({
@@ -171,5 +172,5 @@ function getTopCallTypeShare(incidents: ReturnType<typeof useData>["filteredInci
 }
 
 function isDetailCallType(callType?: string | null) {
-  return (callType || "").trim().toUpperCase() === "DT-DETAIL";
+  return getCallTypeCode(callType) === "DT";
 }

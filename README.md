@@ -42,6 +42,8 @@ Response time metrics exclude Telephone Reporting Unit (TRU) calls. TRU calls ar
 
 The Operations dashboard excludes `DT-Detail` calls from its cards and charts.
 
+Operations call-type summaries group by the call-type code before the dash, so values such as `STAB` and `STAB-Stabbing` are treated as the same call type.
+
 For local RAG search during development, run the API server in a second terminal:
 
 ```sh

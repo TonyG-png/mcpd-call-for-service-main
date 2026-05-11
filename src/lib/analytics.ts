@@ -4,6 +4,7 @@
  */
 
 import { NormalizedIncident } from "@/types/incident";
+import { getCallTypeCode } from "@/lib/callTypes";
 
 export function callsByDay(incidents: NormalizedIncident[]) {
   const counts: Record<string, number> = {};
@@ -33,6 +34,18 @@ export function topCallTypes(incidents: NormalizedIncident[], n = 10) {
   const counts: Record<string, number> = {};
   incidents.forEach((inc) => {
     if (inc.callType) counts[inc.callType] = (counts[inc.callType] || 0) + 1;
+  });
+  return Object.entries(counts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, n)
+    .map(([type, count]) => ({ type, count }));
+}
+
+export function topCallTypeCodes(incidents: NormalizedIncident[], n = 10) {
+  const counts: Record<string, number> = {};
+  incidents.forEach((inc) => {
+    const code = getCallTypeCode(inc.callType);
+    if (code) counts[code] = (counts[code] || 0) + 1;
   });
   return Object.entries(counts)
     .sort(([, a], [, b]) => b - a)
@@ -99,6 +112,26 @@ export function avgTimeByCallType(incidents: NormalizedIncident[], n = 10) {
         if (!sums[inc.callType]) sums[inc.callType] = { total: 0, count: 0 };
         sums[inc.callType].total += mins;
         sums[inc.callType].count++;
+      }
+    }
+  });
+  return Object.entries(sums)
+    .filter(([, v]) => v.count >= 3)
+    .map(([type, v]) => ({ type, avgMinutes: Math.round(v.total / v.count) }))
+    .sort((a, b) => b.avgMinutes - a.avgMinutes)
+    .slice(0, n);
+}
+
+export function avgTimeByCallTypeCode(incidents: NormalizedIncident[], n = 10) {
+  const sums: Record<string, { total: number; count: number }> = {};
+  incidents.forEach((inc) => {
+    const code = getCallTypeCode(inc.callType);
+    if (code && inc.startTime && inc.endTime) {
+      const mins = (inc.endTime.getTime() - inc.startTime.getTime()) / 60000;
+      if (mins >= 0 && mins < 1440) {
+        if (!sums[code]) sums[code] = { total: 0, count: 0 };
+        sums[code].total += mins;
+        sums[code].count++;
       }
     }
   });
