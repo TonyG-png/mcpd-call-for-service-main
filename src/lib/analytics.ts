@@ -4,7 +4,7 @@
  */
 
 import { NormalizedIncident } from "@/types/incident";
-import { getCallTypeCode } from "@/lib/callTypes";
+import { getCallTypeCode, getCallTypeGroupLabel } from "@/lib/callTypes";
 
 export function callsByDay(incidents: NormalizedIncident[]) {
   const counts: Record<string, number> = {};
@@ -44,7 +44,7 @@ export function topCallTypes(incidents: NormalizedIncident[], n = 10) {
 export function topCallTypeCodes(incidents: NormalizedIncident[], n = 10) {
   const counts: Record<string, number> = {};
   incidents.forEach((inc) => {
-    const code = getCallTypeCode(inc.callType);
+    const code = getCallTypeGroupLabel(inc.callType);
     if (code) counts[code] = (counts[code] || 0) + 1;
   });
   return Object.entries(counts)
@@ -125,7 +125,7 @@ export function avgTimeByCallType(incidents: NormalizedIncident[], n = 10) {
 export function avgTimeByCallTypeCode(incidents: NormalizedIncident[], n = 10) {
   const sums: Record<string, { total: number; count: number }> = {};
   incidents.forEach((inc) => {
-    const code = getCallTypeCode(inc.callType);
+    const code = getCallTypeGroupLabel(inc.callType);
     if (code && inc.startTime && inc.endTime) {
       const mins = (inc.endTime.getTime() - inc.startTime.getTime()) / 60000;
       if (mins >= 0 && mins < 1440) {

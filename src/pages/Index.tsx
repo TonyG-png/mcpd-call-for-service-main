@@ -126,7 +126,8 @@ export default function ExecutiveOverview() {
     const highPri = priorities.find(
       (p) => p.priority?.toLowerCase().includes("emergency") || p.priority === "1" || p.priority?.toLowerCase().includes("high")
     );
-    return { byDay, byHour, topTypes, priorities, districts, rolling, dur, overnight, priorityZero, avgPerDay, highPri };
+    const highPriAvgPerDay = highPri && byDay.length > 0 ? highPri.count / byDay.length : 0;
+    return { byDay, byHour, topTypes, priorities, districts, rolling, dur, overnight, priorityZero, avgPerDay, highPri, highPriAvgPerDay };
   }, [filteredIncidents]);
 
   const benchmarkComparison = useMemo(
@@ -168,7 +169,12 @@ export default function ExecutiveOverview() {
           <MetricCard title="Avg Duration" value={`${metrics.dur} min`} icon={<Clock className="h-4 w-4" />} />
         )}
         {metrics.highPri && (
-          <MetricCard title="High Priority" value={metrics.highPri.count.toLocaleString()} icon={<AlertTriangle className="h-4 w-4" />} />
+          <MetricCard
+            title="High Priority / Day"
+            value={metrics.highPriAvgPerDay.toFixed(1)}
+            subtitle={`${metrics.highPri.count.toLocaleString()} total`}
+            icon={<AlertTriangle className="h-4 w-4" />}
+          />
         )}
         <MetricCard title="Overnight (22-06)" value={metrics.overnight.toLocaleString()} icon={<Moon className="h-4 w-4" />} />
       </div>
@@ -347,8 +353,14 @@ function OverviewBenchmarkPanel({
         </div>
       </div>
 
-      <div className="mt-4 overflow-auto">
-        <table className="w-full text-xs">
+      <div className="mt-4 grid gap-3 md:hidden">
+        {comparison.annualRows.map((year) => (
+          <OverviewAnnualMobileCard key={year.year} year={year} />
+        ))}
+      </div>
+
+      <div className="mt-4 hidden overflow-auto md:block">
+        <table className="w-full min-w-[760px] text-xs">
           <thead>
             <tr className="border-b border-border text-left text-muted-foreground">
               <th className="py-2 pr-3 font-medium">Year</th>
@@ -375,6 +387,36 @@ function OverviewBenchmarkPanel({
           </tbody>
         </table>
       </div>
+    </div>
+  );
+}
+
+function OverviewAnnualMobileCard({ year }: { year: OverviewAnnualBenchmark }) {
+  return (
+    <div className="rounded-md border border-border p-3">
+      <div className="flex items-center justify-between gap-3 border-b border-border/50 pb-2">
+        <div className="text-sm font-semibold font-display">{year.year}</div>
+        <div className="text-right">
+          <div className="text-xs text-muted-foreground">Total Calls</div>
+          <div className="text-sm font-bold">{year.total_calls.toLocaleString()}</div>
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
+        <MobileBenchmarkStat label="Avg / Day" value={year.average_calls_per_day.toFixed(1)} />
+        <MobileBenchmarkStat label="Priority 0" value={formatPercent(year.priority_zero_share)} />
+        <MobileBenchmarkStat label="Daywork" value={formatPercent(getShiftShare(year, "daywork"))} />
+        <MobileBenchmarkStat label="Evening" value={formatPercent(getShiftShare(year, "evening"))} />
+        <MobileBenchmarkStat label="Midnight" value={formatPercent(getShiftShare(year, "midnight"))} />
+      </div>
+    </div>
+  );
+}
+
+function MobileBenchmarkStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-[10px] font-medium uppercase text-muted-foreground">{label}</div>
+      <div className="mt-0.5 font-semibold">{value}</div>
     </div>
   );
 }

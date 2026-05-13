@@ -5,7 +5,7 @@
  */
 
 import { formatSocrataDateTime, getDateRangeBounds } from "@/lib/dateRanges";
-import { isDetailCallType, isTruCallType } from "@/lib/callTypes";
+import { isDetailCallType, isTelephoneReportingUnitCallType } from "@/lib/callTypes";
 import type { DateRangeOption } from "@/types/incident";
 
 export interface ResponseTimeRecord {
@@ -57,7 +57,7 @@ export async function fetchResponseTimeData(
 
     for (const r of rows) {
       const callType = r.initial_type != null ? String(r.initial_type) : null;
-      if (isTruCallType(callType) || isDetailCallType(callType)) continue;
+      if (isTelephoneReportingUnitCallType(callType) || isDetailCallType(callType)) continue;
 
       allRecords.push({
         dispatch_date_time: r.start_time,

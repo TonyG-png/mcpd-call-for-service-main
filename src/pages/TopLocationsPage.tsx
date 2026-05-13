@@ -184,6 +184,8 @@ export default function TopLocationsPage() {
   };
 
   const totalCallsAtTop25 = locations.reduce((total, location) => total + location.count, 0);
+  const top25Share =
+    filteredIncidents.length > 0 ? (totalCallsAtTop25 / filteredIncidents.length) * 100 : 0;
   const excludedStationResponses = filteredIncidents.length - locationEligibleIncidents.length;
 
   if (isLoading) {
@@ -211,18 +213,12 @@ export default function TopLocationsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <MetricCard
           title="Filtered Calls"
           value={filteredIncidents.length.toLocaleString()}
           subtitle="Current filters"
           icon={<Activity className="h-4 w-4" />}
-        />
-        <MetricCard
-          title="Locations Ranked"
-          value={locations.length}
-          subtitle="Showing top 25"
-          icon={<MapPin className="h-4 w-4" />}
         />
         <MetricCard
           title="Excluded"
@@ -233,7 +229,7 @@ export default function TopLocationsPage() {
         <MetricCard
           title="Top 25 Calls"
           value={totalCallsAtTop25.toLocaleString()}
-          subtitle="Calls at ranked locations"
+          subtitle={`${top25Share.toFixed(1)}% of filtered calls`}
           icon={<Building2 className="h-4 w-4" />}
         />
       </div>

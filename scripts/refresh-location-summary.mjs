@@ -61,6 +61,94 @@ function getCallTypeCode(callType) {
     .toUpperCase();
 }
 
+function isPriorityZero(priority) {
+  return String(priority ?? "").trim() === "0";
+}
+
+function isTrafficTransportationCallType(callType) {
+  const value = String(callType || "").toUpperCase();
+  const code = getCallTypeCode(callType);
+  return (
+    value.includes("TRAFFIC/TRANSPORTATION") ||
+    value.includes("TRAFFIC TRANSPORTATION") ||
+    (value.includes("TRAFFIC") && value.includes("TRANSPORTATION")) ||
+    code === "TRAFFIC" ||
+    code === "TRAF" ||
+    code === "TRAFF" ||
+    code === "TRF"
+  );
+}
+
+function isAlarmCallType(callType) {
+  const value = String(callType || "").toUpperCase();
+  if (value.includes("BOX ALARM")) return false;
+
+  const code = getCallTypeCode(callType);
+  return code.startsWith("ALARM") || code === "ALRM";
+}
+
+function getBundledCallType(callType) {
+  const value = String(callType || "").toUpperCase();
+  const code = getCallTypeCode(callType);
+
+  if (code === "ANI" || code === "DEERP" || code === "HUNT" || code.startsWith("ANIMAL")) return "Animal";
+  if (code.startsWith("ASLT") || code === "ASSAULT" || code === "ASSAULTTRS") return "Assault";
+  if (code.startsWith("DOM")) return "Domestic";
+  if (
+    code.startsWith("HARASS") ||
+    code.startsWith("STALK") ||
+    code.startsWith("THREAT") ||
+    value.includes("HARASSMENT") ||
+    value.includes("STALKING") ||
+    value.includes("THREATS")
+  ) return "Harassment / Threats / Stalking";
+  if (
+    code.startsWith("RAPE") ||
+    code.startsWith("SEXASLT") ||
+    value.includes("SEX ASSAULT") ||
+    value.includes("SEXUAL ASSAULT")
+  ) return "Sex Assault";
+  if (code.startsWith("WEAP")) return "Weapons";
+  if (value.includes("VANDALISM")) return "Vandalism";
+  if (code.startsWith("ROB") || value.includes("CAR JACKING") || value.includes("CARJACKING")) return "Robbery (including carjacking)";
+  if (code.startsWith("BURG")) return "Burglary";
+  if (code.startsWith("THEFT")) return "Theft";
+  if (code.startsWith("FRAUD")) return "Fraud";
+  if (code.startsWith("TRESP") || code === "TRE") return "Trespassing / Unwanted";
+  if (code.startsWith("DISP") || value.includes("DISTURBANCE/NUISANCE")) return "Disturbance";
+  if (value.includes("ABDUCTION") || value.includes("KIDNAPPING")) return "Abduction / Kidnapping";
+  if (code.startsWith("ABUSE") || code.startsWith("NEGLECT") || value.includes("ABUSE, ABANDONMENT, NEGLECT")) return "Abuse / Neglect";
+  if (value.includes("ADMINISTRATIVE") || value.includes("MISC-ADMIN") || code.startsWith("LOSTT")) return "Administrative / Lost or Found Property";
+  if (value.includes("BOMB DEVICE") || value.includes("BOMB THREAT")) return "Bomb / Suspicious Package";
+  if (code === "CDS") return "CDS / Drug Complaint";
+  if (value.includes("CHECK WELFARE") || value.includes("CHECK THE WELFARE")) return "Check Welfare";
+  if (value.includes("DRIVING UNDER THE INFLUENCE")) return "DUI";
+  if (value.includes("FOLLOW UP/SUPPLEMENTAL") || code.startsWith("FOLLOWT")) return "Follow Up / Supplemental";
+  if (value.includes("INDECENCY/LEWDNESS")) return "Indecency / Lewdness";
+  if (code.startsWith("NOISE")) return "Noise";
+  if (value.includes("PEDESTRIAN STRUCK")) return "Pedestrian Struck";
+  if (code.startsWith("SHOOT") || code.startsWith("SHOTS")) return "Shooting";
+  if (code.startsWith("STAB")) return "Stabbing";
+  if (code === "S" || value.includes("SUSPICIOUS CIRC") || value.includes("SUSICIOUS CIRCUMSTANCE")) return "Suspicious Situation";
+  if (value.includes("TRAFFIC VIOLATION")) return "Traffic Violation";
+
+  return "";
+}
+
+function getDisplayCallType(callType, priority) {
+  if (isPriorityZero(priority) && isTrafficTransportationCallType(callType)) {
+    return "Personal Injury Collision";
+  }
+  if (isAlarmCallType(callType)) {
+    return "Alarm";
+  }
+  const bundledCallType = getBundledCallType(callType);
+  if (bundledCallType) {
+    return bundledCallType;
+  }
+  return String(callType || "");
+}
+
 function isDetailCallType(callType) {
   return getCallTypeCode(callType) === "DT";
 }
@@ -137,7 +225,8 @@ async function main() {
   const groups = new Map();
 
   for (const row of rows) {
-    if (isDetailCallType(row.initial_type)) continue;
+    const callType = getDisplayCallType(row.initial_type, row.priority);
+    if (isDetailCallType(callType)) continue;
 
     const normalizedLocation = getNormalizedLocationKey(row.address, row.city);
     if (!normalizedLocation) continue;
@@ -163,8 +252,7 @@ async function main() {
     existing.call_count += 1;
     if (!existing.district && row.police_district_number != null) existing.district = String(row.police_district_number);
     if (!existing.beat && row.sector != null) existing.beat = String(row.sector);
-    if (row.initial_type) {
-      const callType = String(row.initial_type);
+    if (callType) {
       existing.callTypes.set(callType, (existing.callTypes.get(callType) || 0) + 1);
     }
     groups.set(groupKey, existing);

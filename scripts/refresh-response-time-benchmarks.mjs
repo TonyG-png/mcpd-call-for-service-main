@@ -20,8 +20,9 @@ function getCallTypeCode(callType) {
     .toUpperCase();
 }
 
-function isTruCallType(callType) {
-  return getCallTypeCode(callType).endsWith("T");
+function isTelephoneReportingUnitCallType(callType) {
+  const value = String(callType || "").toUpperCase();
+  return value.includes("TRS") || value.includes("TELEPHONE REPORTING UNIT");
 }
 
 function isDetailCallType(callType) {
@@ -112,7 +113,7 @@ async function fetchYear(year) {
 
     const rows = await response.json();
     for (const row of rows) {
-      if (isTruCallType(row.initial_type) || isDetailCallType(row.initial_type)) continue;
+      if (isTelephoneReportingUnitCallType(row.initial_type) || isDetailCallType(row.initial_type)) continue;
       addRow(acc, row);
     }
 

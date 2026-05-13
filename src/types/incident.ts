@@ -29,6 +29,7 @@ export interface NormalizedIncident {
   startTime?: Date;
   endTime?: Date;
   callType?: string;
+  rawCallType?: string;
   priority?: string;
   district?: string;
   beat?: string;

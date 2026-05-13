@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Loader2, Clock, Zap, Timer } from "lucide-react";
+import { Loader2, Clock, Zap, Timer, SlidersHorizontal } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
@@ -24,6 +24,7 @@ interface ResponseTimeBenchmarks {
   generated_at: string;
   benchmark_type: string;
   excludes_tru_calls: boolean;
+  excludes_detail_calls?: boolean;
   years: number[];
   annual: AnnualResponseTimeBenchmark[];
   three_year_average: {
@@ -42,6 +43,7 @@ export default function ResponseTimesPage() {
   const [priority, setPriority] = useState<string>("");
   const [district, setDistrict] = useState<string>("");
   const [beat, setBeat] = useState<string>("");
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [benchmarks, setBenchmarks] = useState<ResponseTimeBenchmarks | null>(null);
   const [benchmarkError, setBenchmarkError] = useState<string | null>(null);
 
@@ -203,63 +205,102 @@ export default function ResponseTimesPage() {
   }, [filtered]);
 
   const dateButtons = useMemo(() => getDateRangeOptions(), []);
+  const activeResponseFilters = [priority, district, beat].filter(Boolean).length;
+  const renderResponseDateButtons = (isMobile = false) => (
+    <div className="flex items-center gap-1 rounded-lg bg-secondary p-0.5">
+      {dateButtons.map((btn) => (
+        <button
+          key={btn.value}
+          onClick={() => setDateRange(btn.value)}
+          className={`${isMobile ? "px-2.5 py-2" : "px-3 py-1.5"} rounded-md text-xs font-medium transition-colors ${
+            dateRange === btn.value
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          {btn.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  const renderResponseFilterSelects = (isMobile = false) => (
+    <>
+      <select
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+        className={`${isMobile ? "h-10 w-full" : "h-8"} rounded-md border border-border bg-card px-3 text-xs text-foreground`}
+      >
+        <option value="">All Priorities</option>
+        {priorities.map((p) => (
+          <option key={p} value={p}>Priority {p}</option>
+        ))}
+      </select>
+
+      <select
+        value={district}
+        onChange={(e) => setDistrict(e.target.value)}
+        className={`${isMobile ? "h-10 w-full" : "h-8"} rounded-md border border-border bg-card px-3 text-xs text-foreground`}
+      >
+        <option value="">All Districts</option>
+        {districts.map((d) => (
+          <option key={d} value={d}>{d}</option>
+        ))}
+      </select>
+
+      <select
+        value={beat}
+        onChange={(e) => setBeat(e.target.value)}
+        className={`${isMobile ? "h-10 w-full" : "h-8"} rounded-md border border-border bg-card px-3 text-xs text-foreground`}
+      >
+        <option value="">All Beats</option>
+        {beats.map((b) => (
+          <option key={b} value={b}>{b}</option>
+        ))}
+      </select>
+    </>
+  );
 
   return (
     <div className="space-y-6">
       {/* Sticky filters */}
-      <div className="sticky top-14 z-30 bg-background/95 backdrop-blur-sm border-b border-border -mx-4 px-4 py-3 flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1 bg-secondary rounded-lg p-0.5">
-          {dateButtons.map((btn) => (
-            <button
-              key={btn.value}
-              onClick={() => setDateRange(btn.value)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                dateRange === btn.value
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {btn.label}
-            </button>
-          ))}
+      <div className="sticky top-14 z-30 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur-sm">
+        <div className="hidden flex-wrap items-center gap-3 md:flex">
+          {renderResponseDateButtons()}
+          {renderResponseFilterSelects()}
+          <span className="ml-auto text-[10px] text-muted-foreground">
+            {filtered.length.toLocaleString()} records
+          </span>
         </div>
 
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-          className="h-8 px-3 text-xs rounded-md border border-border bg-card text-foreground"
-        >
-          <option value="">All Priorities</option>
-          {priorities.map((p) => (
-            <option key={p} value={p}>Priority {p}</option>
-          ))}
-        </select>
-
-        <select
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-          className="h-8 px-3 text-xs rounded-md border border-border bg-card text-foreground"
-        >
-          <option value="">All Districts</option>
-          {districts.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
-        </select>
-
-        <select
-          value={beat}
-          onChange={(e) => setBeat(e.target.value)}
-          className="h-8 px-3 text-xs rounded-md border border-border bg-card text-foreground"
-        >
-          <option value="">All Beats</option>
-          {beats.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
-
-        <span className="text-[10px] text-muted-foreground ml-auto">
-          {filtered.length.toLocaleString()} records
-        </span>
+        <div className="space-y-2 md:hidden">
+          <div className="flex items-center gap-2">
+            <div className="min-w-0 flex-1 overflow-x-auto">
+              {renderResponseDateButtons(true)}
+            </div>
+            <button
+              type="button"
+              onClick={() => setMobileFiltersOpen((open) => !open)}
+              className="flex h-10 shrink-0 items-center gap-1.5 rounded-md border border-border bg-card px-3 text-xs font-medium text-foreground"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              Filters
+              {activeResponseFilters > 0 && (
+                <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
+                  {activeResponseFilters}
+                </span>
+              )}
+            </button>
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {filtered.length.toLocaleString()} records
+          </div>
+          {mobileFiltersOpen && (
+            <div className="grid gap-2">
+              {renderResponseFilterSelects(true)}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Loading */}
@@ -278,6 +319,10 @@ export default function ResponseTimesPage() {
 
       {!isLoading && !error && (
         <>
+          <div className="dashboard-card p-4 text-xs text-muted-foreground">
+            Response-time assessment excludes Telephone Reporting Unit/TRS calls and DT-Detail calls. Annual benchmark averages are countywide.
+          </div>
+
           {/* KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="dashboard-card p-6 animate-fade-in">
@@ -345,7 +390,9 @@ export default function ResponseTimesPage() {
           {/* Rolling Average Chart */}
           <div className="dashboard-card p-4 animate-fade-in">
             <h3 className="text-sm font-semibold font-display mb-1">Daily Average Response Times</h3>
-            <p className="text-xs text-muted-foreground mb-4">Rolling daily averages (mm:ss), excluding TRU calls</p>
+            <p className="text-xs text-muted-foreground mb-4">
+              Rolling daily averages (mm:ss), excluding Telephone Reporting Unit/TRS and DT-Detail calls.
+            </p>
             <div className="h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
@@ -477,7 +524,7 @@ function ResponseTimeBenchmarkPanel({
         <div>
           <h3 className="text-sm font-semibold font-display">Annual Response-Time Benchmarks</h3>
           <p className="text-xs text-muted-foreground">
-            Current filtered period compared with {benchmarks.years.join(", ")} annual averages, excluding TRU calls.
+            Current filtered period compared with {benchmarks.years.join(", ")} countywide annual averages, excluding Telephone Reporting Unit/TRS and DT-Detail calls.
           </p>
         </div>
         <span className="text-[10px] text-muted-foreground">
@@ -498,7 +545,7 @@ function ResponseTimeBenchmarkPanel({
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold">{formatBenchmarkMetric(item.benchmark)}</div>
-                <div className="text-[10px] text-muted-foreground">3-year avg</div>
+                <div className="text-[10px] text-muted-foreground">countywide 3-year avg</div>
               </div>
             </div>
             <div className={`mt-3 text-xs font-medium ${getComparisonClass(item.current.average, item.benchmark.average_seconds)}`}>
@@ -508,14 +555,20 @@ function ResponseTimeBenchmarkPanel({
         ))}
       </div>
 
-      <div className="mt-4 overflow-auto">
-        <table className="w-full text-xs">
+      <div className="mt-4 grid gap-3 md:hidden">
+        {benchmarks.annual.map((year) => (
+          <ResponseAnnualMobileCard key={year.year} year={year} />
+        ))}
+      </div>
+
+      <div className="mt-4 hidden overflow-auto md:block">
+        <table className="w-full min-w-[760px] text-xs">
           <thead>
             <tr className="border-b border-border text-left text-muted-foreground">
               <th className="py-2 pr-3 font-medium">Year</th>
-              <th className="py-2 pr-3 font-medium">Call to Dispatch</th>
-              <th className="py-2 pr-3 font-medium">Dispatch to Arrival</th>
-              <th className="py-2 pr-3 font-medium">Call to On Scene</th>
+              <th className="py-2 pr-3 font-medium">Countywide Call to Dispatch</th>
+              <th className="py-2 pr-3 font-medium">Countywide Dispatch to Arrival</th>
+              <th className="py-2 pr-3 font-medium">Countywide Call to On Scene</th>
               <th className="py-2 pr-3 text-right font-medium">Records</th>
             </tr>
           </thead>
@@ -532,6 +585,34 @@ function ResponseTimeBenchmarkPanel({
           </tbody>
         </table>
       </div>
+    </div>
+  );
+}
+
+function ResponseAnnualMobileCard({ year }: { year: AnnualResponseTimeBenchmark }) {
+  return (
+    <div className="rounded-md border border-border p-3">
+      <div className="flex items-center justify-between gap-3 border-b border-border/50 pb-2">
+        <div className="text-sm font-semibold font-display">{year.year}</div>
+        <div className="text-right">
+          <div className="text-xs text-muted-foreground">Records</div>
+          <div className="text-sm font-bold">{year.record_count.toLocaleString()}</div>
+        </div>
+      </div>
+      <div className="mt-3 grid gap-3 text-xs">
+        <MobileResponseBenchmarkStat label="Countywide Call to Dispatch" value={formatBenchmarkMetric(year.call_to_dispatch)} />
+        <MobileResponseBenchmarkStat label="Countywide Dispatch to Arrival" value={formatBenchmarkMetric(year.dispatch_to_arrival)} />
+        <MobileResponseBenchmarkStat label="Countywide Call to On Scene" value={formatBenchmarkMetric(year.call_to_arrival)} />
+      </div>
+    </div>
+  );
+}
+
+function MobileResponseBenchmarkStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <div className="text-muted-foreground">{label}</div>
+      <div className="font-semibold">{value}</div>
     </div>
   );
 }

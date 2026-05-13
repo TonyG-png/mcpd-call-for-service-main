@@ -16,7 +16,7 @@ const hasValue = (v: unknown): boolean =>
 const isCrime = (i: NormalizedIncident) => hasValue(i.crNumber);
 const isCrash = (i: NormalizedIncident) => hasValue(i.crashReport);
 const reportCount = (i: NormalizedIncident) => (isCrime(i) ? 1 : 0) + (isCrash(i) ? 1 : 0);
-const isTruReport = (i: NormalizedIncident) => isTruCallType(i.callType);
+const isTruReport = (i: NormalizedIncident) => isTruCallType(i.rawCallType || i.callType);
 
 export default function ReportsPage() {
   const { filteredIncidents, isLoading, availableFields } = useData();
