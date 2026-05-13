@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { defaultConfig } from "@/config/dataset";
 import { getDateRangeBounds } from "@/lib/dateRanges";
+import { isDetailCallType } from "@/lib/callTypes";
 import { FieldMapping, FilterState, NormalizedIncident, SocrataColumn } from "@/types/incident";
 import {
   fetchSchema,
@@ -71,7 +72,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       const raw = await fetchData(defaultConfig, mapping, filters.dateRange, (count) => {
         setLoadProgress(count);
       });
-      const normalized = raw.map((r, i) => normalizeIncident(r, mapping, i));
+      const normalized = raw
+        .map((r, i) => normalizeIncident(r, mapping, i))
+        .filter((incident) => !isDetailCallType(incident.callType));
       setIncidents(normalized);
       setLastRefreshed(new Date());
     } catch (e: unknown) {

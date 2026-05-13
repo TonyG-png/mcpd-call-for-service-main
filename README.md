@@ -44,6 +44,38 @@ The Operations dashboard excludes `DT-Detail` calls from its cards and charts.
 
 Operations call-type summaries group by the call-type code before the dash, so values such as `STAB` and `STAB-Stabbing` are treated as the same call type.
 
+## Location Trend Summary
+
+The Locations tab uses a precomputed static file for fast 12-month detail views:
+
+```sh
+npm run locations:summary
+```
+
+This command fetches the past 12 complete months of public calls-for-service records, groups them by normalized location and month, and writes `public/data/top-location-monthly-summary.json`. The generated file keeps high-interest locations only: top locations overall, top locations by district, and top locations by beat. This keeps location clicks fast without fetching a year of raw records in the browser.
+
+The GitHub Actions workflow `.github/workflows/refresh-location-summary.yml` refreshes this file monthly and also supports manual runs from the GitHub Actions tab.
+
+## Response Time Benchmarks
+
+The Response Times tab compares the current filtered period against precomputed annual averages for the last three full calendar years:
+
+```sh
+npm run response-times:benchmarks
+```
+
+This writes `public/data/response-time-annual-benchmarks.json`. The script excludes TRU calls and automatically rolls forward each year by using the current year minus one, two, and three. The GitHub Actions workflow `.github/workflows/refresh-response-time-benchmarks.yml` refreshes this file monthly and supports manual `workflow_dispatch` runs from GitHub.
+
+## Overview Benchmarks
+
+The Overview tab compares the current filtered period against both a broad 3-year annual baseline and the same calendar window from the prior three full years:
+
+```sh
+npm run overview:benchmarks
+```
+
+This writes `public/data/overview-annual-benchmarks.json`. It stores annual totals plus daily summary rows, so the browser can compare YTD, 7-day, 14-day, or 28-day windows against the matching historical calendar window without pulling multiple years of raw records. The workflow `.github/workflows/refresh-overview-benchmarks.yml` refreshes the file monthly and can be run manually from GitHub.
+
 For local RAG search during development, run the API server in a second terminal:
 
 ```sh

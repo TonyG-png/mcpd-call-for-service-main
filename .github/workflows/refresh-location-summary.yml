@@ -1,0 +1,35 @@
+name: Refresh location summary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 8 1 * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-location-summary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh location monthly summary
+        run: npm run locations:summary
+
+      - name: Commit refreshed summary
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Refresh top location monthly summary"
+          file_pattern: public/data/top-location-monthly-summary.json

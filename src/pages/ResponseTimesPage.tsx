@@ -7,6 +7,32 @@ import { getDateRangeBounds, getDateRangeOptions } from "@/lib/dateRanges";
 import { fetchResponseTimeData, formatSeconds, ResponseTimeRecord } from "@/services/responseTimeService";
 import type { DateRangeOption } from "@/types/incident";
 
+interface BenchmarkMetric {
+  average_seconds: number | null;
+  valid_count: number;
+}
+
+interface AnnualResponseTimeBenchmark {
+  year: number;
+  record_count: number;
+  call_to_dispatch: BenchmarkMetric;
+  dispatch_to_arrival: BenchmarkMetric;
+  call_to_arrival: BenchmarkMetric;
+}
+
+interface ResponseTimeBenchmarks {
+  generated_at: string;
+  benchmark_type: string;
+  excludes_tru_calls: boolean;
+  years: number[];
+  annual: AnnualResponseTimeBenchmark[];
+  three_year_average: {
+    call_to_dispatch: BenchmarkMetric;
+    dispatch_to_arrival: BenchmarkMetric;
+    call_to_arrival: BenchmarkMetric;
+  };
+}
+
 export default function ResponseTimesPage() {
   const [data, setData] = useState<ResponseTimeRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +42,8 @@ export default function ResponseTimesPage() {
   const [priority, setPriority] = useState<string>("");
   const [district, setDistrict] = useState<string>("");
   const [beat, setBeat] = useState<string>("");
+  const [benchmarks, setBenchmarks] = useState<ResponseTimeBenchmarks | null>(null);
+  const [benchmarkError, setBenchmarkError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
@@ -32,6 +60,25 @@ export default function ResponseTimesPage() {
   }, [dateRange]);
 
   useEffect(() => { loadData(); }, [loadData]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/data/response-time-annual-benchmarks.json")
+      .then((response) => {
+        if (!response.ok) throw new Error(`Benchmark fetch failed: ${response.status}`);
+        return response.json() as Promise<ResponseTimeBenchmarks>;
+      })
+      .then((payload) => {
+        if (!cancelled) setBenchmarks(payload);
+      })
+      .catch((e: unknown) => {
+        if (!cancelled) setBenchmarkError(e instanceof Error ? e.message : "Unable to load response time benchmarks");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Available priorities
   const priorities = useMemo(() => {
@@ -285,6 +332,16 @@ export default function ResponseTimesPage() {
             </div>
           </div>
 
+          <ResponseTimeBenchmarkPanel
+            benchmarks={benchmarks}
+            error={benchmarkError}
+            current={{
+              callToDispatch: { average: avgCallToDispatch, count: validCallToDispatch.length },
+              dispatchToArrive: { average: avgDispatchToArrive, count: validDispatchToArrive.length },
+              callToArrive: { average: avgCallToArrive, count: validCallToArrive.length },
+            }}
+          />
+
           {/* Rolling Average Chart */}
           <div className="dashboard-card p-4 animate-fade-in">
             <h3 className="text-sm font-semibold font-display mb-1">Daily Average Response Times</h3>
@@ -365,4 +422,141 @@ export default function ResponseTimesPage() {
       )}
     </div>
   );
+}
+
+function ResponseTimeBenchmarkPanel({
+  benchmarks,
+  error,
+  current,
+}: {
+  benchmarks: ResponseTimeBenchmarks | null;
+  error: string | null;
+  current: {
+    callToDispatch: { average: number; count: number };
+    dispatchToArrive: { average: number; count: number };
+    callToArrive: { average: number; count: number };
+  };
+}) {
+  if (error) {
+    return (
+      <div className="dashboard-card p-4 text-sm text-destructive">
+        Unable to load response-time benchmarks: {error}
+      </div>
+    );
+  }
+
+  if (!benchmarks) {
+    return (
+      <div className="dashboard-card p-4 text-sm text-muted-foreground">
+        Loading annual response-time benchmarks...
+      </div>
+    );
+  }
+
+  const comparisons = [
+    {
+      label: "Call -> Dispatch",
+      current: current.callToDispatch,
+      benchmark: benchmarks.three_year_average.call_to_dispatch,
+    },
+    {
+      label: "Dispatch -> Arrival",
+      current: current.dispatchToArrive,
+      benchmark: benchmarks.three_year_average.dispatch_to_arrival,
+    },
+    {
+      label: "Call -> On Scene",
+      current: current.callToArrive,
+      benchmark: benchmarks.three_year_average.call_to_arrival,
+    },
+  ];
+
+  return (
+    <div className="dashboard-card p-4 animate-fade-in">
+      <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h3 className="text-sm font-semibold font-display">Annual Response-Time Benchmarks</h3>
+          <p className="text-xs text-muted-foreground">
+            Current filtered period compared with {benchmarks.years.join(", ")} annual averages, excluding TRU calls.
+          </p>
+        </div>
+        <span className="text-[10px] text-muted-foreground">
+          Updated {formatBenchmarkDate(benchmarks.generated_at)}
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+        {comparisons.map((item) => (
+          <div key={item.label} className="rounded-md border border-border p-3">
+            <div className="text-xs font-medium text-muted-foreground">{item.label}</div>
+            <div className="mt-2 flex items-baseline justify-between gap-3">
+              <div>
+                <div className="text-xl font-bold font-display">{formatSeconds(item.current.average)}</div>
+                <div className="text-[10px] text-muted-foreground">
+                  Current, {item.current.count.toLocaleString()} records
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-semibold">{formatBenchmarkMetric(item.benchmark)}</div>
+                <div className="text-[10px] text-muted-foreground">3-year avg</div>
+              </div>
+            </div>
+            <div className={`mt-3 text-xs font-medium ${getComparisonClass(item.current.average, item.benchmark.average_seconds)}`}>
+              {formatComparison(item.current.average, item.benchmark.average_seconds)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 overflow-auto">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="border-b border-border text-left text-muted-foreground">
+              <th className="py-2 pr-3 font-medium">Year</th>
+              <th className="py-2 pr-3 font-medium">Call to Dispatch</th>
+              <th className="py-2 pr-3 font-medium">Dispatch to Arrival</th>
+              <th className="py-2 pr-3 font-medium">Call to On Scene</th>
+              <th className="py-2 pr-3 text-right font-medium">Records</th>
+            </tr>
+          </thead>
+          <tbody>
+            {benchmarks.annual.map((year) => (
+              <tr key={year.year} className="border-b border-border/50">
+                <td className="py-2 pr-3 font-semibold">{year.year}</td>
+                <td className="py-2 pr-3">{formatBenchmarkMetric(year.call_to_dispatch)}</td>
+                <td className="py-2 pr-3">{formatBenchmarkMetric(year.dispatch_to_arrival)}</td>
+                <td className="py-2 pr-3">{formatBenchmarkMetric(year.call_to_arrival)}</td>
+                <td className="py-2 pr-3 text-right">{year.record_count.toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function formatBenchmarkMetric(metric: BenchmarkMetric) {
+  return metric.average_seconds == null ? "-" : formatSeconds(metric.average_seconds);
+}
+
+function formatComparison(currentAverage: number, benchmarkAverage: number | null) {
+  if (!benchmarkAverage || currentAverage <= 0) return "Not enough data to compare";
+
+  const delta = currentAverage - benchmarkAverage;
+  const pct = Math.abs(delta / benchmarkAverage) * 100;
+  if (pct < 5) return "Stable vs 3-year average";
+  return `${pct.toFixed(1)}% ${delta > 0 ? "slower" : "faster"} than 3-year average`;
+}
+
+function getComparisonClass(currentAverage: number, benchmarkAverage: number | null) {
+  if (!benchmarkAverage || currentAverage <= 0) return "text-muted-foreground";
+  const deltaPct = (currentAverage - benchmarkAverage) / benchmarkAverage;
+  if (Math.abs(deltaPct) < 0.05) return "text-muted-foreground";
+  return deltaPct > 0 ? "text-destructive" : "text-emerald-500";
+}
+
+function formatBenchmarkDate(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString();
 }

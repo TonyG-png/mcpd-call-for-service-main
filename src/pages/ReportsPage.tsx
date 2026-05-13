@@ -109,9 +109,30 @@ export default function ReportsPage() {
     return { tru, patrol, total: tru + patrol };
   }, [byReportChannel]);
 
+  const topReportCallTypes = useMemo(() => {
+    const tru = new Map<string, number>();
+    const patrol = new Map<string, number>();
+
+    for (const incident of filteredIncidents) {
+      const reports = reportCount(incident);
+      if (reports === 0) continue;
+
+      const callType = incident.callType || "Unknown";
+      const target = isTruReport(incident) ? tru : patrol;
+      target.set(callType, (target.get(callType) || 0) + reports);
+    }
+
+    return {
+      tru: getTopReportTypes(tru),
+      patrol: getTopReportTypes(patrol),
+    };
+  }, [filteredIncidents]);
+
   const pctOfCalls = (n: number, d: number) => (d > 0 ? `${((n / d) * 100).toFixed(1)}% of calls` : undefined);
   const pctOfReportCalls = (n: number, d: number) =>
     d > 0 ? `${((n / d) * 100).toFixed(1)}% of report calls` : undefined;
+  const pctOfTruEligibleReportCalls = (n: number, d: number) =>
+    d > 0 ? `${((n / d) * 100).toFixed(1)}% of report calls are TRU eligible` : undefined;
 
   if (isLoading && filteredIncidents.length === 0) {
     return <div className="text-sm text-muted-foreground py-12 text-center">Loading reports…</div>;
@@ -216,7 +237,7 @@ export default function ReportsPage() {
         <MetricCard
           title="TRU Reports"
           value={truPatrolStats.tru.toLocaleString()}
-          subtitle={pctOfReportCalls(truPatrolStats.tru, truPatrolStats.total)}
+          subtitle={pctOfTruEligibleReportCalls(truPatrolStats.tru, truPatrolStats.total)}
           icon={<FileText className="h-4 w-4" />}
         />
         <MetricCard
@@ -230,6 +251,19 @@ export default function ReportsPage() {
           value={truPatrolStats.total.toLocaleString()}
           subtitle="Crime plus crash reports"
           icon={<FileText className="h-4 w-4" />}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <ReportTypeListCard
+          title="Top 10 TRU Eligible Report Calls"
+          items={topReportCallTypes.tru}
+          emptyText="No TRU eligible report calls in the current filters."
+        />
+        <ReportTypeListCard
+          title="Top 10 Patrol Report Calls"
+          items={topReportCallTypes.patrol}
+          emptyText="No patrol report calls in the current filters."
         />
       </div>
 
@@ -367,6 +401,63 @@ export default function ReportsPage() {
           </div>
         </ChartCard>
       </div>
+    </div>
+  );
+}
+
+function getTopReportTypes(callTypes: Map<string, number>) {
+  return Array.from(callTypes.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 10)
+    .map(([type, count]) => ({ type, count }));
+}
+
+function ReportTypeListCard({
+  title,
+  items,
+  emptyText,
+}: {
+  title: string;
+  items: { type: string; count: number }[];
+  emptyText: string;
+}) {
+  const total = items.reduce((sum, item) => sum + item.count, 0);
+
+  return (
+    <div className="dashboard-card p-4">
+      <h3 className="text-sm font-semibold font-display mb-3">{title}</h3>
+      {items.length === 0 ? (
+        <p className="text-sm text-muted-foreground">{emptyText}</p>
+      ) : (
+        <div className="space-y-2">
+          {items.map((item, index) => {
+            const percent = total > 0 ? (item.count / total) * 100 : 0;
+            return (
+              <div key={item.type} className="space-y-1.5">
+                <div className="flex items-center justify-between gap-3 text-xs">
+                  <div className="min-w-0 flex items-center gap-2">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/10 text-[10px] font-semibold text-primary">
+                      {index + 1}
+                    </span>
+                    <span className="truncate font-medium text-foreground" title={item.type}>
+                      {item.type}
+                    </span>
+                  </div>
+                  <span className="shrink-0 font-semibold text-foreground">
+                    {item.count.toLocaleString()}
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className="h-full rounded-full bg-primary"
+                    style={{ width: `${Math.max(percent, 2)}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

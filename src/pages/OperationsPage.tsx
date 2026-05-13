@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useData } from "@/context/DataContext";
 import ChartCard from "@/components/dashboard/ChartCard";
 import MetricCard from "@/components/dashboard/MetricCard";
-import { getCallTypeCode } from "@/lib/callTypes";
 import * as analytics from "@/lib/analytics";
 import {
   BarChart, Bar, PieChart, Pie, Cell,
@@ -23,7 +22,7 @@ export default function OperationsPage() {
   const { filteredIncidents, availableFields, isLoading } = useData();
 
   const data = useMemo(() => {
-    const inc = filteredIncidents.filter((incident) => !isDetailCallType(incident.callType));
+    const inc = filteredIncidents;
     return {
       byHour: analytics.callsByHour(inc),
       byDow: analytics.callsByDayOfWeek(inc),
@@ -169,8 +168,4 @@ function getTopCallTypeShare(incidents: ReturnType<typeof useData>["filteredInci
     ...row,
     share: totalCalls > 0 ? (row.count / totalCalls) * 100 : 0,
   }));
-}
-
-function isDetailCallType(callType?: string | null) {
-  return getCallTypeCode(callType) === "DT";
 }

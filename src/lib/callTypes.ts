@@ -9,3 +9,7 @@ export function getCallTypeCode(callType?: string | null) {
 export function isTruCallType(callType?: string | null) {
   return getCallTypeCode(callType).endsWith("T");
 }
+
+export function isDetailCallType(callType?: string | null) {
+  return getCallTypeCode(callType) === "DT";
+}

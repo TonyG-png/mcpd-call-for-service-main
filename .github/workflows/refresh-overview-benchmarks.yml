@@ -1,0 +1,35 @@
+name: Refresh overview benchmarks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 9 2 * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-overview-benchmarks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh overview benchmarks
+        run: npm run overview:benchmarks
+
+      - name: Commit refreshed benchmarks
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Refresh overview annual benchmarks"
+          file_pattern: public/data/overview-annual-benchmarks.json

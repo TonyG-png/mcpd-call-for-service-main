@@ -1,0 +1,35 @@
+name: Refresh response time benchmarks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 8 2 * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-response-time-benchmarks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh response time benchmarks
+        run: npm run response-times:benchmarks
+
+      - name: Commit refreshed benchmarks
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Refresh response time annual benchmarks"
+          file_pattern: public/data/response-time-annual-benchmarks.json

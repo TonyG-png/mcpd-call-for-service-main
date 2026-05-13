@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-05-13T01:02:33.735Z",
+  "benchmark_type": "last_three_full_calendar_years",
+  "excludes_tru_calls": true,
+  "years": [
+    2023,
+    2024,
+    2025
+  ],
+  "annual": [
+    {
+      "year": 2023,
+      "record_count": 177407,
+      "call_to_dispatch": {
+        "average_seconds": 916.0837543597555,
+        "valid_count": 170021
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 738.4055380786117,
+        "valid_count": 144635
+      },
+      "call_to_arrival": {
+        "average_seconds": 1605.579946623892,
+        "valid_count": 144634
+      }
+    },
+    {
+      "year": 2024,
+      "record_count": 179438,
+      "call_to_dispatch": {
+        "average_seconds": 860.7082022585498,
+        "valid_count": 168161
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 733.3156313603033,
+        "valid_count": 143468
+      },
+      "call_to_arrival": {
+        "average_seconds": 1543.7177102865628,
+        "valid_count": 143459
+      }
+    },
+    {
+      "year": 2025,
+      "record_count": 170764,
+      "call_to_dispatch": {
+        "average_seconds": 727.1986581533397,
+        "valid_count": 160376
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 693.4832052846988,
+        "valid_count": 139270
+      },
+      "call_to_arrival": {
+        "average_seconds": 1385.6090172115432,
+        "valid_count": 139267
+      }
+    }
+  ],
+  "three_year_average": {
+    "call_to_dispatch": {
+      "average_seconds": 836.6453652333329,
+      "valid_count": 498558
+    },
+    "dispatch_to_arrival": {
+      "average_seconds": 722.0578230257878,
+      "valid_count": 427373
+    },
+    "call_to_arrival": {
+      "average_seconds": 1513.130054286784,
+      "valid_count": 427360
+    }
+  }
+}
