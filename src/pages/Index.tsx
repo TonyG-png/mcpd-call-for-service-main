@@ -590,7 +590,7 @@ function weightedAnnualAverage(annualRows: OverviewAnnualBenchmark[]) {
 }
 
 function getSeasonalBaseline(benchmarks: OverviewBenchmarks, filters: FilterState) {
-  const bounds = getDateRangeBounds(filters.dateRange);
+  const bounds = getDateRangeBounds(filters.dateRange, new Date(), filters.customStartDate, filters.customEndDate);
   const dailyRows = filters.district.length > 0
     ? filters.district.flatMap((district) => benchmarks.daily_by_district?.[district] || [])
     : benchmarks.daily;

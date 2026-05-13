@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useData } from "@/context/DataContext";
-import { Check, ChevronDown, Search, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { CalendarDays, Check, ChevronDown, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { getDateRangeOptions } from "@/lib/dateRanges";
 
 export default function GlobalFilters() {
@@ -31,43 +31,75 @@ export default function GlobalFilters() {
   const resetFilters = () =>
     setFilters({
       dateRange: 28,
+      customStartDate: "",
+      customEndDate: "",
       district: [],
       beat: "",
       priority: "",
       callType: "",
-      search: "",
     });
 
   const hasActiveFilters =
     filters.dateRange !== 28 ||
+    filters.customStartDate !== "" ||
+    filters.customEndDate !== "" ||
     filters.district.length > 0 ||
     filters.beat !== "" ||
     filters.priority !== "" ||
-    filters.callType !== "" ||
-    filters.search !== "";
+    filters.callType !== "";
   const activeAdvancedFilters = [
     filters.district.length > 0 ? filters.district.join(",") : "",
     filters.beat,
     filters.priority,
     filters.callType,
-    filters.search,
+    filters.dateRange === "custom" ? [filters.customStartDate, filters.customEndDate].filter(Boolean).join(" to ") : "",
   ].filter(Boolean).length;
 
-  const renderDateButtons = (buttonClass = "px-3 py-1.5") => (
-    <div className="inline-flex rounded-md border border-border overflow-hidden">
-      {dateRangeOptions.map((opt) => (
-        <button
-          key={opt.value}
-          onClick={() => setFilters((f) => ({ ...f, dateRange: opt.value }))}
-          className={`${buttonClass} text-xs font-medium transition-colors ${
-            filters.dateRange === opt.value
-              ? "bg-primary text-primary-foreground"
-              : "bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-          }`}
-        >
-          {opt.label}
-        </button>
-      ))}
+  const setCustomDate = (field: "customStartDate" | "customEndDate", value: string) => {
+    setFilters((f) => ({
+      ...f,
+      dateRange: "custom",
+      [field]: value,
+    }));
+  };
+
+  const renderDateControls = (buttonClass = "px-3 py-1.5", isMobile = false) => (
+    <div className={`flex ${isMobile ? "w-full flex-col gap-2" : "flex-wrap items-center gap-2"}`}>
+      <div className="inline-flex rounded-md border border-border overflow-hidden">
+        {dateRangeOptions.map((opt) => (
+          <button
+            key={opt.value}
+            onClick={() => setFilters((f) => ({ ...f, dateRange: opt.value }))}
+            className={`${buttonClass} text-xs font-medium transition-colors ${
+              filters.dateRange === opt.value
+                ? "bg-primary text-primary-foreground"
+                : "bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+      <div className={`flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 ${
+        isMobile ? "w-full" : ""
+      }`}>
+        <CalendarDays className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+        <input
+          type="date"
+          value={filters.customStartDate}
+          onChange={(e) => setCustomDate("customStartDate", e.target.value)}
+          className="h-7 min-w-0 bg-transparent text-xs text-foreground outline-none"
+          aria-label="Custom start date"
+        />
+        <span className="text-xs text-muted-foreground">to</span>
+        <input
+          type="date"
+          value={filters.customEndDate}
+          onChange={(e) => setCustomDate("customEndDate", e.target.value)}
+          className="h-7 min-w-0 bg-transparent text-xs text-foreground outline-none"
+          aria-label="Custom end date"
+        />
+      </div>
     </div>
   );
 
@@ -172,17 +204,6 @@ export default function GlobalFilters() {
         </select>
       )}
 
-      <div className={`relative ${isMobile ? "w-full" : ""}`}>
-        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Search ID/address..."
-          value={filters.search}
-          onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
-          className={`filter-input pl-7 ${isMobile ? "h-10 w-full" : "w-[160px]"}`}
-        />
-      </div>
-
       {hasActiveFilters && (
         <button
           onClick={resetFilters}
@@ -200,14 +221,14 @@ export default function GlobalFilters() {
     <div className="sticky top-14 z-40 bg-card/60 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 py-2">
         <div className="hidden flex-wrap items-center gap-2 sm:flex">
-          {renderDateButtons()}
+          {renderDateControls()}
           {renderAdvancedFilters()}
         </div>
 
         <div className="space-y-2 sm:hidden">
           <div className="flex items-center gap-2">
             <div className="min-w-0 flex-1 overflow-x-auto">
-              {renderDateButtons("px-2.5 py-2")}
+              {renderDateControls("px-2.5 py-2", true)}
             </div>
             <button
               type="button"

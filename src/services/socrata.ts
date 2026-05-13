@@ -232,11 +232,13 @@ export async function fetchData(
   config: DatasetConfig,
   fieldMapping: FieldMapping,
   dateRange: DateRangeOption = 28,
-  onProgress?: (loaded: number) => void
+  onProgress?: (loaded: number) => void,
+  customStartDate?: string,
+  customEndDate?: string,
 ): Promise<Record<string, unknown>[]> {
   const timeField = fieldMapping.startTime || "start_time";
   const baseUrl = `https://${config.domain}/resource/${config.datasetId}.json`;
-  const bounds = getDateRangeBounds(dateRange);
+  const bounds = getDateRangeBounds(dateRange, new Date(), customStartDate, customEndDate);
   const startDateISO = formatSocrataDateTime(bounds.start);
   const clauses = [`${timeField} >= '${startDateISO}'`];
 

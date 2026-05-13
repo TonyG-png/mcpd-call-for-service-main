@@ -28,11 +28,12 @@ interface DataContextType {
 
 const defaultFilters: FilterState = {
   dateRange: 28,
+  customStartDate: "",
+  customEndDate: "",
   district: [],
   beat: "",
   priority: "",
   callType: "",
-  search: "",
 };
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -69,9 +70,16 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       console.log("Field mapping:", mapping);
 
       // Step 3: Fetch data for the selected range via OData pagination.
-      const raw = await fetchData(defaultConfig, mapping, filters.dateRange, (count) => {
-        setLoadProgress(count);
-      });
+      const raw = await fetchData(
+        defaultConfig,
+        mapping,
+        filters.dateRange,
+        (count) => {
+          setLoadProgress(count);
+        },
+        filters.customStartDate,
+        filters.customEndDate,
+      );
       const normalized = raw
         .map((r, i) => {
           const incident = normalizeIncident(r, mapping, i);
@@ -90,7 +98,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [filters.dateRange]);
+  }, [filters.customEndDate, filters.customStartDate, filters.dateRange]);
 
   useEffect(() => {
     loadData();
@@ -117,7 +125,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   }, [fieldMapping, incidents]);
 
   const filteredIncidents = useMemo(() => {
-    const range = getDateRangeBounds(filters.dateRange);
+    const range = getDateRangeBounds(filters.dateRange, new Date(), filters.customStartDate, filters.customEndDate);
     return incidents.filter((inc) => {
       if (inc.startTime && inc.startTime < range.start) return false;
       if (inc.startTime && range.end && inc.startTime >= range.end) return false;
@@ -125,13 +133,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       if (filters.beat && inc.beat !== filters.beat) return false;
       if (filters.priority && inc.priority !== filters.priority) return false;
       if (filters.callType && inc.callType !== filters.callType) return false;
-      if (filters.search) {
-        const q = filters.search.toLowerCase();
-        const matches = [inc.incidentId, inc.address, inc.city].some((v) =>
-          v?.toLowerCase().includes(q)
-        );
-        if (!matches) return false;
-      }
       return true;
     });
   }, [incidents, filters]);

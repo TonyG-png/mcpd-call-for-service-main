@@ -41,15 +41,16 @@ export interface NormalizedIncident {
   raw: Record<string, unknown>;
 }
 
-export type DateRangeOption = 7 | 14 | 28 | "ytd";
+export type DateRangeOption = 7 | 14 | 28 | "ytd" | "custom";
 
 export interface FilterState {
   dateRange: DateRangeOption;
+  customStartDate: string;
+  customEndDate: string;
   district: string[];
   beat: string;
   priority: string;
   callType: string;
-  search: string;
 }
 
 export interface SocrataColumn {
