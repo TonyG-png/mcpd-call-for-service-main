@@ -161,6 +161,10 @@ export default function ExecutiveOverview() {
     <div className="space-y-6">
       <h2 className="text-xl font-display font-bold">Executive Overview</h2>
 
+      <div className="dashboard-card border-primary/30 bg-primary/5 p-4 text-sm text-muted-foreground">
+        For official department numbers, contact the Crime Analysis Unit. This dashboard reflects calls for service only and should not be used as official NIBRS, crime, or incident statistics.
+      </div>
+
       {/* Metric cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <MetricCard title="Total Calls" value={filteredIncidents.length.toLocaleString()} icon={<Activity className="h-4 w-4" />} />
