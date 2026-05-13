@@ -41,6 +41,10 @@ function createAccumulator() {
   };
 }
 
+function getPriority(row) {
+  return row.priority != null ? String(row.priority).trim() : "";
+}
+
 function addRow(acc, row) {
   const callToDispatch = row.calltime_dispatch != null ? Number(row.calltime_dispatch) : null;
   const dispatchToArrival = row.dispatch_arrive != null ? Number(row.dispatch_arrive) : null;
@@ -90,12 +94,13 @@ async function fetchYear(year) {
   const start = new Date(year, 0, 1);
   const end = new Date(year + 1, 0, 1);
   const baseUrl = `https://${DOMAIN}/resource/${DATASET_ID}.json`;
-  const selectFields = "start_time,calltime_dispatch,dispatch_arrive,initial_type";
+  const selectFields = "start_time,calltime_dispatch,dispatch_arrive,initial_type,priority";
   const whereClause = [
     `start_time >= '${formatSocrataDateTime(start)}'`,
     `start_time < '${formatSocrataDateTime(end)}'`,
   ].join(" AND ");
   const acc = createAccumulator();
+  const byPriority = new Map();
   let offset = 0;
 
   while (true) {
@@ -115,6 +120,13 @@ async function fetchYear(year) {
     for (const row of rows) {
       if (isTelephoneReportingUnitCallType(row.initial_type) || isDetailCallType(row.initial_type)) continue;
       addRow(acc, row);
+
+      const priority = getPriority(row);
+      if (priority) {
+        const priorityAcc = byPriority.get(priority) || createAccumulator();
+        addRow(priorityAcc, row);
+        byPriority.set(priority, priorityAcc);
+      }
     }
 
     console.log(`${year}: loaded ${(offset + rows.length).toLocaleString()} raw rows, retained ${acc.record_count.toLocaleString()} non-TRU, non-detail rows`);
@@ -125,6 +137,11 @@ async function fetchYear(year) {
   return {
     year,
     ...finalizeAccumulator(acc),
+    by_priority: Object.fromEntries(
+      Array.from(byPriority.entries())
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([priority, priorityAcc]) => [priority, finalizeAccumulator(priorityAcc)])
+    ),
   };
 }
 
@@ -151,6 +168,19 @@ async function main() {
     annual.push(await fetchYear(year));
   }
 
+  const annualByPriority = {};
+  const priorities = new Set();
+  for (const year of annual) {
+    Object.keys(year.by_priority || {}).forEach((priority) => priorities.add(priority));
+  }
+
+  for (const priority of Array.from(priorities).sort()) {
+    annualByPriority[priority] = annual.map((year) => ({
+      year: year.year,
+      ...(year.by_priority?.[priority] || finalizeAccumulator(createAccumulator())),
+    }));
+  }
+
   const output = {
     generated_at: new Date().toISOString(),
     benchmark_type: "last_three_full_calendar_years",
@@ -158,11 +188,22 @@ async function main() {
     excludes_detail_calls: true,
     years,
     annual,
+    annual_by_priority: annualByPriority,
     three_year_average: {
       call_to_dispatch: weightedAverage(annual, "call_to_dispatch"),
       dispatch_to_arrival: weightedAverage(annual, "dispatch_to_arrival"),
       call_to_arrival: weightedAverage(annual, "call_to_arrival"),
     },
+    three_year_average_by_priority: Object.fromEntries(
+      Object.entries(annualByPriority).map(([priority, priorityAnnual]) => [
+        priority,
+        {
+          call_to_dispatch: weightedAverage(priorityAnnual, "call_to_dispatch"),
+          dispatch_to_arrival: weightedAverage(priorityAnnual, "dispatch_to_arrival"),
+          call_to_arrival: weightedAverage(priorityAnnual, "call_to_arrival"),
+        },
+      ])
+    ),
   };
 
   const fs = await import("node:fs/promises");

@@ -162,7 +162,7 @@ export default function ExecutiveOverview() {
       <h2 className="text-xl font-display font-bold">Executive Overview</h2>
 
       <div className="dashboard-card border-primary/30 bg-primary/5 p-4 text-sm text-muted-foreground">
-        For official department numbers, contact the Crime Analysis Unit. This dashboard reflects calls for service only and should not be used as official NIBRS, crime, or incident statistics.
+        For official department numbers, contact the Crime Analysis Unit. This dashboard reflects calls for service only and should not be used as official NIBRS, crime, or incident statistics. Call-type analysis is based on initial dispatch type; for 2026 YTD, grouped initial call type differed from grouped closed call type for about 1.5% of calls.
       </div>
 
       {/* Metric cards */}
@@ -497,15 +497,61 @@ function getOverviewComparison(benchmarks: OverviewBenchmarks, metrics: Overview
     seasonal,
     projection,
     annualRows,
-    scopeLabel: filters.district ? `${filters.district} district` : "Countywide",
+    scopeLabel: getDistrictScopeLabel(filters),
   };
 }
 
 function getBenchmarkAnnualRows(benchmarks: OverviewBenchmarks, filters: FilterState) {
-  if (filters.district && benchmarks.annual_by_district?.[filters.district]) {
-    return benchmarks.annual_by_district[filters.district];
+  if (filters.district.length > 0) {
+    return getAggregatedAnnualRows(benchmarks, filters.district);
   }
   return benchmarks.annual;
+}
+
+function getAggregatedAnnualRows(benchmarks: OverviewBenchmarks, districts: string[]) {
+  const rowsByYear = new Map<number, OverviewAnnualBenchmark>();
+
+  for (const district of districts) {
+    const rows = benchmarks.annual_by_district?.[district] || [];
+    for (const row of rows) {
+      const existing = rowsByYear.get(row.year) || {
+        year: row.year,
+        days: row.days,
+        total_calls: 0,
+        average_calls_per_day: 0,
+        daywork_calls: 0,
+        daywork_share: 0,
+        evening_calls: 0,
+        evening_share: 0,
+        midnight_calls: 0,
+        midnight_share: 0,
+        overnight_calls: 0,
+        overnight_share: 0,
+        priority_zero_calls: 0,
+        priority_zero_share: 0,
+      };
+
+      existing.total_calls += row.total_calls;
+      existing.daywork_calls = (existing.daywork_calls || 0) + (row.daywork_calls || 0);
+      existing.evening_calls = (existing.evening_calls || 0) + (row.evening_calls || 0);
+      existing.midnight_calls = (existing.midnight_calls || 0) + (row.midnight_calls || 0);
+      existing.overnight_calls += row.overnight_calls;
+      existing.priority_zero_calls += row.priority_zero_calls;
+      rowsByYear.set(row.year, existing);
+    }
+  }
+
+  return Array.from(rowsByYear.values())
+    .map((row) => ({
+      ...row,
+      average_calls_per_day: row.days > 0 ? row.total_calls / row.days : 0,
+      daywork_share: row.total_calls > 0 ? (row.daywork_calls || 0) / row.total_calls : 0,
+      evening_share: row.total_calls > 0 ? (row.evening_calls || 0) / row.total_calls : 0,
+      midnight_share: row.total_calls > 0 ? (row.midnight_calls || 0) / row.total_calls : 0,
+      overnight_share: row.total_calls > 0 ? row.overnight_calls / row.total_calls : 0,
+      priority_zero_share: row.total_calls > 0 ? row.priority_zero_calls / row.total_calls : 0,
+    }))
+    .sort((a, b) => a.year - b.year);
 }
 
 function getOverviewProjection(
@@ -545,8 +591,8 @@ function weightedAnnualAverage(annualRows: OverviewAnnualBenchmark[]) {
 
 function getSeasonalBaseline(benchmarks: OverviewBenchmarks, filters: FilterState) {
   const bounds = getDateRangeBounds(filters.dateRange);
-  const dailyRows = filters.district && benchmarks.daily_by_district?.[filters.district]
-    ? benchmarks.daily_by_district[filters.district]
+  const dailyRows = filters.district.length > 0
+    ? filters.district.flatMap((district) => benchmarks.daily_by_district?.[district] || [])
     : benchmarks.daily;
   let calls = 0;
   let overnight = 0;
@@ -576,6 +622,12 @@ function getSeasonalBaseline(benchmarks: OverviewBenchmarks, filters: FilterStat
     overnightShare: calls > 0 ? overnight / calls : 0,
     priorityZeroShare: calls > 0 ? priorityZero / calls : 0,
   };
+}
+
+function getDistrictScopeLabel(filters: FilterState) {
+  if (filters.district.length === 0) return "Countywide";
+  if (filters.district.length === 1) return `${filters.district[0]} district`;
+  return `${filters.district.join(" + ")} districts`;
 }
 
 function shiftDateToYear(date: Date, year: number) {

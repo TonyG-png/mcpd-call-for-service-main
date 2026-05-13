@@ -79,6 +79,19 @@ function isTrafficTransportationCallType(callType) {
   );
 }
 
+function isVehicleTheftCallType(callType) {
+  const value = String(callType || "").toUpperCase();
+  const code = getCallTypeCode(callType);
+  return (
+    code.startsWith("STLVEH") ||
+    code.startsWith("STOLENVEH") ||
+    code.startsWith("AUTOTHEFT") ||
+    value.includes("STOLEN VEHICLE") ||
+    value.includes("AUTO THEFT") ||
+    value.includes("VEHICLE THEFT")
+  );
+}
+
 function isAlarmCallType(callType) {
   const value = String(callType || "").toUpperCase();
   if (value.includes("BOX ALARM")) return false;
@@ -112,6 +125,7 @@ function getBundledCallType(callType) {
   if (value.includes("VANDALISM")) return "Vandalism";
   if (code.startsWith("ROB") || value.includes("CAR JACKING") || value.includes("CARJACKING")) return "Robbery (including carjacking)";
   if (code.startsWith("BURG")) return "Burglary";
+  if (isVehicleTheftCallType(callType)) return "Vehicle Theft";
   if (code.startsWith("THEFT")) return "Theft";
   if (code.startsWith("FRAUD")) return "Fraud";
   if (code.startsWith("TRESP") || code === "TRE") return "Trespassing / Unwanted";
@@ -131,6 +145,7 @@ function getBundledCallType(callType) {
   if (code.startsWith("STAB")) return "Stabbing";
   if (code === "S" || value.includes("SUSPICIOUS CIRC") || value.includes("SUSICIOUS CIRCUMSTANCE")) return "Suspicious Situation";
   if (value.includes("TRAFFIC VIOLATION")) return "Traffic Violation";
+  if (isTrafficTransportationCallType(callType)) return "Traffic / Transportation";
 
   return "";
 }

@@ -28,7 +28,7 @@ interface DataContextType {
 
 const defaultFilters: FilterState = {
   dateRange: 28,
-  district: "",
+  district: [],
   beat: "",
   priority: "",
   callType: "",
@@ -121,7 +121,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     return incidents.filter((inc) => {
       if (inc.startTime && inc.startTime < range.start) return false;
       if (inc.startTime && range.end && inc.startTime >= range.end) return false;
-      if (filters.district && inc.district !== filters.district) return false;
+      if (filters.district.length > 0 && (!inc.district || !filters.district.includes(inc.district))) return false;
       if (filters.beat && inc.beat !== filters.beat) return false;
       if (filters.priority && inc.priority !== filters.priority) return false;
       if (filters.callType && inc.callType !== filters.callType) return false;

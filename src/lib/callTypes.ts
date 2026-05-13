@@ -18,6 +18,7 @@ export const VANDALISM_CALL_TYPE = "Vandalism";
 export const ROBBERY_CALL_TYPE = "Robbery (including carjacking)";
 export const BURGLARY_CALL_TYPE = "Burglary";
 export const THEFT_CALL_TYPE = "Theft";
+export const VEHICLE_THEFT_CALL_TYPE = "Vehicle Theft";
 export const FRAUD_CALL_TYPE = "Fraud";
 export const TRESPASSING_CALL_TYPE = "Trespassing / Unwanted";
 export const DISTURBANCE_CALL_TYPE = "Disturbance";
@@ -35,6 +36,7 @@ export const PEDESTRIAN_STRUCK_CALL_TYPE = "Pedestrian Struck";
 export const SHOOTING_CALL_TYPE = "Shooting";
 export const STABBING_CALL_TYPE = "Stabbing";
 export const SUSPICIOUS_CALL_TYPE = "Suspicious Situation";
+export const TRAFFIC_TRANSPORTATION_CALL_TYPE = "Traffic / Transportation";
 export const TRAFFIC_VIOLATION_CALL_TYPE = "Traffic Violation";
 
 const DISPLAY_CALL_TYPE_GROUPS = new Set([
@@ -50,6 +52,7 @@ const DISPLAY_CALL_TYPE_GROUPS = new Set([
   ROBBERY_CALL_TYPE,
   BURGLARY_CALL_TYPE,
   THEFT_CALL_TYPE,
+  VEHICLE_THEFT_CALL_TYPE,
   FRAUD_CALL_TYPE,
   TRESPASSING_CALL_TYPE,
   DISTURBANCE_CALL_TYPE,
@@ -67,6 +70,7 @@ const DISPLAY_CALL_TYPE_GROUPS = new Set([
   SHOOTING_CALL_TYPE,
   STABBING_CALL_TYPE,
   SUSPICIOUS_CALL_TYPE,
+  TRAFFIC_TRANSPORTATION_CALL_TYPE,
   TRAFFIC_VIOLATION_CALL_TYPE,
 ]);
 
@@ -98,6 +102,19 @@ export function isTrafficTransportationCallType(callType?: string | null) {
     code === "TRAF" ||
     code === "TRAFF" ||
     code === "TRF"
+  );
+}
+
+export function isVehicleTheftCallType(callType?: string | null) {
+  const value = String(callType || "").toUpperCase();
+  const code = getCallTypeCode(callType);
+  return (
+    code.startsWith("STLVEH") ||
+    code.startsWith("STOLENVEH") ||
+    code.startsWith("AUTOTHEFT") ||
+    value.includes("STOLEN VEHICLE") ||
+    value.includes("AUTO THEFT") ||
+    value.includes("VEHICLE THEFT")
   );
 }
 
@@ -164,6 +181,10 @@ function getBundledCallType(callType?: string | null) {
 
   if (code.startsWith("BURG")) {
     return BURGLARY_CALL_TYPE;
+  }
+
+  if (isVehicleTheftCallType(callType)) {
+    return VEHICLE_THEFT_CALL_TYPE;
   }
 
   if (code.startsWith("THEFT")) {
@@ -252,6 +273,10 @@ function getBundledCallType(callType?: string | null) {
 
   if (value.includes("TRAFFIC VIOLATION")) {
     return TRAFFIC_VIOLATION_CALL_TYPE;
+  }
+
+  if (isTrafficTransportationCallType(callType)) {
+    return TRAFFIC_TRANSPORTATION_CALL_TYPE;
   }
 
   return "";

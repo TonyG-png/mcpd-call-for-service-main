@@ -45,7 +45,7 @@ export type DateRangeOption = 7 | 14 | 28 | "ytd";
 
 export interface FilterState {
   dateRange: DateRangeOption;
-  district: string;
+  district: string[];
   beat: string;
   priority: string;
   callType: string;

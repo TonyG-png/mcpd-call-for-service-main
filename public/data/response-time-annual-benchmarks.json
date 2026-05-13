@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-13T09:56:57.049Z",
+  "generated_at": "2026-05-13T20:56:46.993Z",
   "benchmark_type": "last_three_full_calendar_years",
   "excludes_tru_calls": true,
   "excludes_detail_calls": true,
@@ -23,6 +23,83 @@
       "call_to_arrival": {
         "average_seconds": 1595.3720939169195,
         "valid_count": 156138
+      },
+      "by_priority": {
+        "0": {
+          "record_count": 18797,
+          "call_to_dispatch": {
+            "average_seconds": 200.80066320800128,
+            "valid_count": 18697
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 354.8208381391772,
+            "valid_count": 18207
+          },
+          "call_to_arrival": {
+            "average_seconds": 555.3535453397045,
+            "valid_count": 18207
+          }
+        },
+        "1": {
+          "record_count": 82584,
+          "call_to_dispatch": {
+            "average_seconds": 783.9524025328247,
+            "valid_count": 79437
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 713.802449985503,
+            "valid_count": 68980
+          },
+          "call_to_arrival": {
+            "average_seconds": 1486.8099276591427,
+            "valid_count": 68979
+          }
+        },
+        "2": {
+          "record_count": 49214,
+          "call_to_dispatch": {
+            "average_seconds": 823.6712562011268,
+            "valid_count": 47572
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 710.9914346372532,
+            "valid_count": 40979
+          },
+          "call_to_arrival": {
+            "average_seconds": 1501.0234510358964,
+            "valid_count": 40979
+          }
+        },
+        "3": {
+          "record_count": 13631,
+          "call_to_dispatch": {
+            "average_seconds": 1328.1023896314298,
+            "valid_count": 12345
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 1000.6857720119099,
+            "valid_count": 9404
+          },
+          "call_to_arrival": {
+            "average_seconds": 2336.577307528711,
+            "valid_count": 9404
+          }
+        },
+        "4": {
+          "record_count": 24963,
+          "call_to_dispatch": {
+            "average_seconds": 1751.694369178662,
+            "valid_count": 23620
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 1119.667402660348,
+            "valid_count": 18569
+          },
+          "call_to_arrival": {
+            "average_seconds": 2851.236523237654,
+            "valid_count": 18569
+          }
+        }
       }
     },
     {
@@ -39,6 +116,83 @@
       "call_to_arrival": {
         "average_seconds": 1529.2857959825578,
         "valid_count": 153879
+      },
+      "by_priority": {
+        "0": {
+          "record_count": 18712,
+          "call_to_dispatch": {
+            "average_seconds": 205.82504186247502,
+            "valid_count": 18513
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 349.65224875069407,
+            "valid_count": 18010
+          },
+          "call_to_arrival": {
+            "average_seconds": 555.8476317396858,
+            "valid_count": 18009
+          }
+        },
+        "1": {
+          "record_count": 80679,
+          "call_to_dispatch": {
+            "average_seconds": 728.3947008187012,
+            "valid_count": 75974
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 705.5010316159961,
+            "valid_count": 65916
+          },
+          "call_to_arrival": {
+            "average_seconds": 1429.088907769568,
+            "valid_count": 65911
+          }
+        },
+        "2": {
+          "record_count": 52823,
+          "call_to_dispatch": {
+            "average_seconds": 784.8746691423379,
+            "valid_count": 50626
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 715.2223374827109,
+            "valid_count": 43380
+          },
+          "call_to_arrival": {
+            "average_seconds": 1474.6042833759827,
+            "valid_count": 43377
+          }
+        },
+        "3": {
+          "record_count": 14018,
+          "call_to_dispatch": {
+            "average_seconds": 1209.9888141221707,
+            "valid_count": 11443
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 903.9349862258953,
+            "valid_count": 9075
+          },
+          "call_to_arrival": {
+            "average_seconds": 2108.34347107438,
+            "valid_count": 9075
+          }
+        },
+        "4": {
+          "record_count": 23945,
+          "call_to_dispatch": {
+            "average_seconds": 1645.3610973912262,
+            "valid_count": 22271
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 1122.107442737191,
+            "valid_count": 17507
+          },
+          "call_to_arrival": {
+            "average_seconds": 2743.1828982692637,
+            "valid_count": 17507
+          }
+        }
       }
     },
     {
@@ -55,9 +209,338 @@
       "call_to_arrival": {
         "average_seconds": 1379.285222008434,
         "valid_count": 149161
+      },
+      "by_priority": {
+        "0": {
+          "record_count": 17773,
+          "call_to_dispatch": {
+            "average_seconds": 206.27399591558884,
+            "valid_count": 17628
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 337.1419381250366,
+            "valid_count": 17099
+          },
+          "call_to_arrival": {
+            "average_seconds": 543.4880402362711,
+            "valid_count": 17099
+          }
+        },
+        "1": {
+          "record_count": 75315,
+          "call_to_dispatch": {
+            "average_seconds": 626.6214217557252,
+            "valid_count": 71264
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 673.955640292342,
+            "valid_count": 62940
+          },
+          "call_to_arrival": {
+            "average_seconds": 1301.596831853064,
+            "valid_count": 62939
+          }
+        },
+        "2": {
+          "record_count": 50786,
+          "call_to_dispatch": {
+            "average_seconds": 658.6588145583447,
+            "valid_count": 48522
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 668.4706379383185,
+            "valid_count": 42606
+          },
+          "call_to_arrival": {
+            "average_seconds": 1310.95420725267,
+            "valid_count": 42605
+          }
+        },
+        "3": {
+          "record_count": 13491,
+          "call_to_dispatch": {
+            "average_seconds": 1051.6805642914908,
+            "valid_count": 11129
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 867.7933650362319,
+            "valid_count": 8832
+          },
+          "call_to_arrival": {
+            "average_seconds": 1931.1724606499831,
+            "valid_count": 8831
+          }
+        },
+        "4": {
+          "record_count": 23625,
+          "call_to_dispatch": {
+            "average_seconds": 1315.6106585354753,
+            "valid_count": 21973
+          },
+          "dispatch_to_arrival": {
+            "average_seconds": 1050.2124158986826,
+            "valid_count": 17687
+          },
+          "call_to_arrival": {
+            "average_seconds": 2352.7941425906033,
+            "valid_count": 17687
+          }
+        }
       }
     }
   ],
+  "annual_by_priority": {
+    "0": [
+      {
+        "year": 2023,
+        "record_count": 18797,
+        "call_to_dispatch": {
+          "average_seconds": 200.80066320800128,
+          "valid_count": 18697
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 354.8208381391772,
+          "valid_count": 18207
+        },
+        "call_to_arrival": {
+          "average_seconds": 555.3535453397045,
+          "valid_count": 18207
+        }
+      },
+      {
+        "year": 2024,
+        "record_count": 18712,
+        "call_to_dispatch": {
+          "average_seconds": 205.82504186247502,
+          "valid_count": 18513
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 349.65224875069407,
+          "valid_count": 18010
+        },
+        "call_to_arrival": {
+          "average_seconds": 555.8476317396858,
+          "valid_count": 18009
+        }
+      },
+      {
+        "year": 2025,
+        "record_count": 17773,
+        "call_to_dispatch": {
+          "average_seconds": 206.27399591558884,
+          "valid_count": 17628
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 337.1419381250366,
+          "valid_count": 17099
+        },
+        "call_to_arrival": {
+          "average_seconds": 543.4880402362711,
+          "valid_count": 17099
+        }
+      }
+    ],
+    "1": [
+      {
+        "year": 2023,
+        "record_count": 82584,
+        "call_to_dispatch": {
+          "average_seconds": 783.9524025328247,
+          "valid_count": 79437
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 713.802449985503,
+          "valid_count": 68980
+        },
+        "call_to_arrival": {
+          "average_seconds": 1486.8099276591427,
+          "valid_count": 68979
+        }
+      },
+      {
+        "year": 2024,
+        "record_count": 80679,
+        "call_to_dispatch": {
+          "average_seconds": 728.3947008187012,
+          "valid_count": 75974
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 705.5010316159961,
+          "valid_count": 65916
+        },
+        "call_to_arrival": {
+          "average_seconds": 1429.088907769568,
+          "valid_count": 65911
+        }
+      },
+      {
+        "year": 2025,
+        "record_count": 75315,
+        "call_to_dispatch": {
+          "average_seconds": 626.6214217557252,
+          "valid_count": 71264
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 673.955640292342,
+          "valid_count": 62940
+        },
+        "call_to_arrival": {
+          "average_seconds": 1301.596831853064,
+          "valid_count": 62939
+        }
+      }
+    ],
+    "2": [
+      {
+        "year": 2023,
+        "record_count": 49214,
+        "call_to_dispatch": {
+          "average_seconds": 823.6712562011268,
+          "valid_count": 47572
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 710.9914346372532,
+          "valid_count": 40979
+        },
+        "call_to_arrival": {
+          "average_seconds": 1501.0234510358964,
+          "valid_count": 40979
+        }
+      },
+      {
+        "year": 2024,
+        "record_count": 52823,
+        "call_to_dispatch": {
+          "average_seconds": 784.8746691423379,
+          "valid_count": 50626
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 715.2223374827109,
+          "valid_count": 43380
+        },
+        "call_to_arrival": {
+          "average_seconds": 1474.6042833759827,
+          "valid_count": 43377
+        }
+      },
+      {
+        "year": 2025,
+        "record_count": 50786,
+        "call_to_dispatch": {
+          "average_seconds": 658.6588145583447,
+          "valid_count": 48522
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 668.4706379383185,
+          "valid_count": 42606
+        },
+        "call_to_arrival": {
+          "average_seconds": 1310.95420725267,
+          "valid_count": 42605
+        }
+      }
+    ],
+    "3": [
+      {
+        "year": 2023,
+        "record_count": 13631,
+        "call_to_dispatch": {
+          "average_seconds": 1328.1023896314298,
+          "valid_count": 12345
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 1000.6857720119099,
+          "valid_count": 9404
+        },
+        "call_to_arrival": {
+          "average_seconds": 2336.577307528711,
+          "valid_count": 9404
+        }
+      },
+      {
+        "year": 2024,
+        "record_count": 14018,
+        "call_to_dispatch": {
+          "average_seconds": 1209.9888141221707,
+          "valid_count": 11443
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 903.9349862258953,
+          "valid_count": 9075
+        },
+        "call_to_arrival": {
+          "average_seconds": 2108.34347107438,
+          "valid_count": 9075
+        }
+      },
+      {
+        "year": 2025,
+        "record_count": 13491,
+        "call_to_dispatch": {
+          "average_seconds": 1051.6805642914908,
+          "valid_count": 11129
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 867.7933650362319,
+          "valid_count": 8832
+        },
+        "call_to_arrival": {
+          "average_seconds": 1931.1724606499831,
+          "valid_count": 8831
+        }
+      }
+    ],
+    "4": [
+      {
+        "year": 2023,
+        "record_count": 24963,
+        "call_to_dispatch": {
+          "average_seconds": 1751.694369178662,
+          "valid_count": 23620
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 1119.667402660348,
+          "valid_count": 18569
+        },
+        "call_to_arrival": {
+          "average_seconds": 2851.236523237654,
+          "valid_count": 18569
+        }
+      },
+      {
+        "year": 2024,
+        "record_count": 23945,
+        "call_to_dispatch": {
+          "average_seconds": 1645.3610973912262,
+          "valid_count": 22271
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 1122.107442737191,
+          "valid_count": 17507
+        },
+        "call_to_arrival": {
+          "average_seconds": 2743.1828982692637,
+          "valid_count": 17507
+        }
+      },
+      {
+        "year": 2025,
+        "record_count": 23625,
+        "call_to_dispatch": {
+          "average_seconds": 1315.6106585354753,
+          "valid_count": 21973
+        },
+        "dispatch_to_arrival": {
+          "average_seconds": 1050.2124158986826,
+          "valid_count": 17687
+        },
+        "call_to_arrival": {
+          "average_seconds": 2352.7941425906033,
+          "valid_count": 17687
+        }
+      }
+    ]
+  },
   "three_year_average": {
     "call_to_dispatch": {
       "average_seconds": 815.8370381948498,
@@ -70,6 +553,78 @@
     "call_to_arrival": {
       "average_seconds": 1503.030937893366,
       "valid_count": 459178
+    }
+  },
+  "three_year_average_by_priority": {
+    "0": {
+      "call_to_dispatch": {
+        "average_seconds": 204.25630037565193,
+        "valid_count": 54838
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 347.4050941556006,
+        "valid_count": 53316
+      },
+      "call_to_arrival": {
+        "average_seconds": 551.7149770233518,
+        "valid_count": 53315
+      }
+    },
+    "1": {
+      "call_to_dispatch": {
+        "average_seconds": 715.8682474909011,
+        "valid_count": 226675
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 698.359585717463,
+        "valid_count": 197836
+      },
+      "call_to_arrival": {
+        "average_seconds": 1408.6536554296893,
+        "valid_count": 197829
+      }
+    },
+    "2": {
+      "call_to_dispatch": {
+        "average_seconds": 755.7129021264994,
+        "valid_count": 146720
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 698.1681802071437,
+        "valid_count": 126965
+      },
+      "call_to_arrival": {
+        "average_seconds": 1428.214601334268,
+        "valid_count": 126961
+      }
+    },
+    "3": {
+      "call_to_dispatch": {
+        "average_seconds": 1201.2910330211644,
+        "valid_count": 34917
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 925.5614953681667,
+        "valid_count": 27311
+      },
+      "call_to_arrival": {
+        "average_seconds": 2129.643866715489,
+        "valid_count": 27310
+      }
+    },
+    "4": {
+      "call_to_dispatch": {
+        "average_seconds": 1575.6037221501826,
+        "valid_count": 67864
+      },
+      "dispatch_to_arrival": {
+        "average_seconds": 1097.6125960232873,
+        "valid_count": 53763
+      },
+      "call_to_arrival": {
+        "average_seconds": 2652.072689396053,
+        "valid_count": 53763
+      }
     }
   }
 }

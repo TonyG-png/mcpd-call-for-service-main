@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import { useData } from "@/context/DataContext";
-import { Search, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { Check, ChevronDown, Search, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { getDateRangeOptions } from "@/lib/dateRanges";
 
 export default function GlobalFilters() {
   const { incidents, filters, setFilters, availableFields } = useData();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [districtMenuOpen, setDistrictMenuOpen] = useState(false);
   const dateRangeOptions = useMemo(() => getDateRangeOptions(), []);
 
   const uniqueValues = useMemo(() => {
@@ -30,7 +31,7 @@ export default function GlobalFilters() {
   const resetFilters = () =>
     setFilters({
       dateRange: 28,
-      district: "",
+      district: [],
       beat: "",
       priority: "",
       callType: "",
@@ -39,13 +40,13 @@ export default function GlobalFilters() {
 
   const hasActiveFilters =
     filters.dateRange !== 28 ||
-    filters.district !== "" ||
+    filters.district.length > 0 ||
     filters.beat !== "" ||
     filters.priority !== "" ||
     filters.callType !== "" ||
     filters.search !== "";
   const activeAdvancedFilters = [
-    filters.district,
+    filters.district.length > 0 ? filters.district.join(",") : "",
     filters.beat,
     filters.priority,
     filters.callType,
@@ -73,16 +74,63 @@ export default function GlobalFilters() {
   const renderAdvancedFilters = (isMobile = false) => (
     <>
       {availableFields.has("district") && uniqueValues.districts.length > 0 && (
-        <select
-          value={filters.district}
-          onChange={(e) => setFilters((f) => ({ ...f, district: e.target.value }))}
-          className={`filter-select ${isMobile ? "h-10 w-full" : ""}`}
-        >
-          <option value="">All Districts</option>
-          {uniqueValues.districts.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
-        </select>
+        <div className={`relative ${isMobile ? "w-full" : ""}`}>
+          <button
+            type="button"
+            onClick={() => setDistrictMenuOpen((open) => !open)}
+            className={`filter-select flex items-center justify-between gap-3 text-left ${
+              isMobile ? "h-10 w-full" : "min-w-[140px]"
+            }`}
+          >
+            <span className="truncate">
+              {filters.district.length === 0
+                ? "All Districts"
+                : filters.district.length === 1
+                ? filters.district[0]
+                : `${filters.district.length} Districts`}
+            </span>
+            <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+          </button>
+
+          {districtMenuOpen && (
+            <div className={`absolute left-0 top-full z-50 mt-1 rounded-md border border-border bg-card p-1 shadow-lg ${
+              isMobile ? "w-full" : "w-48"
+            }`}>
+              <button
+                type="button"
+                onClick={() => {
+                  setFilters((f) => ({ ...f, district: [] }));
+                  setDistrictMenuOpen(false);
+                }}
+                className="flex w-full items-center justify-between rounded px-2 py-2 text-left text-xs text-foreground hover:bg-accent"
+              >
+                All Districts
+                {filters.district.length === 0 && <Check className="h-3.5 w-3.5 text-primary" />}
+              </button>
+              {uniqueValues.districts.map((d) => {
+                const selected = filters.district.includes(d);
+                return (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() =>
+                      setFilters((f) => ({
+                        ...f,
+                        district: selected
+                          ? f.district.filter((value) => value !== d)
+                          : [...f.district, d].sort(),
+                      }))
+                    }
+                    className="flex w-full items-center justify-between rounded px-2 py-2 text-left text-xs text-foreground hover:bg-accent"
+                  >
+                    {d}
+                    {selected && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       )}
 
       {availableFields.has("beat") && uniqueValues.beats.length > 0 && (

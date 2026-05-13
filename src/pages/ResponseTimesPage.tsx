@@ -18,6 +18,7 @@ interface AnnualResponseTimeBenchmark {
   call_to_dispatch: BenchmarkMetric;
   dispatch_to_arrival: BenchmarkMetric;
   call_to_arrival: BenchmarkMetric;
+  by_priority?: Record<string, Omit<AnnualResponseTimeBenchmark, "year" | "by_priority">>;
 }
 
 interface ResponseTimeBenchmarks {
@@ -27,11 +28,17 @@ interface ResponseTimeBenchmarks {
   excludes_detail_calls?: boolean;
   years: number[];
   annual: AnnualResponseTimeBenchmark[];
+  annual_by_priority?: Record<string, AnnualResponseTimeBenchmark[]>;
   three_year_average: {
     call_to_dispatch: BenchmarkMetric;
     dispatch_to_arrival: BenchmarkMetric;
     call_to_arrival: BenchmarkMetric;
   };
+  three_year_average_by_priority?: Record<string, {
+    call_to_dispatch: BenchmarkMetric;
+    dispatch_to_arrival: BenchmarkMetric;
+    call_to_arrival: BenchmarkMetric;
+  }>;
 }
 
 export default function ResponseTimesPage() {
@@ -203,6 +210,11 @@ export default function ResponseTimesPage() {
         callToArrive: v.ctaCount > 0 ? v.ctaSum / v.ctaCount : null,
       }));
   }, [filtered]);
+
+  const activeBenchmarks = useMemo(
+    () => getResponseBenchmarksForPriority(benchmarks, priority),
+    [benchmarks, priority],
+  );
 
   const dateButtons = useMemo(() => getDateRangeOptions(), []);
   const activeResponseFilters = [priority, district, beat].filter(Boolean).length;
@@ -378,8 +390,9 @@ export default function ResponseTimesPage() {
           </div>
 
           <ResponseTimeBenchmarkPanel
-            benchmarks={benchmarks}
+            benchmarks={activeBenchmarks}
             error={benchmarkError}
+            priority={priority}
             current={{
               callToDispatch: { average: avgCallToDispatch, count: validCallToDispatch.length },
               dispatchToArrive: { average: avgDispatchToArrive, count: validDispatchToArrive.length },
@@ -474,10 +487,12 @@ export default function ResponseTimesPage() {
 function ResponseTimeBenchmarkPanel({
   benchmarks,
   error,
+  priority,
   current,
 }: {
   benchmarks: ResponseTimeBenchmarks | null;
   error: string | null;
+  priority: string;
   current: {
     callToDispatch: { average: number; count: number };
     dispatchToArrive: { average: number; count: number };
@@ -524,7 +539,7 @@ function ResponseTimeBenchmarkPanel({
         <div>
           <h3 className="text-sm font-semibold font-display">Annual Response-Time Benchmarks</h3>
           <p className="text-xs text-muted-foreground">
-            Current filtered period compared with {benchmarks.years.join(", ")} countywide annual averages, excluding Telephone Reporting Unit/TRS and DT-Detail calls.
+            Current filtered period compared with {benchmarks.years.join(", ")} countywide {priority ? `Priority ${priority}` : "all-priority"} annual averages, excluding Telephone Reporting Unit/TRS and DT-Detail calls.
           </p>
         </div>
         <span className="text-[10px] text-muted-foreground">
@@ -545,7 +560,9 @@ function ResponseTimeBenchmarkPanel({
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold">{formatBenchmarkMetric(item.benchmark)}</div>
-                <div className="text-[10px] text-muted-foreground">countywide 3-year avg</div>
+                <div className="text-[10px] text-muted-foreground">
+                  countywide {priority ? `Priority ${priority}` : ""} 3-year avg
+                </div>
               </div>
             </div>
             <div className={`mt-3 text-xs font-medium ${getComparisonClass(item.current.average, item.benchmark.average_seconds)}`}>
@@ -587,6 +604,23 @@ function ResponseTimeBenchmarkPanel({
       </div>
     </div>
   );
+}
+
+function getResponseBenchmarksForPriority(
+  benchmarks: ResponseTimeBenchmarks | null,
+  priority: string,
+): ResponseTimeBenchmarks | null {
+  if (!benchmarks || !priority) return benchmarks;
+
+  const annual = benchmarks.annual_by_priority?.[priority];
+  const threeYearAverage = benchmarks.three_year_average_by_priority?.[priority];
+  if (!annual || !threeYearAverage) return benchmarks;
+
+  return {
+    ...benchmarks,
+    annual,
+    three_year_average: threeYearAverage,
+  };
 }
 
 function ResponseAnnualMobileCard({ year }: { year: AnnualResponseTimeBenchmark }) {
