@@ -79,6 +79,12 @@ export interface UseOfForceRecord {
   forceTypes: string[];
 }
 
+export interface UseOfForceAnnualSummaryRow {
+  year: number;
+  district: string;
+  count: number;
+}
+
 type ApiRow = Record<string, unknown>;
 
 const REASON_FIELDS: Array<[string, string]> = [
@@ -171,6 +177,7 @@ export async function fetchUseOfForceData(
   dateRange: DateRangeOption,
   customStartDate?: string,
   customEndDate?: string,
+  includeAnimalRelated = false,
 ): Promise<UseOfForceRecord[]> {
   const bounds = getDateRangeBounds(dateRange, new Date(), customStartDate, customEndDate);
   const clauses = [`event_date_time >= '${formatSocrataDateTime(bounds.start)}'`];
@@ -197,7 +204,11 @@ export async function fetchUseOfForceData(
     }
 
     const rows = (await response.json()) as ApiRow[];
-    allRecords.push(...rows.filter((row) => !isAnimalRelatedUseOfForce(row)).map(normalizeUseOfForceRow));
+    allRecords.push(
+      ...rows
+        .filter((row) => includeAnimalRelated || !isAnimalRelatedUseOfForce(row))
+        .map(normalizeUseOfForceRow),
+    );
 
     if (allRecords.length > MAX_RECORDS) {
       throw new Error(`Use of Force sync stopped: exceeded ${MAX_RECORDS.toLocaleString()} records.`);
@@ -208,4 +219,41 @@ export async function fetchUseOfForceData(
   }
 
   return allRecords;
+}
+
+export async function fetchUseOfForceAnnualSummary(includeAnimalRelated = false): Promise<UseOfForceAnnualSummaryRow[]> {
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 3;
+  const start = `${startYear}-01-01T00:00:00`;
+  const end = `${currentYear + 1}-01-01T00:00:00`;
+  const whereClauses = [
+    `event_date_time >= '${start}'`,
+    `event_date_time < '${end}'`,
+  ];
+
+  if (!includeAnimalRelated) {
+    whereClauses.push(
+      "NOT (upper(event_class_description) like '%ANIMAL%' OR upper(event_class_description) like '%DEER%' OR reason_animal_involved = true)",
+    );
+  }
+
+  const params = new URLSearchParams({
+    "$select": "substring(event_date_time,1,4) as year,district_of_occurrence,count(*) as count",
+    "$where": whereClauses.join(" AND "),
+    "$group": "year,district_of_occurrence",
+    "$order": "year ASC,district_of_occurrence ASC",
+    "$limit": "50000",
+  });
+
+  const response = await fetch(`${BASE_URL}?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error(`Use of Force annual summary fetch failed: ${response.status}`);
+  }
+
+  const rows = (await response.json()) as ApiRow[];
+  return rows.map((row) => ({
+    year: Number(row.year),
+    district: String(row.district_of_occurrence || "Unknown"),
+    count: Number(row.count || 0),
+  }));
 }
