@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react";
 import { useData } from "@/context/DataContext";
+import { useLocation } from "react-router-dom";
 import { CalendarDays, Check, ChevronDown, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { getDateRangeOptions } from "@/lib/dateRanges";
 
 export default function GlobalFilters() {
   const { incidents, filters, setFilters, availableFields } = useData();
+  const location = useLocation();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [districtMenuOpen, setDistrictMenuOpen] = useState(false);
   const dateRangeOptions = useMemo(() => getDateRangeOptions(), []);
+  const isUseOfForcePage = location.pathname === "/use-of-force";
 
   const uniqueValues = useMemo(() => {
     const dSet = new Set<string>();
@@ -49,9 +52,9 @@ export default function GlobalFilters() {
     filters.callType !== "";
   const activeAdvancedFilters = [
     filters.district.length > 0 ? filters.district.join(",") : "",
-    filters.beat,
-    filters.priority,
-    filters.callType,
+    isUseOfForcePage ? "" : filters.beat,
+    isUseOfForcePage ? "" : filters.priority,
+    isUseOfForcePage ? "" : filters.callType,
     filters.dateRange === "custom" ? [filters.customStartDate, filters.customEndDate].filter(Boolean).join(" to ") : "",
   ].filter(Boolean).length;
 
@@ -165,7 +168,7 @@ export default function GlobalFilters() {
         </div>
       )}
 
-      {availableFields.has("beat") && uniqueValues.beats.length > 0 && (
+      {!isUseOfForcePage && availableFields.has("beat") && uniqueValues.beats.length > 0 && (
         <select
           value={filters.beat}
           onChange={(e) => setFilters((f) => ({ ...f, beat: e.target.value }))}
@@ -178,7 +181,7 @@ export default function GlobalFilters() {
         </select>
       )}
 
-      {availableFields.has("priority") && uniqueValues.priorities.length > 0 && (
+      {!isUseOfForcePage && availableFields.has("priority") && uniqueValues.priorities.length > 0 && (
         <select
           value={filters.priority}
           onChange={(e) => setFilters((f) => ({ ...f, priority: e.target.value }))}
@@ -191,7 +194,7 @@ export default function GlobalFilters() {
         </select>
       )}
 
-      {availableFields.has("callType") && uniqueValues.callTypes.length > 0 && (
+      {!isUseOfForcePage && availableFields.has("callType") && uniqueValues.callTypes.length > 0 && (
         <select
           value={filters.callType}
           onChange={(e) => setFilters((f) => ({ ...f, callType: e.target.value }))}

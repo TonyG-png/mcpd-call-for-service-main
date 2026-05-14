@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import { useData } from "@/context/DataContext";
 import { Loader2 } from "lucide-react";
 import GlobalFilters from "@/components/filters/GlobalFilters";
-import { Sun, Moon, RefreshCw, BarChart3, Map, MapPin, Layers, Table2, Menu, X, Timer, FileText } from "lucide-react";
+import { Sun, Moon, RefreshCw, BarChart3, Map, MapPin, Layers, Table2, Menu, X, Timer, FileText, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 
 const NAV_ITEMS = [
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { path: "/map", label: "Map", icon: Map },
   { path: "/locations", label: "Locations", icon: MapPin },
   { path: "/reports", label: "Reports", icon: FileText },
+  { path: "/use-of-force", label: "Use of Force", icon: ShieldAlert },
   { path: "/explorer", label: "Explorer", icon: Table2 },
 ];
 
