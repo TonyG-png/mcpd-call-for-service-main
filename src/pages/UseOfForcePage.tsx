@@ -341,7 +341,7 @@ export default function UseOfForcePage() {
 
       <ChartCard title="3-Year UOF Benchmarks" subtitle="Last three full years and current year projection" visible={benchmark.annualRows.length > 0}>
         <p className="mb-3 text-xs text-muted-foreground">
-          Three-year benchmark uses dataset-level annual aggregates and may still include row-level duplication.
+          Three-year benchmark uses deduplicated annual event counts (distinct case/event IDs), not raw row totals.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 mb-4">
           <MetricCard title="3-Year Avg" value={Math.round(benchmark.threeYearAverage).toLocaleString()} subtitle="Annual average UOF events" icon={<Activity className="h-4 w-4" />} />

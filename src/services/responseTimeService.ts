@@ -25,7 +25,7 @@ interface ResponseTimeApiRow {
   priority?: string | number | null;
   police_district_number?: string | number | null;
   sector?: string | number | null;
-  initial_type?: string | number | null;
+  close_type?: string | number | null;
 }
 
 const BASE_URL = "https://data.montgomerycountymd.gov/resource/98cc-bc7d.json";
@@ -45,7 +45,7 @@ export async function fetchResponseTimeData(
   }
 
   const whereClause = clauses.join(" AND ");
-  const selectFields = "start_time,calltime_dispatch,dispatch_arrive,priority,police_district_number,sector,initial_type";
+  const selectFields = "start_time,calltime_dispatch,dispatch_arrive,priority,police_district_number,sector,close_type";
   const allRecords: ResponseTimeRecord[] = [];
   let offset = 0;
 
@@ -56,7 +56,7 @@ export async function fetchResponseTimeData(
     const rows = (await resp.json()) as ResponseTimeApiRow[];
 
     for (const r of rows) {
-      const callType = r.initial_type != null ? String(r.initial_type) : null;
+      const callType = r.close_type != null ? String(r.close_type) : null;
       if (isTelephoneReportingUnitCallType(callType) || isDetailCallType(callType)) continue;
 
       allRecords.push({

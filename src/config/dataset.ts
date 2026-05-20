@@ -33,5 +33,6 @@ export const defaultConfig: DatasetConfig = {
   defaultLimit: 5000,
   fieldOverrides: {
     beat: "sector",
+    callType: "close_type",
   },
 };

@@ -238,7 +238,7 @@ export async function fetchUseOfForceAnnualSummary(includeAnimalRelated = false)
   }
 
   const params = new URLSearchParams({
-    "$select": "substring(event_date_time,1,4) as year,district_of_occurrence,count(*) as count",
+    "$select": "substring(event_date_time,1,4) as year,district_of_occurrence,count(distinct cr_or_event) as count",
     "$where": whereClauses.join(" AND "),
     "$group": "year,district_of_occurrence",
     "$order": "year ASC,district_of_occurrence ASC",

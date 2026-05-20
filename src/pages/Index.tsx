@@ -162,7 +162,7 @@ export default function ExecutiveOverview() {
       <h2 className="text-xl font-display font-bold">Executive Overview</h2>
 
       <div className="dashboard-card border-primary/30 bg-primary/5 p-4 text-sm text-muted-foreground">
-        For official department numbers, contact the Crime Analysis Unit. This dashboard reflects calls for service only and should not be used as official NIBRS, crime, or incident statistics. Call-type analysis is based on initial dispatch type; for 2026 YTD, grouped initial call type differed from grouped closed call type for about 1.5% of calls.
+        For official department numbers, contact the Crime Analysis Unit. This dashboard reflects calls for service only and should not be used as official NIBRS, crime, or incident statistics. Call-type analysis in this app is based on final/closed call type (close type), not the initial dispatch type.
       </div>
 
       {/* Metric cards */}
