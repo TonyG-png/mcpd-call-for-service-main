@@ -13,6 +13,7 @@
     "locations:summary": "node scripts/refresh-location-summary.mjs",
     "overview:benchmarks": "node scripts/refresh-overview-benchmarks.mjs",
     "response-times:benchmarks": "node scripts/refresh-response-time-benchmarks.mjs",
+    "vehicle-risk:forecast": "node scripts/refresh-vehicle-risk-forecast.mjs",
     "server": "node server/index.mjs",
     "start": "node server/index.mjs",
     "typecheck": "tsc --noEmit",

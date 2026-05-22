@@ -293,7 +293,7 @@ function OverviewBenchmarkPanel({
         <div>
           <h3 className="text-sm font-semibold font-display">3-Year Overview Benchmarks</h3>
           <p className="text-xs text-muted-foreground">
-            Current filters compared with {comparison.scopeLabel.toLowerCase()} annual averages and the same calendar window from {benchmarks.years.join(", ")}.
+            Current filters compared with {comparison.scopeLabel.toLowerCase()} annual averages and the same calendar window from {formatBenchmarkYears(benchmarks.years)}.
           </p>
         </div>
         <span className="text-[10px] text-muted-foreground">Updated {formatBenchmarkDate(benchmarks.generated_at)}</span>
@@ -505,7 +505,7 @@ function getBenchmarkAnnualRows(benchmarks: OverviewBenchmarks, filters: FilterS
   if (filters.district.length > 0) {
     return getAggregatedAnnualRows(benchmarks, filters.district);
   }
-  return benchmarks.annual;
+  return [...benchmarks.annual].sort((a, b) => b.year - a.year);
 }
 
 function getAggregatedAnnualRows(benchmarks: OverviewBenchmarks, districts: string[]) {
@@ -551,7 +551,7 @@ function getAggregatedAnnualRows(benchmarks: OverviewBenchmarks, districts: stri
       overnight_share: row.total_calls > 0 ? row.overnight_calls / row.total_calls : 0,
       priority_zero_share: row.total_calls > 0 ? row.priority_zero_calls / row.total_calls : 0,
     }))
-    .sort((a, b) => a.year - b.year);
+    .sort((a, b) => b.year - a.year);
 }
 
 function getOverviewProjection(
@@ -660,6 +660,10 @@ function formatBenchmarkDate(value: string) {
     day: "numeric",
     year: "numeric",
   });
+}
+
+function formatBenchmarkYears(years: number[]) {
+  return [...years].sort((a, b) => b - a).join(", ");
 }
 
 function getShiftShare(

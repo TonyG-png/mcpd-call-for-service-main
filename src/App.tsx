@@ -15,6 +15,7 @@ import IncidentExplorer from "./pages/IncidentExplorer";
 import ResponseTimesPage from "./pages/ResponseTimesPage";
 import ReportsPage from "./pages/ReportsPage";
 import UseOfForcePage from "./pages/UseOfForcePage";
+import VehicleRiskPage from "./pages/VehicleRiskPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
                   <Route path="/response-times" element={<ResponseTimesPage />} />
                   <Route path="/reports" element={<ReportsPage />} />
                   <Route path="/use-of-force" element={<UseOfForcePage />} />
+                  <Route path="/vehicle-risk" element={<VehicleRiskPage />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>
