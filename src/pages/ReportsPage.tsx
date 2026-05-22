@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { FileText, Car, Activity } from "lucide-react";
+import { FileText, Car, Activity, Info } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   BarChart, Bar,
@@ -19,7 +19,7 @@ const reportCount = (i: NormalizedIncident) => (isCrime(i) ? 1 : 0) + (isCrash(i
 const isTruReport = (i: NormalizedIncident) => isTruCallType(i.rawCallType || i.callType);
 
 export default function ReportsPage() {
-  const { filteredIncidents, isLoading, availableFields } = useData();
+  const { filteredIncidents, isLoading, availableFields, columns } = useData();
 
   const showCrime = availableFields.has("crNumber");
   const showCrash = availableFields.has("crashReport");
@@ -87,27 +87,32 @@ export default function ReportsPage() {
   const byReportChannel = useMemo(() => {
     const channels = {
       TRU: { channel: "TRU", crime: 0, crash: 0, total: 0 },
-      Patrol: { channel: "Patrol", crime: 0, crash: 0, total: 0 },
+      nonTru: { channel: "Non-TRU Code", crime: 0, crash: 0, total: 0 },
     };
 
     for (const i of filteredIncidents) {
       const reports = reportCount(i);
       if (reports === 0) continue;
 
-      const entry = isTruReport(i) ? channels.TRU : channels.Patrol;
+      const entry = isTruReport(i) ? channels.TRU : channels.nonTru;
       if (isCrime(i)) entry.crime++;
       if (isCrash(i)) entry.crash++;
       entry.total += reports;
     }
 
-    return [channels.TRU, channels.Patrol];
+    return [channels.TRU, channels.nonTru];
   }, [filteredIncidents]);
 
   const truPatrolStats = useMemo(() => {
     const tru = byReportChannel.find((r) => r.channel === "TRU")?.total || 0;
-    const patrol = byReportChannel.find((r) => r.channel === "Patrol")?.total || 0;
+    const patrol = byReportChannel.find((r) => r.channel === "Non-TRU Code")?.total || 0;
     return { tru, patrol, total: tru + patrol };
   }, [byReportChannel]);
+
+  const handlerUnitColumns = useMemo(
+    () => columns.filter((column) => looksLikeHandlerUnitField(column.fieldName, column.name, column.description)),
+    [columns],
+  );
 
   const topReportCallTypes = useMemo(() => {
     const tru = new Map<string, number>();
@@ -153,6 +158,25 @@ export default function ReportsPage() {
         <p className="text-xs text-muted-foreground">
           Crime reports and crash reports written for calls in the selected window.
         </p>
+      </div>
+
+      <div className="dashboard-card p-4">
+        <div className="flex gap-3">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold font-display">TRU Handler Method</h3>
+            <p className="text-xs text-muted-foreground">
+              The public CFS feed does not include the handling officer, car number, or unit identifier. These counts
+              classify reports by TRU-coded call types such as codes ending in T or TRS. Non-TRU code means the report
+              call was not TRU-coded; it does not prove a patrol officer handled it.
+            </p>
+            {handlerUnitColumns.length > 0 && (
+              <p className="text-xs text-muted-foreground">
+                Potential handler fields detected in this source: {handlerUnitColumns.map((column) => column.name).join(", ")}.
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* KPIs */}
@@ -241,7 +265,7 @@ export default function ReportsPage() {
           icon={<FileText className="h-4 w-4" />}
         />
         <MetricCard
-          title="Patrol Reports"
+          title="Non-TRU-Code Reports"
           value={truPatrolStats.patrol.toLocaleString()}
           subtitle={pctOfReportCalls(truPatrolStats.patrol, truPatrolStats.total)}
           icon={<Activity className="h-4 w-4" />}
@@ -261,15 +285,15 @@ export default function ReportsPage() {
           emptyText="No TRU eligible report calls in the current filters."
         />
         <ReportTypeListCard
-          title="Top 10 Patrol Report Calls"
+          title="Top 10 Non-TRU-Code Report Calls"
           items={topReportCallTypes.patrol}
-          emptyText="No patrol report calls in the current filters."
+          emptyText="No non-TRU-code report calls in the current filters."
         />
       </div>
 
       <ChartCard
-        title="TRU vs Patrol Reports"
-        subtitle="TRU is classified by call-type codes ending in T; all other report calls are Patrol"
+        title="TRU-Coded vs Non-TRU-Coded Reports"
+        subtitle="This is based on call-type code, not handler car/unit, because the public CFS feed does not publish handler fields."
       >
         <div className="h-[260px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -410,6 +434,11 @@ function getTopReportTypes(callTypes: Map<string, number>) {
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, 10)
     .map(([type, count]) => ({ type, count }));
+}
+
+function looksLikeHandlerUnitField(fieldName?: string, name?: string, description?: string) {
+  const text = [fieldName, name, description].filter(Boolean).join(" ").toLowerCase();
+  return /\b(primary unit|handling unit|responding unit|dispatched unit|assigned unit|unit id|unit number|car number|car no|officer|badge|employee id)\b/.test(text);
 }
 
 function ReportTypeListCard({

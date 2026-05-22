@@ -352,6 +352,31 @@ export default function VehicleRiskPage() {
       </ChartCard>
 
       <div className="grid gap-4 lg:grid-cols-2">
+        <ChartCard title="What The Score Means">
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <p>
+              Probability is the estimated chance of at least one matching vehicle-crime incident in one 750-foot grid cell during one 6-hour window.
+            </p>
+            <div className="grid gap-2 text-xs sm:grid-cols-2">
+              <div className="rounded-md border border-border p-3">
+                <p className="font-medium text-foreground">Risk score</p>
+                <p className="mt-1">Expected incidents multiplied by 1,000, used for ranking cells.</p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="font-medium text-foreground">Probability</p>
+                <p className="mt-1">Converted from expected incidents with a Poisson event model.</p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="font-medium text-foreground">Risk bands</p>
+                <p className="mt-1">Low &lt; 1.5%, Elevated 1.5-3.9%, High 4-7.9%, Very High 8%+.</p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="font-medium text-foreground">Inputs</p>
+                <p className="mt-1">History, recent nearby incidents, time, calendar, weather, parking, transit, and place type.</p>
+              </div>
+            </div>
+          </div>
+        </ChartCard>
         <ChartCard title="Prediction Accuracy">
           {latestValidation ? (
             <div className="space-y-3 text-sm">
