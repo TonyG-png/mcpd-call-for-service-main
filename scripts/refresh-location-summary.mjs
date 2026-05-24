@@ -5,6 +5,8 @@ const DOMAIN = "data.montgomerycountymd.gov";
 const DATASET_ID = "98cc-bc7d";
 const PAGE_SIZE = 5000;
 const OUT_FILE = path.resolve("public/data/top-location-monthly-summary.json");
+const HISTORY_MONTHS = 36;
+const RECENT_MONTHS = 12;
 const TOP_OVERALL_LOCATIONS = 1000;
 const TOP_LOCATIONS_PER_DISTRICT = 100;
 const TOP_LOCATIONS_PER_BEAT = 50;
@@ -42,8 +44,14 @@ function getMonthLabel(year, month) {
 function getWindowBounds(now = new Date()) {
   const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const start = new Date(currentMonthStart);
-  start.setMonth(start.getMonth() - 12);
+  start.setMonth(start.getMonth() - HISTORY_MONTHS);
   return { start, end: currentMonthStart };
+}
+
+function subtractMonths(date, months) {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() - months);
+  return result;
 }
 
 function getTopCallTypes(callTypes) {
@@ -168,11 +176,20 @@ function isDetailCallType(callType) {
   return getCallTypeCode(callType) === "DT";
 }
 
-function addTopKeysByScope(locationTotals, getScope, limit, retainedKeys) {
+function addTopKeysByMetric(locationTotals, metric, limit, retainedKeys) {
+  Array.from(locationTotals.values())
+    .filter((entry) => entry[metric] > 0)
+    .sort((a, b) => b[metric] - a[metric] || a.location.localeCompare(b.location))
+    .slice(0, limit)
+    .forEach((entry) => retainedKeys.add(entry.normalized_location));
+}
+
+function addTopKeysByScope(locationTotals, getScope, metric, limit, retainedKeys) {
   const scoped = new Map();
 
   for (const entry of locationTotals.values()) {
     const scope = getScope(entry);
+    if (entry[metric] <= 0) continue;
     if (!scope) continue;
     const list = scoped.get(scope) || [];
     list.push(entry);
@@ -181,7 +198,7 @@ function addTopKeysByScope(locationTotals, getScope, limit, retainedKeys) {
 
   for (const list of scoped.values()) {
     list
-      .sort((a, b) => b.total - a.total || a.location.localeCompare(b.location))
+      .sort((a, b) => b[metric] - a[metric] || a.location.localeCompare(b.location))
       .slice(0, limit)
       .forEach((entry) => retainedKeys.add(entry.normalized_location));
   }
@@ -234,6 +251,7 @@ async function fetchRows(start, end) {
 
 async function main() {
   const { start, end } = getWindowBounds();
+  const recentStart = subtractMonths(end, RECENT_MONTHS);
   console.log(`Refreshing location summary from ${formatSocrataDateTime(start)} to ${formatSocrataDateTime(end)}`);
 
   const rows = await fetchRows(start, end);
@@ -282,22 +300,26 @@ async function main() {
       location: entry.location,
       district: entry.district,
       beat: entry.beat,
-      total: 0,
+      total36: 0,
+      total12: 0,
     };
-    total.total += entry.call_count;
+    total.total36 += entry.call_count;
+    const entryMonthStart = new Date(entry.year, entry.month - 1, 1);
+    if (entryMonthStart >= recentStart && entryMonthStart < end) {
+      total.total12 += entry.call_count;
+    }
     if (!total.district && entry.district) total.district = entry.district;
     if (!total.beat && entry.beat) total.beat = entry.beat;
     locationTotals.set(entry.normalized_location, total);
   }
 
-  const retainedKeys = new Set(
-    Array.from(locationTotals.values())
-      .sort((a, b) => b.total - a.total || a.location.localeCompare(b.location))
-      .slice(0, TOP_OVERALL_LOCATIONS)
-      .map((entry) => entry.normalized_location)
-  );
-  addTopKeysByScope(locationTotals, (entry) => entry.district, TOP_LOCATIONS_PER_DISTRICT, retainedKeys);
-  addTopKeysByScope(locationTotals, (entry) => entry.beat, TOP_LOCATIONS_PER_BEAT, retainedKeys);
+  const retainedKeys = new Set();
+  addTopKeysByMetric(locationTotals, "total12", TOP_OVERALL_LOCATIONS, retainedKeys);
+  addTopKeysByMetric(locationTotals, "total36", TOP_OVERALL_LOCATIONS, retainedKeys);
+  addTopKeysByScope(locationTotals, (entry) => entry.district, "total12", TOP_LOCATIONS_PER_DISTRICT, retainedKeys);
+  addTopKeysByScope(locationTotals, (entry) => entry.district, "total36", TOP_LOCATIONS_PER_DISTRICT, retainedKeys);
+  addTopKeysByScope(locationTotals, (entry) => entry.beat, "total12", TOP_LOCATIONS_PER_BEAT, retainedKeys);
+  addTopKeysByScope(locationTotals, (entry) => entry.beat, "total36", TOP_LOCATIONS_PER_BEAT, retainedKeys);
 
   const summary = Array.from(groups.values())
     .filter((entry) => retainedKeys.has(entry.normalized_location))
