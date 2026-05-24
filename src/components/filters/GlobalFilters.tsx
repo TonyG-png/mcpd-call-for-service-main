@@ -9,6 +9,7 @@ export default function GlobalFilters() {
   const location = useLocation();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [districtMenuOpen, setDistrictMenuOpen] = useState(false);
+  const [beatMenuOpen, setBeatMenuOpen] = useState(false);
   const dateRangeOptions = useMemo(() => getDateRangeOptions(), []);
   const isUseOfForcePage = location.pathname === "/use-of-force";
 
@@ -19,7 +20,9 @@ export default function GlobalFilters() {
     const tSet = new Set<string>();
     incidents.forEach((inc) => {
       if (inc.district) dSet.add(inc.district);
-      if (inc.beat) bSet.add(inc.beat);
+      if (inc.beat && (filters.district.length === 0 || (inc.district && filters.district.includes(inc.district)))) {
+        bSet.add(inc.beat);
+      }
       if (inc.priority) pSet.add(inc.priority);
       if (inc.callType) tSet.add(inc.callType);
     });
@@ -29,7 +32,7 @@ export default function GlobalFilters() {
       priorities: [...pSet].sort(),
       callTypes: [...tSet].sort(),
     };
-  }, [incidents]);
+  }, [filters.district, incidents]);
 
   const resetFilters = () =>
     setFilters({
@@ -37,7 +40,7 @@ export default function GlobalFilters() {
       customStartDate: "",
       customEndDate: "",
       district: [],
-      beat: "",
+      beat: [],
       priority: "",
       callType: "",
     });
@@ -47,12 +50,12 @@ export default function GlobalFilters() {
     filters.customStartDate !== "" ||
     filters.customEndDate !== "" ||
     filters.district.length > 0 ||
-    filters.beat !== "" ||
+    filters.beat.length > 0 ||
     filters.priority !== "" ||
     filters.callType !== "";
   const activeAdvancedFilters = [
     filters.district.length > 0 ? filters.district.join(",") : "",
-    isUseOfForcePage ? "" : filters.beat,
+    isUseOfForcePage || filters.beat.length === 0 ? "" : filters.beat.join(","),
     isUseOfForcePage ? "" : filters.priority,
     isUseOfForcePage ? "" : filters.callType,
     filters.dateRange === "custom" ? [filters.customStartDate, filters.customEndDate].filter(Boolean).join(" to ") : "",
@@ -64,6 +67,42 @@ export default function GlobalFilters() {
       dateRange: "custom",
       [field]: value,
     }));
+  };
+
+  const getBeatsForDistricts = (districts: string[]) => {
+    if (districts.length === 0) return null;
+    const allowed = new Set<string>();
+    incidents.forEach((inc) => {
+      if (inc.beat && inc.district && districts.includes(inc.district)) {
+        allowed.add(inc.beat);
+      }
+    });
+    return allowed;
+  };
+
+  const toggleDistrict = (district: string) => {
+    setFilters((f) => {
+      const selected = f.district.includes(district);
+      const nextDistricts = selected
+        ? f.district.filter((value) => value !== district)
+        : [...f.district, district].sort();
+      const allowedBeats = getBeatsForDistricts(nextDistricts);
+      return {
+        ...f,
+        district: nextDistricts,
+        beat: allowedBeats ? f.beat.filter((value) => allowedBeats.has(value)) : f.beat,
+      };
+    });
+  };
+
+  const toggleBeat = (beat: string) => {
+    setFilters((f) => {
+      const selected = f.beat.includes(beat);
+      return {
+        ...f,
+        beat: selected ? f.beat.filter((value) => value !== beat) : [...f.beat, beat].sort(),
+      };
+    });
   };
 
   const renderDateControls = (buttonClass = "px-3 py-1.5", isMobile = false) => (
@@ -112,7 +151,10 @@ export default function GlobalFilters() {
         <div className={`relative ${isMobile ? "w-full" : ""}`}>
           <button
             type="button"
-            onClick={() => setDistrictMenuOpen((open) => !open)}
+            onClick={() => {
+              setDistrictMenuOpen((open) => !open);
+              setBeatMenuOpen(false);
+            }}
             className={`filter-select flex items-center justify-between gap-3 text-left ${
               isMobile ? "h-10 w-full" : "min-w-[140px]"
             }`}
@@ -148,14 +190,7 @@ export default function GlobalFilters() {
                   <button
                     key={d}
                     type="button"
-                    onClick={() =>
-                      setFilters((f) => ({
-                        ...f,
-                        district: selected
-                          ? f.district.filter((value) => value !== d)
-                          : [...f.district, d].sort(),
-                      }))
-                    }
+                    onClick={() => toggleDistrict(d)}
                     className="flex w-full items-center justify-between rounded px-2 py-2 text-left text-xs text-foreground hover:bg-accent"
                   >
                     {d}
@@ -169,16 +204,59 @@ export default function GlobalFilters() {
       )}
 
       {!isUseOfForcePage && availableFields.has("beat") && uniqueValues.beats.length > 0 && (
-        <select
-          value={filters.beat}
-          onChange={(e) => setFilters((f) => ({ ...f, beat: e.target.value }))}
-          className={`filter-select ${isMobile ? "h-10 w-full" : ""}`}
-        >
-          <option value="">All Beats</option>
-          {uniqueValues.beats.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
+        <div className={`relative ${isMobile ? "w-full" : ""}`}>
+          <button
+            type="button"
+            onClick={() => {
+              setBeatMenuOpen((open) => !open);
+              setDistrictMenuOpen(false);
+            }}
+            className={`filter-select flex items-center justify-between gap-3 text-left ${
+              isMobile ? "h-10 w-full" : "min-w-[120px]"
+            }`}
+          >
+            <span className="truncate">
+              {filters.beat.length === 0
+                ? "All Beats"
+                : filters.beat.length === 1
+                ? filters.beat[0]
+                : `${filters.beat.length} Beats`}
+            </span>
+            <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+          </button>
+
+          {beatMenuOpen && (
+            <div className={`absolute left-0 top-full z-50 mt-1 max-h-80 overflow-y-auto rounded-md border border-border bg-card p-1 shadow-lg ${
+              isMobile ? "w-full" : "w-44"
+            }`}>
+              <button
+                type="button"
+                onClick={() => {
+                  setFilters((f) => ({ ...f, beat: [] }));
+                  setBeatMenuOpen(false);
+                }}
+                className="flex w-full items-center justify-between rounded px-2 py-2 text-left text-xs text-foreground hover:bg-accent"
+              >
+                All Beats
+                {filters.beat.length === 0 && <Check className="h-3.5 w-3.5 text-primary" />}
+              </button>
+              {uniqueValues.beats.map((b) => {
+                const selected = filters.beat.includes(b);
+                return (
+                  <button
+                    key={b}
+                    type="button"
+                    onClick={() => toggleBeat(b)}
+                    className="flex w-full items-center justify-between rounded px-2 py-2 text-left text-xs text-foreground hover:bg-accent"
+                  >
+                    {b}
+                    {selected && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       )}
 
       {!isUseOfForcePage && availableFields.has("priority") && uniqueValues.priorities.length > 0 && (

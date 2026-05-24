@@ -48,7 +48,7 @@ export interface FilterState {
   customStartDate: string;
   customEndDate: string;
   district: string[];
-  beat: string;
+  beat: string[];
   priority: string;
   callType: string;
 }

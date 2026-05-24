@@ -31,7 +31,7 @@ const defaultFilters: FilterState = {
   customStartDate: "",
   customEndDate: "",
   district: [],
-  beat: "",
+  beat: [],
   priority: "",
   callType: "",
 };
@@ -130,7 +130,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       if (inc.startTime && inc.startTime < range.start) return false;
       if (inc.startTime && range.end && inc.startTime >= range.end) return false;
       if (filters.district.length > 0 && (!inc.district || !filters.district.includes(inc.district))) return false;
-      if (filters.beat && inc.beat !== filters.beat) return false;
+      if (filters.beat.length > 0 && (!inc.beat || !filters.beat.includes(inc.beat))) return false;
       if (filters.priority && inc.priority !== filters.priority) return false;
       if (filters.callType && inc.callType !== filters.callType) return false;
       return true;
