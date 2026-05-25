@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import MetricCard from "@/components/dashboard/MetricCard";
 import ChartCard from "@/components/dashboard/ChartCard";
 import { AlertTriangle, CalendarClock, Car, FileText, Gauge, MapPin, ShieldCheck, Target } from "lucide-react";
-import { MapContainer, CircleMarker, Popup, TileLayer } from "react-leaflet";
+import { CircleMarker, MapContainer, Polygon, Popup, TileLayer } from "react-leaflet";
 import { useTheme } from "next-themes";
 
 type RiskGroup = "combined" | "theft_from_auto" | "stolen_vehicle";
@@ -105,7 +105,8 @@ export default function VehicleRiskPage() {
   const [validationSummary, setValidationSummary] = useState<ValidationSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<RiskGroup>("combined");
-  const [selectedWindowId, setSelectedWindowId] = useState("all");
+  const [selectedWindowId, setSelectedWindowId] = useState("focus");
+  const [selectedPrediction, setSelectedPrediction] = useState<ForecastPrediction | null>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -146,19 +147,24 @@ export default function VehicleRiskPage() {
     [forecast, selectedGroup],
   );
 
+  const forecastWindows = useMemo(() => {
+    if (!forecast) return [];
+    return Array.from(new Set(forecast.predictions.map(getWindowId))).sort();
+  }, [forecast]);
+
+  const focusedWindowIds = useMemo(() => getFocusedWindowIds(forecastWindows), [forecastWindows]);
+
   const mappedPredictions = useMemo(() => {
     if (!forecast) return [];
     return forecast.predictions
       .filter((prediction) => prediction.offenseGroup === selectedGroup)
-      .filter((prediction) => selectedWindowId === "all" || prediction.windowLabel.startsWith(selectedWindowId))
+      .filter((prediction) => {
+        if (selectedWindowId === "focus") return getFocusedWindowIds(forecastWindows).includes(getWindowId(prediction));
+        return selectedWindowId === "all" || prediction.windowLabel.startsWith(selectedWindowId);
+      })
       .sort((a, b) => b.probability - a.probability || b.expectedIncidents - a.expectedIncidents)
       .slice(0, 80);
-  }, [forecast, selectedGroup, selectedWindowId]);
-
-  const forecastWindows = useMemo(() => {
-    if (!forecast) return [];
-    return Array.from(new Set(forecast.predictions.map((prediction) => prediction.windowLabel.slice(0, 16))));
-  }, [forecast]);
+  }, [forecast, forecastWindows, selectedGroup, selectedWindowId]);
 
   const latestValidation = validationSummary?.validations?.[0];
   const highestRisk = selectedPredictions[0];
@@ -205,7 +211,10 @@ export default function VehicleRiskPage() {
             <button
               key={group.value}
               type="button"
-              onClick={() => setSelectedGroup(group.value)}
+              onClick={() => {
+                setSelectedGroup(group.value);
+                setSelectedPrediction(null);
+              }}
               className={`rounded px-3 py-1.5 font-medium transition-colors ${
                 selectedGroup === group.value
                   ? "bg-primary text-primary-foreground"
@@ -245,11 +254,48 @@ export default function VehicleRiskPage() {
         />
       </div>
 
+      <ChartCard title="What The Score Means">
+        <div className="space-y-3 text-sm text-muted-foreground">
+          <p>
+            Probability is the estimated chance of at least one matching vehicle-crime incident in one 750-foot grid cell during one 6-hour window.
+          </p>
+          <div className="grid gap-2 text-xs sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-md border border-border p-3">
+              <p className="font-medium text-foreground">Risk score</p>
+              <p className="mt-1">Expected incidents multiplied by 1,000, used for ranking cells.</p>
+            </div>
+            <div className="rounded-md border border-border p-3">
+              <p className="font-medium text-foreground">Probability</p>
+              <p className="mt-1">Converted from expected incidents with a Poisson event model.</p>
+            </div>
+            <div className="rounded-md border border-border p-3">
+              <p className="font-medium text-foreground">Risk bands</p>
+              <p className="mt-1">Low &lt; 1.5%, Elevated 1.5-3.9%, High 4-7.9%, Very High 8%+.</p>
+            </div>
+            <div className="rounded-md border border-border p-3">
+              <p className="font-medium text-foreground">Inputs</p>
+              <p className="mt-1">History, recent nearby incidents, time, calendar, weather, parking, transit, and place type.</p>
+            </div>
+          </div>
+        </div>
+      </ChartCard>
+
       <ChartCard
         title="Risk Map"
-        subtitle={`${GROUPS.find((group) => group.value === selectedGroup)?.label} forecast cells`}
+        subtitle={`${GROUPS.find((group) => group.value === selectedGroup)?.label} forecast cells; default view emphasizes active/upcoming windows`}
       >
         <div className="mb-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setSelectedWindowId("focus")}
+            className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+              selectedWindowId === "focus"
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
+            }`}
+          >
+            Next active windows
+          </button>
           <button
             type="button"
             onClick={() => setSelectedWindowId("all")}
@@ -272,7 +318,7 @@ export default function VehicleRiskPage() {
                   : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
-              {windowId}
+              {focusedWindowIds.includes(windowId) ? `${windowId} *` : windowId}
             </button>
           ))}
         </div>
@@ -305,11 +351,77 @@ export default function VehicleRiskPage() {
                 </Popup>
               </CircleMarker>
             ))}
+            {selectedPrediction && (
+              <Polygon
+                positions={getCellCorners(selectedPrediction)}
+                pathOptions={{
+                  color: "#38bdf8",
+                  weight: 3,
+                  fillColor: "#38bdf8",
+                  fillOpacity: 0.18,
+                }}
+              >
+                <Popup>
+                  <div className="space-y-1 text-xs">
+                    <p className="font-semibold">Selected 750-foot cell</p>
+                    <p>{selectedPrediction.summaryLocation || "Forecast cell"}</p>
+                    <p>{selectedPrediction.windowLabel}</p>
+                  </div>
+                </Popup>
+              </Polygon>
+            )}
           </MapContainer>
         </div>
       </ChartCard>
 
       <ChartCard title="Top Forecast Cells" subtitle={GROUPS.find((group) => group.value === selectedGroup)?.label}>
+        {selectedPrediction && (
+          <div className="mb-4 rounded-md border border-border p-3">
+            <div className="mb-2 flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-semibold">Selected 750-Foot Cell</h3>
+                <p className="text-xs text-muted-foreground">
+                  {selectedPrediction.summaryLocation || "Unknown area"}; {selectedPrediction.windowLabel}; {formatPercent(selectedPrediction.probability)}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedPrediction(null)}
+                className="text-xs font-medium text-muted-foreground hover:text-foreground"
+              >
+                Clear
+              </button>
+            </div>
+            <div className="overflow-hidden rounded-md border border-border" style={{ height: 320 }}>
+              <MapContainer
+                key={selectedPrediction.id}
+                center={[selectedPrediction.cell.centroid.latitude, selectedPrediction.cell.centroid.longitude]}
+                zoom={16}
+                style={{ height: "100%", width: "100%" }}
+                scrollWheelZoom={true}
+              >
+                <TileLayer url={tileUrl} attribution='&copy; <a href="https://carto.com">CARTO</a>' />
+                <Polygon
+                  positions={getCellCorners(selectedPrediction)}
+                  pathOptions={{
+                    color: "#38bdf8",
+                    weight: 3,
+                    fillColor: riskColors[selectedPrediction.riskBand] || riskColors.Low,
+                    fillOpacity: 0.32,
+                  }}
+                />
+                <CircleMarker
+                  center={[selectedPrediction.cell.centroid.latitude, selectedPrediction.cell.centroid.longitude]}
+                  radius={8}
+                  color="#ffffff"
+                  weight={2}
+                  fillColor={riskColors[selectedPrediction.riskBand] || riskColors.Low}
+                  fillOpacity={0.9}
+                />
+              </MapContainer>
+            </div>
+          </div>
+        )}
         <div className="overflow-auto">
           <table className="w-full min-w-[920px] text-sm">
             <thead>
@@ -325,7 +437,14 @@ export default function VehicleRiskPage() {
             </thead>
             <tbody>
               {selectedPredictions.map((prediction, index) => (
-                <tr key={prediction.id} className="border-b border-border/50 hover:bg-secondary/40">
+                <tr
+                  key={prediction.id}
+                  className={`border-b border-border/50 hover:bg-secondary/40 ${selectedPrediction?.id === prediction.id ? "bg-primary/10" : ""}`}
+                  onClick={() => {
+                    setSelectedPrediction(prediction);
+                    setSelectedWindowId(getWindowId(prediction));
+                  }}
+                >
                   <td className="px-3 py-3 align-top text-xs font-mono">{index + 1}</td>
                   <td className="px-3 py-3 align-top text-xs whitespace-nowrap">{prediction.windowLabel}</td>
                   <td className="px-3 py-3 align-top">
@@ -352,31 +471,6 @@ export default function VehicleRiskPage() {
       </ChartCard>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <ChartCard title="What The Score Means">
-          <div className="space-y-3 text-sm text-muted-foreground">
-            <p>
-              Probability is the estimated chance of at least one matching vehicle-crime incident in one 750-foot grid cell during one 6-hour window.
-            </p>
-            <div className="grid gap-2 text-xs sm:grid-cols-2">
-              <div className="rounded-md border border-border p-3">
-                <p className="font-medium text-foreground">Risk score</p>
-                <p className="mt-1">Expected incidents multiplied by 1,000, used for ranking cells.</p>
-              </div>
-              <div className="rounded-md border border-border p-3">
-                <p className="font-medium text-foreground">Probability</p>
-                <p className="mt-1">Converted from expected incidents with a Poisson event model.</p>
-              </div>
-              <div className="rounded-md border border-border p-3">
-                <p className="font-medium text-foreground">Risk bands</p>
-                <p className="mt-1">Low &lt; 1.5%, Elevated 1.5-3.9%, High 4-7.9%, Very High 8%+.</p>
-              </div>
-              <div className="rounded-md border border-border p-3">
-                <p className="font-medium text-foreground">Inputs</p>
-                <p className="mt-1">History, recent nearby incidents, time, calendar, weather, parking, transit, and place type.</p>
-              </div>
-            </div>
-          </div>
-        </ChartCard>
         <ChartCard title="Prediction Accuracy">
           {latestValidation ? (
             <div className="space-y-3 text-sm">
@@ -465,4 +559,48 @@ function formatPercent(value: number) {
 
 function circleRadius(probability: number) {
   return Math.max(8, Math.min(30, 8 + probability * 360));
+}
+
+function getWindowId(prediction: ForecastPrediction) {
+  return prediction.windowLabel.slice(0, 16);
+}
+
+function getFocusedWindowIds(windowIds: string[]) {
+  const now = new Date();
+  const active = windowIds.filter((windowId) => {
+    const range = parseWindowRange(windowId);
+    return range ? range.end >= now : false;
+  });
+
+  return (active.length > 0 ? active : windowIds.slice(-8)).slice(0, 8);
+}
+
+function parseWindowRange(windowId: string) {
+  const match = windowId.match(/^(\d{4}-\d{2}-\d{2})\s+(\d{2}):00-(\d{2}):00$/);
+  if (!match) return null;
+
+  const [, date, startHour, endHour] = match;
+  const start = new Date(`${date}T${startHour}:00:00`);
+  const end = new Date(`${date}T${endHour}:00:00`);
+  if (Number(endHour) <= Number(startHour)) {
+    end.setDate(end.getDate() + 1);
+  }
+  return { start, end };
+}
+
+function getCellCorners(prediction: ForecastPrediction): [number, number][] {
+  const halfSideFeet = 375;
+  const lat = prediction.cell.centroid.latitude;
+  const lng = prediction.cell.centroid.longitude;
+  const feetPerDegreeLat = 364000;
+  const feetPerDegreeLng = Math.max(1, feetPerDegreeLat * Math.cos((lat * Math.PI) / 180));
+  const dLat = halfSideFeet / feetPerDegreeLat;
+  const dLng = halfSideFeet / feetPerDegreeLng;
+
+  return [
+    [lat + dLat, lng - dLng],
+    [lat + dLat, lng + dLng],
+    [lat - dLat, lng + dLng],
+    [lat - dLat, lng - dLng],
+  ];
 }

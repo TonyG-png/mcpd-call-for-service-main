@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { MapPin, Activity, Building2, TrendingDown, TrendingUp } from "lucide-react";
 import {
   Bar,
@@ -72,6 +73,12 @@ interface LocationTrendSummary {
 
 interface LocationSummaryWithTrend extends LocationSummary {
   trend: LocationTrendSummary | null;
+  hourly: HourlyCallSummary[];
+}
+
+interface HourlyCallSummary {
+  hour: string;
+  count: number;
 }
 
 type ChangeBand =
@@ -83,6 +90,13 @@ type ChangeBand =
   | "moderateIncrease"
   | "strongIncrease"
   | "insufficient";
+
+type SortKey = "rank" | "location" | "district" | "beat" | "filterCalls" | "latestMonth" | "avg12" | "avg36" | "latestVs12" | "latestVs36" | "topCallTypes";
+
+interface SortState {
+  key: SortKey;
+  direction: "asc" | "desc";
+}
 
 const MONTHS_PER_YEAR = 12;
 const HISTORY_MONTHS = 36;
@@ -127,6 +141,7 @@ export default function TopLocationsPage() {
   const [monthlySummary, setMonthlySummary] = useState<MonthlyLocationSummary[]>([]);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [summaryError, setSummaryError] = useState<string | null>(null);
+  const [sortState, setSortState] = useState<SortState>({ key: "rank", direction: "asc" });
 
   useEffect(() => {
     if (monthlySummary.length > 0 || summaryError) return;
@@ -194,6 +209,23 @@ export default function TopLocationsPage() {
       .slice(0, 25);
   }, [locationEligibleIncidents]);
 
+  const hourlyByLocation = useMemo(() => {
+    const map = new Map<string, number[]>();
+
+    for (const incident of locationEligibleIncidents) {
+      const address = normalizeLocationPart(incident.address);
+      if (!address || !incident.startTime) continue;
+
+      const city = normalizeLocationPart(incident.city) || "UNKNOWN";
+      const key = getNormalizedLocationKey(address, city);
+      const hours = map.get(key) || Array.from({ length: 24 }, () => 0);
+      hours[incident.startTime.getHours()] += 1;
+      map.set(key, hours);
+    }
+
+    return map;
+  }, [locationEligibleIncidents]);
+
   const chartData = useMemo(
     () =>
       locations.slice(0, 10).map((location) => ({
@@ -233,9 +265,15 @@ export default function TopLocationsPage() {
         return {
           ...location,
           trend: rows.length > 0 ? getTrendSummary(rows) : null,
+          hourly: getHourlySummary(hourlyByLocation.get(location.key)),
         };
       }),
-    [locations, monthlySummary, summaryMonths, summaryRowsByLocation],
+    [hourlyByLocation, locations, monthlySummary, summaryMonths, summaryRowsByLocation],
+  );
+
+  const sortedLocations = useMemo(
+    () => sortLocations(locationsWithTrends, sortState),
+    [locationsWithTrends, sortState],
   );
 
   const selectedMonthlyRows = useMemo(
@@ -255,6 +293,11 @@ export default function TopLocationsPage() {
     const location = locations.find((item) => item.key === key);
     if (location) setSelectedLocation(location);
   };
+
+  const selectedHourlyRows = useMemo(
+    () => (selectedLocation ? getHourlySummary(hourlyByLocation.get(selectedLocation.key)) : []),
+    [hourlyByLocation, selectedLocation],
+  );
 
   const totalCallsAtTop25 = locations.reduce((total, location) => total + location.count, 0);
   const top25Share =
@@ -359,21 +402,21 @@ export default function TopLocationsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left">
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Rank</th>
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Location</th>
-              {availableFields.has("district") && <th className="px-3 py-2 text-xs font-medium text-muted-foreground">District</th>}
-              {availableFields.has("beat") && <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Beat</th>}
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground text-right">Filter Calls</th>
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground text-right">Latest Month</th>
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground text-right">Avg / Month 12M</th>
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground text-right">Avg / Month 36M</th>
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Latest vs 12M</th>
-              <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Latest vs 36M</th>
-              {availableFields.has("callType") && <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Top Call Types</th>}
+              <SortableHeader label="Rank" sortKey="rank" sortState={sortState} setSortState={setSortState} />
+              <SortableHeader label="Location" sortKey="location" sortState={sortState} setSortState={setSortState} />
+              {availableFields.has("district") && <SortableHeader label="District" sortKey="district" sortState={sortState} setSortState={setSortState} />}
+              {availableFields.has("beat") && <SortableHeader label="Beat" sortKey="beat" sortState={sortState} setSortState={setSortState} />}
+              <SortableHeader label="Filter Calls" sortKey="filterCalls" align="right" sortState={sortState} setSortState={setSortState} />
+              <SortableHeader label="Latest Month" sortKey="latestMonth" align="right" sortState={sortState} setSortState={setSortState} />
+              <SortableHeader label="Avg / Month 12M" sortKey="avg12" align="right" sortState={sortState} setSortState={setSortState} />
+              <SortableHeader label="Avg / Month 36M" sortKey="avg36" align="right" sortState={sortState} setSortState={setSortState} />
+              <SortableHeader label="Latest vs 12M" sortKey="latestVs12" sortState={sortState} setSortState={setSortState} />
+              <SortableHeader label="Latest vs 36M" sortKey="latestVs36" sortState={sortState} setSortState={setSortState} />
+              {availableFields.has("callType") && <SortableHeader label="Top Call Types" sortKey="topCallTypes" sortState={sortState} setSortState={setSortState} />}
             </tr>
           </thead>
           <tbody>
-            {locationsWithTrends.map((location, index) => (
+            {sortedLocations.map((location, index) => (
               <tr
                 key={location.key}
                 className={`border-b border-border/50 transition-colors cursor-pointer ${getRowChangeClass(location.trend?.latestVs36Change)}`}
@@ -499,6 +542,41 @@ export default function TopLocationsPage() {
               </div>
 
               <div className="rounded-md border border-border p-4">
+                <h3 className="text-sm font-semibold mb-3">Calls by Hour</h3>
+                <div className="h-[240px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={selectedHourlyRows} margin={{ top: 5, right: 16, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                      <XAxis
+                        dataKey="hour"
+                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={{ stroke: "hsl(var(--border))" }}
+                        interval={1}
+                      />
+                      <YAxis
+                        allowDecimals={false}
+                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={{ stroke: "hsl(var(--border))" }}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "hsl(var(--card))",
+                          border: "1px solid hsl(var(--border))",
+                          borderRadius: "0.5rem",
+                          fontSize: 12,
+                          color: "hsl(var(--foreground))",
+                        }}
+                        formatter={(value: number) => [value.toLocaleString(), "Calls"]}
+                      />
+                      <Bar dataKey="count" fill="hsl(var(--primary))" radius={[3, 3, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="rounded-md border border-border p-4">
                 <h3 className="text-sm font-semibold mb-3">36-Month Calls</h3>
                 <div className="h-[260px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -611,6 +689,84 @@ function getTrendSummary(rows: MonthlyLocationSummary[]): LocationTrendSummary {
     beat: rows.find((row) => row.beat)?.beat || "",
     lastUpdated: rows[0]?.last_updated || "",
   };
+}
+
+function getHourlySummary(counts?: number[]): HourlyCallSummary[] {
+  const safeCounts = counts || Array.from({ length: 24 }, () => 0);
+  return safeCounts.map((count, hour) => ({
+    hour: `${String(hour).padStart(2, "0")}:00`,
+    count,
+  }));
+}
+
+function SortableHeader({
+  label,
+  sortKey,
+  sortState,
+  setSortState,
+  align = "left",
+}: {
+  label: string;
+  sortKey: SortKey;
+  sortState: SortState;
+  setSortState: Dispatch<SetStateAction<SortState>>;
+  align?: "left" | "right";
+}) {
+  const active = sortState.key === sortKey;
+  const nextDirection = active && sortState.direction === "desc" ? "asc" : "desc";
+
+  return (
+    <th className={`px-3 py-2 text-xs font-medium text-muted-foreground ${align === "right" ? "text-right" : ""}`}>
+      <button
+        type="button"
+        onClick={() => setSortState({ key: sortKey, direction: nextDirection })}
+        className={`inline-flex items-center gap-1 hover:text-foreground ${align === "right" ? "justify-end" : ""}`}
+      >
+        {label}
+        <span className="text-[10px]">{active ? (sortState.direction === "asc" ? "▲" : "▼") : "↕"}</span>
+      </button>
+    </th>
+  );
+}
+
+function sortLocations(locations: LocationSummaryWithTrend[], sortState: SortState) {
+  const multiplier = sortState.direction === "asc" ? 1 : -1;
+
+  return [...locations].sort((a, b) => {
+    const result = compareSortValues(getSortValue(a, sortState.key), getSortValue(b, sortState.key));
+    return result * multiplier || b.count - a.count || a.address.localeCompare(b.address);
+  });
+}
+
+function getSortValue(location: LocationSummaryWithTrend, key: SortKey) {
+  switch (key) {
+    case "rank":
+    case "filterCalls":
+      return location.count;
+    case "location":
+      return formatLocationLabel(location.address, location.city);
+    case "district":
+      return location.district || "";
+    case "beat":
+      return location.beat || "";
+    case "latestMonth":
+      return location.trend?.recent.call_count ?? -1;
+    case "avg12":
+      return location.trend?.recent12.averagePerMonth ?? -1;
+    case "avg36":
+      return location.trend?.averagePerMonth ?? -1;
+    case "latestVs12":
+      return location.trend?.latestVs12Change.percent ?? Number.NEGATIVE_INFINITY;
+    case "latestVs36":
+      return location.trend?.latestVs36Change.percent ?? Number.NEGATIVE_INFINITY;
+    case "topCallTypes":
+      return getTopCallTypes(location.callTypes) || "";
+  }
+}
+
+function compareSortValues(a: string | number, b: string | number) {
+  if (typeof a === "number" && typeof b === "number") return a - b;
+  return String(a).localeCompare(String(b));
 }
 
 function summarizeWindow(rows: MonthlyLocationSummary[]): TrendWindowSummary {

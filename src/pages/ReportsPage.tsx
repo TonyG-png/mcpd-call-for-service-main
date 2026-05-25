@@ -280,12 +280,12 @@ export default function ReportsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <ReportTypeListCard
-          title="Top 10 TRU Eligible Report Calls"
+          title="Top 5 TRU Eligible Report Calls"
           items={topReportCallTypes.tru}
           emptyText="No TRU eligible report calls in the current filters."
         />
         <ReportTypeListCard
-          title="Top 10 Non-TRU-Code Report Calls"
+          title="Top 5 Non-TRU-Code Report Calls"
           items={topReportCallTypes.patrol}
           emptyText="No non-TRU-code report calls in the current filters."
         />
@@ -432,7 +432,7 @@ export default function ReportsPage() {
 function getTopReportTypes(callTypes: Map<string, number>) {
   return Array.from(callTypes.entries())
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .slice(0, 10)
+    .slice(0, 5)
     .map(([type, count]) => ({ type, count }));
 }
 
