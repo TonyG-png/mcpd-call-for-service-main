@@ -81,7 +81,7 @@ export default function ReportsPage() {
       .map(([callType, v]) => ({ callType, ...v, total: v.crime + v.crash }))
       .filter((r) => r.total > 0)
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10);
+      .slice(0, 5);
   }, [filteredIncidents]);
 
   const byReportChannel = useMemo(() => {
@@ -381,7 +381,7 @@ export default function ReportsPage() {
           </div>
         </ChartCard>
 
-        <ChartCard title="Reports by Call Type" subtitle="Top 10 call types">
+        <ChartCard title="Reports by Call Type" subtitle="Top 5 call types">
           <div className="h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={byCallType} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
