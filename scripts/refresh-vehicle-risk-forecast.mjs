@@ -1095,6 +1095,8 @@ async function saveForecastArtifacts(forecast, validations) {
   const forecastPath = path.join(forecastDir, `${forecast.metadata.runDate}.json`);
   const assessmentPath = path.join(assessmentDir, `${forecast.metadata.runDate}.md`);
   const latestPath = path.join(publicDataDir, "vehicle-risk-latest.json");
+  const latestAssessmentMarkdownPath = path.join(publicDataDir, "vehicle-risk-assessment-latest.md");
+  const latestAssessmentHtmlPath = path.join(publicDataDir, "vehicle-risk-assessment-latest.html");
 
   forecast.forecastPath = forecastPath;
   forecast.assessmentPath = assessmentPath;
@@ -1110,11 +1112,20 @@ async function saveForecastArtifacts(forecast, validations) {
   await writeFile(forecastPath, `${JSON.stringify(publicForecast, null, 2)}\n`, "utf8");
   await writeFile(latestPath, `${JSON.stringify(publicForecast, null, 2)}\n`, "utf8");
   await writeValidationSummary(validations);
-  await writeFile(assessmentPath, buildAssessmentMarkdown(publicForecast, validations), "utf8");
+  const assessmentMarkdown = buildAssessmentMarkdown(publicForecast, validations);
+  await writeFile(assessmentPath, assessmentMarkdown, "utf8");
+  await writeFile(latestAssessmentMarkdownPath, assessmentMarkdown, "utf8");
+  await writeFile(
+    latestAssessmentHtmlPath,
+    buildHtmlDocument(`Vehicle Risk Forecast - ${forecast.metadata.runDate}`, assessmentMarkdown),
+    "utf8",
+  );
 }
 
 async function writeValidationSummary(currentRunValidations) {
   const latestPath = path.join(publicDataDir, "vehicle-risk-validations-latest.json");
+  const latestMarkdownPath = path.join(publicDataDir, "vehicle-risk-validation-report.md");
+  const latestHtmlPath = path.join(publicDataDir, "vehicle-risk-validation-report.html");
   const allValidations = [];
 
   if (existsSync(validationDir)) {
@@ -1143,6 +1154,9 @@ async function writeValidationSummary(currentRunValidations) {
   };
 
   await writeFile(latestPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
+  const validationMarkdown = buildValidationMarkdown(summary);
+  await writeFile(latestMarkdownPath, validationMarkdown, "utf8");
+  await writeFile(latestHtmlPath, buildHtmlDocument("Vehicle Risk Prediction Accuracy", validationMarkdown), "utf8");
 }
 
 function buildAssessmentMarkdown(forecast, validations) {
@@ -1201,6 +1215,196 @@ function buildAssessmentMarkdown(forecast, validations) {
 
   lines.push("");
   return `${lines.join("\n")}\n`;
+}
+
+function buildValidationMarkdown(summary) {
+  const lines = [];
+  lines.push("# Vehicle Risk Prediction Accuracy");
+  lines.push("");
+  lines.push(`Generated: ${formatEastern(new Date())} ${EASTERN_TIME_ZONE}`);
+  lines.push("");
+  lines.push(`**Caveat:** ${CAVEAT}`);
+  lines.push("");
+
+  if (!summary.validations?.length) {
+    lines.push("No forecast windows are old enough to validate yet.");
+    lines.push("");
+    lines.push(
+      `Validation begins after ${summary.validationStartDate}, once a 72-hour forecast window has ended and at least 48 hours have passed for public records to settle.`,
+    );
+    lines.push("");
+    return `${lines.join("\n")}\n`;
+  }
+
+  lines.push("## Latest Results");
+  lines.push("");
+  lines.push("| Forecast | Window | Actual Incidents | Combined Hit Rate | Combined Precision | Combined PAI |");
+  lines.push("| --- | --- | ---: | ---: | ---: | ---: |");
+  for (const validation of summary.validations) {
+    const combined = validation.metrics.combined.model;
+    lines.push(
+      `| ${validation.forecastRunDate} | ${validation.forecastWindow.start} through ${validation.forecastWindow.end} | ${validation.actualIncidentCount} | ${formatPct(combined.hitRate)} | ${formatPct(combined.precision)} | ${combined.predictiveAccuracyIndex.toFixed(2)} |`,
+    );
+  }
+  lines.push("");
+
+  for (const validation of summary.validations) {
+    lines.push(`## Forecast ${validation.forecastRunDate}`);
+    lines.push("");
+    lines.push(`Forecast window: ${validation.forecastWindow.start} through ${validation.forecastWindow.end}`);
+    lines.push(`Actual matching incidents: ${validation.actualIncidentCount}`);
+    lines.push("");
+    lines.push("| Group | Actual Incidents | Selected Cells | Model Hit Rate | Baseline Hit Rate | Precision | Brier | PAI | False Positives |");
+    lines.push("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const group of ["combined", "theft_from_auto", "stolen_vehicle"]) {
+      const metrics = validation.metrics[group];
+      lines.push(
+        `| ${groupLabel(group)} | ${metrics.actualIncidentCount} | ${metrics.selectedPredictionCount} | ${formatPct(metrics.model.hitRate)} | ${formatPct(metrics.baseline.hitRate)} | ${formatPct(metrics.model.precision)} | ${metrics.model.brierScore.toFixed(3)} | ${metrics.model.predictiveAccuracyIndex.toFixed(2)} | ${metrics.model.falsePositiveBurden} |`,
+      );
+    }
+    lines.push("");
+  }
+
+  lines.push("## How To Read This");
+  lines.push("");
+  lines.push("- Hit rate is the share of actual incidents captured by the selected forecast cells.");
+  lines.push("- Precision is the share of selected forecast cells that had at least one actual incident.");
+  lines.push("- Baseline compares the model to a simple recent-hot-spots approach.");
+  lines.push("- Brier score is probability error; lower is better.");
+  lines.push("- PAI is concentration efficiency; higher is better.");
+  lines.push("- False positives are selected forecast cells with no matching incident.");
+  lines.push("");
+  return `${lines.join("\n")}\n`;
+}
+
+function buildHtmlDocument(title, markdown) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${escapeHtml(title)}</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; background: #f8fafc; color: #0f172a; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px 22px 56px; }
+    h1, h2, h3 { letter-spacing: 0; line-height: 1.15; }
+    h1 { margin: 0 0 18px; font-size: 30px; }
+    h2 { margin-top: 34px; border-top: 1px solid #dbe3ef; padding-top: 22px; font-size: 21px; }
+    h3 { margin-top: 24px; font-size: 17px; }
+    p, li { color: #334155; line-height: 1.55; }
+    strong { color: #0f172a; }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0 24px; background: white; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08); }
+    th, td { border: 1px solid #dbe3ef; padding: 8px 10px; text-align: left; vertical-align: top; font-size: 13px; }
+    th { background: #edf2f7; color: #334155; font-weight: 700; }
+    td:nth-child(1), th:nth-child(1) { white-space: nowrap; }
+    ul { padding-left: 22px; }
+    .toolbar { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px; }
+    button { border: 1px solid #cbd5e1; background: white; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-weight: 600; cursor: pointer; }
+    @media print { body { background: white; } main { max-width: none; padding: 0; } .toolbar { display: none; } table { box-shadow: none; break-inside: auto; } tr { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="toolbar"><button onclick="window.print()">Print or Save PDF</button></div>
+    ${markdownToHtml(markdown)}
+  </main>
+</body>
+</html>
+`;
+}
+
+function markdownToHtml(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const html = [];
+  let paragraph = [];
+  let list = [];
+
+  const flushParagraph = () => {
+    if (paragraph.length) {
+      html.push(`<p>${inlineMarkdown(paragraph.join(" "))}</p>`);
+      paragraph = [];
+    }
+  };
+  const flushList = () => {
+    if (list.length) {
+      html.push(`<ul>${list.map((item) => `<li>${inlineMarkdown(item)}</li>`).join("")}</ul>`);
+      list = [];
+    }
+  };
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (!line.trim()) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+    if (line.startsWith("# ")) {
+      flushParagraph();
+      flushList();
+      html.push(`<h1>${inlineMarkdown(line.slice(2))}</h1>`);
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      flushParagraph();
+      flushList();
+      html.push(`<h2>${inlineMarkdown(line.slice(3))}</h2>`);
+      continue;
+    }
+    if (line.startsWith("### ")) {
+      flushParagraph();
+      flushList();
+      html.push(`<h3>${inlineMarkdown(line.slice(4))}</h3>`);
+      continue;
+    }
+    if (line.startsWith("- ")) {
+      flushParagraph();
+      list.push(line.slice(2));
+      continue;
+    }
+    if (line.startsWith("| ")) {
+      flushParagraph();
+      flushList();
+      const tableLines = [];
+      while (i < lines.length && lines[i].startsWith("| ")) {
+        tableLines.push(lines[i]);
+        i += 1;
+      }
+      i -= 1;
+      html.push(markdownTableToHtml(tableLines));
+      continue;
+    }
+    paragraph.push(line);
+  }
+
+  flushParagraph();
+  flushList();
+  return html.join("\n");
+}
+
+function markdownTableToHtml(lines) {
+  const rows = lines
+    .filter((line) => !/^\|\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/.test(line))
+    .map((line) => line.replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim()));
+  if (rows.length === 0) return "";
+  const [header, ...body] = rows;
+  return `<table><thead><tr>${header.map((cell) => `<th>${inlineMarkdown(cell)}</th>`).join("")}</tr></thead><tbody>${body
+    .map((row) => `<tr>${row.map((cell) => `<td>${inlineMarkdown(cell)}</td>`).join("")}</tr>`)
+    .join("")}</tbody></table>`;
+}
+
+function inlineMarkdown(value) {
+  return escapeHtml(value).replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+}
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function appendPredictionTable(lines, title, predictions) {

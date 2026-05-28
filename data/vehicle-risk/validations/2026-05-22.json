@@ -1,0 +1,79 @@
+{
+  "forecastRunDate": "2026-05-22",
+  "forecastWindow": {
+    "start": "2026-05-22",
+    "end": "2026-05-25"
+  },
+  "validatedAt": "2026-05-28T09:31:25.613Z",
+  "validatedAtEastern": "2026-05-28 05:31",
+  "actualIncidentCount": 25,
+  "metrics": {
+    "combined": {
+      "model": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0021,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "baseline": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0016,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "actualIncidentCount": 25,
+      "selectedPredictionCount": 25
+    },
+    "theft_from_auto": {
+      "model": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0012,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "baseline": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0009,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "actualIncidentCount": 13,
+      "selectedPredictionCount": 25
+    },
+    "stolen_vehicle": {
+      "model": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0003,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "baseline": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0002,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "actualIncidentCount": 12,
+      "selectedPredictionCount": 25
+    }
+  },
+  "caveat": "These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address."
+}

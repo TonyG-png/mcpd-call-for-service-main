@@ -474,16 +474,30 @@ export default function VehicleRiskPage() {
         <ChartCard title="Prediction Accuracy">
           {latestValidation ? (
             <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <Target className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <div>
-                  <p className="font-medium text-foreground">
-                    Latest validation: {latestValidation.forecastRunDate}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {latestValidation.forecastWindow.start} through {latestValidation.forecastWindow.end}; {latestValidation.actualIncidentCount} actual matching incident(s)
-                  </p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex items-start gap-3">
+                  <Target className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <div>
+                    <p className="font-medium text-foreground">
+                      Latest validation: {latestValidation.forecastRunDate}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {latestValidation.forecastWindow.start} through {latestValidation.forecastWindow.end}; {latestValidation.actualIncidentCount} actual matching incident(s)
+                    </p>
+                  </div>
                 </div>
+                <a
+                  href="/data/vehicle-risk-validation-report.html"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex w-fit items-center gap-2 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  Open Accuracy Report
+                </a>
+              </div>
+              <div className="rounded-md border border-border bg-secondary/25 p-3 text-xs text-muted-foreground">
+                Click <span className="font-medium text-foreground">Open Accuracy Report</span> for a readable page with tables and a print/save-to-PDF button. The JSON file stays available for the dashboard, but the report is the version meant for people.
               </div>
               <div className="overflow-auto">
                 <table className="w-full min-w-[520px] text-xs">
@@ -542,13 +556,23 @@ export default function VehicleRiskPage() {
         </ChartCard>
       </div>
 
-      <a
-        href={`/data/vehicle-risk-latest.json?run=${forecast.metadata.runDate}`}
-        className="inline-flex items-center gap-2 text-xs font-medium text-primary hover:underline"
-      >
-        <FileText className="h-3.5 w-3.5" />
-        Latest forecast JSON
-      </a>
+      <div className="flex flex-wrap gap-3">
+        <a
+          href="/data/vehicle-risk-assessment-latest.html"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 text-xs font-medium text-primary hover:underline"
+        >
+          <FileText className="h-3.5 w-3.5" />
+          Open readable forecast assessment
+        </a>
+        <a
+          href={`/data/vehicle-risk-latest.json?run=${forecast.metadata.runDate}`}
+          className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-primary hover:underline"
+        >
+          Raw forecast JSON
+        </a>
+      </div>
     </div>
   );
 }

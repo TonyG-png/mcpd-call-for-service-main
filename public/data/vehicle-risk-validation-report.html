@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vehicle Risk Prediction Accuracy</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; background: #f8fafc; color: #0f172a; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px 22px 56px; }
+    h1, h2, h3 { letter-spacing: 0; line-height: 1.15; }
+    h1 { margin: 0 0 18px; font-size: 30px; }
+    h2 { margin-top: 34px; border-top: 1px solid #dbe3ef; padding-top: 22px; font-size: 21px; }
+    h3 { margin-top: 24px; font-size: 17px; }
+    p, li { color: #334155; line-height: 1.55; }
+    strong { color: #0f172a; }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0 24px; background: white; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08); }
+    th, td { border: 1px solid #dbe3ef; padding: 8px 10px; text-align: left; vertical-align: top; font-size: 13px; }
+    th { background: #edf2f7; color: #334155; font-weight: 700; }
+    td:nth-child(1), th:nth-child(1) { white-space: nowrap; }
+    ul { padding-left: 22px; }
+    .toolbar { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px; }
+    button { border: 1px solid #cbd5e1; background: white; border-radius: 6px; padding: 8px 12px; color: #0f172a; font-weight: 600; cursor: pointer; }
+    @media print { body { background: white; } main { max-width: none; padding: 0; } .toolbar { display: none; } table { box-shadow: none; break-inside: auto; } tr { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="toolbar"><button onclick="window.print()">Print or Save PDF</button></div>
+    <h1>Vehicle Risk Prediction Accuracy</h1>
+<p>Generated: 2026-05-28 05:43 America/New_York</p>
+<p><strong>Caveat:</strong> These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.</p>
+<h2>Latest Results</h2>
+<table><thead><tr><th>Forecast</th><th>Window</th><th>Actual Incidents</th><th>Combined Hit Rate</th><th>Combined Precision</th><th>Combined PAI</th></tr></thead><tbody><tr><td>2026-05-22</td><td>2026-05-22 through 2026-05-25</td><td>25</td><td>0.0%</td><td>0.0%</td><td>0.00</td></tr></tbody></table>
+<h2>Forecast 2026-05-22</h2>
+<p>Forecast window: 2026-05-22 through 2026-05-25 Actual matching incidents: 25</p>
+<table><thead><tr><th>Group</th><th>Actual Incidents</th><th>Selected Cells</th><th>Model Hit Rate</th><th>Baseline Hit Rate</th><th>Precision</th><th>Brier</th><th>PAI</th><th>False Positives</th></tr></thead><tbody><tr><td>Combined</td><td>25</td><td>25</td><td>0.0%</td><td>0.0%</td><td>0.0%</td><td>0.002</td><td>0.00</td><td>25</td></tr><tr><td>Theft From Auto</td><td>13</td><td>25</td><td>0.0%</td><td>0.0%</td><td>0.0%</td><td>0.001</td><td>0.00</td><td>25</td></tr><tr><td>Stolen Vehicle</td><td>12</td><td>25</td><td>0.0%</td><td>0.0%</td><td>0.0%</td><td>0.000</td><td>0.00</td><td>25</td></tr></tbody></table>
+<h2>How To Read This</h2>
+<ul><li>Hit rate is the share of actual incidents captured by the selected forecast cells.</li><li>Precision is the share of selected forecast cells that had at least one actual incident.</li><li>Baseline compares the model to a simple recent-hot-spots approach.</li><li>Brier score is probability error; lower is better.</li><li>PAI is concentration efficiency; higher is better.</li><li>False positives are selected forecast cells with no matching incident.</li></ul>
+  </main>
+</body>
+</html>
