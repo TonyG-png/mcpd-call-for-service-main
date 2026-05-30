@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-30T01:11:05.201Z",
+  "generatedAt": "2026-05-30T08:32:55.130Z",
   "validationStartDate": "2026-05-27",
   "caveat": "These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.",
   "validations": [
@@ -9,8 +9,8 @@
         "start": "2026-05-22",
         "end": "2026-05-25"
       },
-      "validatedAt": "2026-05-30T01:09:29.333Z",
-      "validatedAtEastern": "2026-05-29 21:09",
+      "validatedAt": "2026-05-30T08:31:10.125Z",
+      "validatedAtEastern": "2026-05-30 04:31",
       "actualIncidentCount": 29,
       "metrics": {
         "combined": {
