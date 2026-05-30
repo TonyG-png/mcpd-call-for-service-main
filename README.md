@@ -91,6 +91,13 @@ The forecast script builds a 72-hour theft-from-auto and stolen-vehicle place/ti
 - `public/data/vehicle-risk-latest.json`
 
 Starting May 27, 2026, the same run validates older forecasts once their 72-hour window has ended by at least 48 hours and writes `data/vehicle-risk/validations/YYYY-MM-DD.json`.
+Recent eligible validations are refreshed for 14 days so late-posting crime records can update the accuracy report. To force a manual refresh, run:
+
+```sh
+npm run vehicle-risk:forecast -- --refresh-validations
+```
+
+When the local API server is running, the Vehicle Risk tab also includes a **Refresh Accuracy** button that reruns the forecast/validation script and updates the readable accuracy report.
 
 Set `SOCRATA_APP_TOKEN` in `.env` to use the SODA3 query endpoint. If the token is missing or SODA3 is unavailable, the script falls back to the public SODA2 resource endpoint for local prototyping. Forecasts are place/time risk indicators only and must not be used to score people, vehicles, or addresses.
 

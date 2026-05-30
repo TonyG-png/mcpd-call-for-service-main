@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import MetricCard from "@/components/dashboard/MetricCard";
 import ChartCard from "@/components/dashboard/ChartCard";
-import { AlertTriangle, CalendarClock, Car, FileText, Gauge, MapPin, ShieldCheck, Target } from "lucide-react";
+import { AlertTriangle, CalendarClock, Car, FileText, Gauge, Loader2, MapPin, RefreshCw, ShieldCheck, Target } from "lucide-react";
 import { CircleMarker, MapContainer, Polygon, Popup, TileLayer } from "react-leaflet";
 import { useTheme } from "next-themes";
 
@@ -66,6 +66,7 @@ interface ForecastValidation {
     start: string;
     end: string;
   };
+  validatedAtEastern?: string;
   actualIncidentCount: number;
   metrics: Record<RiskGroup, {
     model: ForecastValidationMetric;
@@ -107,6 +108,8 @@ export default function VehicleRiskPage() {
   const [selectedGroup, setSelectedGroup] = useState<RiskGroup>("combined");
   const [selectedWindowId, setSelectedWindowId] = useState("focus");
   const [selectedPrediction, setSelectedPrediction] = useState<ForecastPrediction | null>(null);
+  const [isRefreshingAccuracy, setIsRefreshingAccuracy] = useState(false);
+  const [refreshMessage, setRefreshMessage] = useState<string | null>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -126,6 +129,36 @@ export default function VehicleRiskPage() {
       active = false;
     };
   }, []);
+
+  async function reloadVehicleRiskFiles() {
+    const [forecastResponse, validationResponse] = await Promise.all([
+      fetch(`/data/vehicle-risk-latest.json?ts=${Date.now()}`),
+      fetch(`/data/vehicle-risk-validations-latest.json?ts=${Date.now()}`),
+    ]);
+
+    if (!forecastResponse.ok) throw new Error(`Latest forecast unavailable (${forecastResponse.status})`);
+    setForecast(await forecastResponse.json());
+    setValidationSummary(validationResponse.ok ? await validationResponse.json() : null);
+  }
+
+  async function handleRefreshAccuracy() {
+    setIsRefreshingAccuracy(true);
+    setRefreshMessage("Refreshing forecast and validation data. This may take a minute.");
+    try {
+      const response = await fetch("/api/vehicle-risk/run", { method: "POST" });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.ok === false) {
+        throw new Error(result.error || result.stderr || `Refresh failed (${response.status})`);
+      }
+      await reloadVehicleRiskFiles();
+      setRefreshMessage("Accuracy report refreshed with the latest public crime data.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Refresh failed";
+      setRefreshMessage(`${message}. If you are in development mode, make sure the local API server is running with npm run server.`);
+    } finally {
+      setIsRefreshingAccuracy(false);
+    }
+  }
 
   useEffect(() => {
     let active = true;
@@ -474,7 +507,7 @@ export default function VehicleRiskPage() {
         <ChartCard title="Prediction Accuracy">
           {latestValidation ? (
             <div className="space-y-3 text-sm">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                 <div className="flex items-start gap-3">
                   <Target className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <div>
@@ -483,19 +516,36 @@ export default function VehicleRiskPage() {
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {latestValidation.forecastWindow.start} through {latestValidation.forecastWindow.end}; {latestValidation.actualIncidentCount} actual matching incident(s)
+                      {latestValidation.validatedAtEastern ? `; scored ${latestValidation.validatedAtEastern}` : ""}
                     </p>
                   </div>
                 </div>
-                <a
-                  href="/data/vehicle-risk-validation-report.html"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex w-fit items-center gap-2 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent"
-                >
-                  <FileText className="h-3.5 w-3.5" />
-                  Open Accuracy Report
-                </a>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={handleRefreshAccuracy}
+                    disabled={isRefreshingAccuracy}
+                    className="inline-flex w-fit items-center gap-2 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isRefreshingAccuracy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+                    Refresh Accuracy
+                  </button>
+                  <a
+                    href="/data/vehicle-risk-validation-report.html"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex w-fit items-center gap-2 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent"
+                  >
+                    <FileText className="h-3.5 w-3.5" />
+                    Open Accuracy Report
+                  </a>
+                </div>
               </div>
+              {refreshMessage && (
+                <div className="rounded-md border border-border bg-secondary/25 p-3 text-xs text-muted-foreground">
+                  {refreshMessage}
+                </div>
+              )}
               <div className="rounded-md border border-border bg-secondary/25 p-3 text-xs text-muted-foreground">
                 Click <span className="font-medium text-foreground">Open Accuracy Report</span> for a readable page with tables and a print/save-to-PDF button. The JSON file stays available for the dashboard, but the report is the version meant for people.
               </div>

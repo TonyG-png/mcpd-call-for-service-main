@@ -22,6 +22,9 @@ const TOP_PREDICTIONS_PER_GROUP = 140;
 const TOP_ASSESSMENT_ROWS = 25;
 const VALIDATION_TOP_N = 25;
 const VALIDATION_START_YMD = "2026-05-27";
+const VALIDATION_REFRESH_DAYS = Number(process.env.VEHICLE_RISK_VALIDATION_REFRESH_DAYS || 14);
+const FORCE_REFRESH_VALIDATIONS =
+  process.argv.includes("--refresh-validations") || process.env.VEHICLE_RISK_REFRESH_VALIDATIONS === "1";
 const NWS_POINT = { latitude: 39.1, longitude: -77.2 };
 const CAVEAT =
   "These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.";
@@ -994,9 +997,12 @@ async function validateEligibleForecasts(now) {
     const forecast = JSON.parse(await readFile(forecastPath, "utf8"));
     const forecastYmd = forecast.metadata?.runDate || file.replace(".json", "");
     const outputPath = path.join(validationDir, `${forecastYmd}.json`);
-    if (existsSync(outputPath)) continue;
     const horizonEnd = easternDateTimeToUtc(forecast.metadata.forecastEnd, 0, 0, 0).getTime();
     if (horizonEnd > cutoff) continue;
+    if (existsSync(outputPath) && !FORCE_REFRESH_VALIDATIONS) {
+      const refreshCutoff = now.getTime() - VALIDATION_REFRESH_DAYS * 24 * 60 * 60 * 1000;
+      if (horizonEnd < refreshCutoff) continue;
+    }
 
     const actualRows = await fetchCrimeRows(forecast.metadata.forecastStart, forecast.metadata.forecastEnd);
     const actuals = actualRows.map(normalizeCrimeRow).filter(Boolean);

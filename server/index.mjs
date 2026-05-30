@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
+import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,6 +31,7 @@ const INSUFFICIENT_CONTEXT_ANSWER = "I do not have enough information in the ava
 
 let recordCache = null;
 const embeddingCache = new Map();
+let vehicleRiskRun = null;
 
 function loadEnv(filePath) {
   if (!existsSync(filePath)) return;
@@ -435,6 +437,70 @@ async function handleRagSearch(req, res) {
   }
 }
 
+async function handleVehicleRiskRun(req, res) {
+  if (req.method !== "POST") {
+    sendJson(res, 405, { error: "Method not allowed" });
+    return;
+  }
+
+  if (vehicleRiskRun) {
+    sendJson(res, 409, { error: "Vehicle risk refresh is already running." });
+    return;
+  }
+
+  const startedAt = new Date();
+  const scriptPath = path.join(rootDir, "scripts", "refresh-vehicle-risk-forecast.mjs");
+
+  try {
+    vehicleRiskRun = runNodeScript(scriptPath, ["--refresh-validations"], {
+      ...process.env,
+      VEHICLE_RISK_REFRESH_VALIDATIONS: "1",
+    });
+    const result = await vehicleRiskRun;
+    sendJson(res, result.exitCode === 0 ? 200 : 500, {
+      ok: result.exitCode === 0,
+      startedAt: startedAt.toISOString(),
+      finishedAt: new Date().toISOString(),
+      exitCode: result.exitCode,
+      stdout: result.stdout,
+      stderr: result.stderr,
+    });
+  } catch (error) {
+    sendJson(res, 500, {
+      ok: false,
+      startedAt: startedAt.toISOString(),
+      finishedAt: new Date().toISOString(),
+      error: error instanceof Error ? error.message : "Vehicle risk refresh failed",
+    });
+  } finally {
+    vehicleRiskRun = null;
+  }
+}
+
+function runNodeScript(scriptPath, args = [], env = process.env) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [scriptPath, ...args], {
+      cwd: rootDir,
+      env,
+      windowsHide: true,
+    });
+    let stdout = "";
+    let stderr = "";
+    const maxOutputLength = 12000;
+
+    child.stdout.on("data", (chunk) => {
+      stdout = `${stdout}${chunk}`.slice(-maxOutputLength);
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr = `${stderr}${chunk}`.slice(-maxOutputLength);
+    });
+    child.on("error", reject);
+    child.on("close", (exitCode) => {
+      resolve({ exitCode, stdout, stderr });
+    });
+  });
+}
+
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -489,6 +555,11 @@ createServer(async (req, res) => {
       embedModel: OLLAMA_EMBED_MODEL,
       cachedRecords: recordCache?.count || 0,
     });
+    return;
+  }
+
+  if (url.pathname === "/api/vehicle-risk/run") {
+    await handleVehicleRiskRun(req, res);
     return;
   }
 

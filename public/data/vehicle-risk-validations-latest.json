@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-28T09:43:33.218Z",
+  "generatedAt": "2026-05-30T01:11:05.201Z",
   "validationStartDate": "2026-05-27",
   "caveat": "These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.",
   "validations": [
@@ -9,9 +9,9 @@
         "start": "2026-05-22",
         "end": "2026-05-25"
       },
-      "validatedAt": "2026-05-28T09:31:25.613Z",
-      "validatedAtEastern": "2026-05-28 05:31",
-      "actualIncidentCount": 25,
+      "validatedAt": "2026-05-30T01:09:29.333Z",
+      "validatedAtEastern": "2026-05-29 21:09",
+      "actualIncidentCount": 29,
       "metrics": {
         "combined": {
           "model": {
@@ -32,7 +32,7 @@
             "actualHits": 0,
             "selectedWithActual": 0
           },
-          "actualIncidentCount": 25,
+          "actualIncidentCount": 29,
           "selectedPredictionCount": 25
         },
         "theft_from_auto": {
@@ -54,7 +54,7 @@
             "actualHits": 0,
             "selectedWithActual": 0
           },
-          "actualIncidentCount": 13,
+          "actualIncidentCount": 15,
           "selectedPredictionCount": 25
         },
         "stolen_vehicle": {
@@ -76,7 +76,7 @@
             "actualHits": 0,
             "selectedWithActual": 0
           },
-          "actualIncidentCount": 12,
+          "actualIncidentCount": 14,
           "selectedPredictionCount": 25
         }
       },
