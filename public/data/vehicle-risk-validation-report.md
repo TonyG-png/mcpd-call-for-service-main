@@ -1,6 +1,6 @@
 # Vehicle Risk Prediction Accuracy
 
-Generated: 2026-05-30 04:32 America/New_York
+Generated: 2026-05-31 04:32 America/New_York
 
 **Caveat:** These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.
 
@@ -8,7 +8,19 @@ Generated: 2026-05-30 04:32 America/New_York
 
 | Forecast | Window | Actual Incidents | Combined Hit Rate | Combined Precision | Combined PAI |
 | --- | --- | ---: | ---: | ---: | ---: |
+| 2026-05-26 | 2026-05-26 through 2026-05-29 | 35 | 0.0% | 0.0% | 0.00 |
 | 2026-05-22 | 2026-05-22 through 2026-05-25 | 29 | 0.0% | 0.0% | 0.00 |
+
+## Forecast 2026-05-26
+
+Forecast window: 2026-05-26 through 2026-05-29
+Actual matching incidents: 35
+
+| Group | Actual Incidents | Selected Cells | Model Hit Rate | Baseline Hit Rate | Precision | Brier | PAI | False Positives |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Combined | 35 | 25 | 0.0% | 0.0% | 0.0% | 0.002 | 0.00 | 25 |
+| Theft From Auto | 20 | 25 | 0.0% | 0.0% | 0.0% | 0.001 | 0.00 | 25 |
+| Stolen Vehicle | 15 | 25 | 0.0% | 0.0% | 0.0% | 0.000 | 0.00 | 25 |
 
 ## Forecast 2026-05-22
 

@@ -1,19 +1,19 @@
 {
-  "forecastRunDate": "2026-05-22",
+  "forecastRunDate": "2026-05-26",
   "forecastWindow": {
-    "start": "2026-05-22",
-    "end": "2026-05-25"
+    "start": "2026-05-26",
+    "end": "2026-05-29"
   },
   "validatedAt": "2026-05-31T08:31:13.180Z",
   "validatedAtEastern": "2026-05-31 04:31",
-  "actualIncidentCount": 29,
+  "actualIncidentCount": 35,
   "metrics": {
     "combined": {
       "model": {
         "hitRate": 0,
         "precision": 0,
         "falsePositiveBurden": 25,
-        "brierScore": 0.0021,
+        "brierScore": 0.0017,
         "predictiveAccuracyIndex": 0,
         "actualHits": 0,
         "selectedWithActual": 0
@@ -22,25 +22,16 @@
         "hitRate": 0,
         "precision": 0,
         "falsePositiveBurden": 25,
-        "brierScore": 0.0016,
+        "brierScore": 0.0011,
         "predictiveAccuracyIndex": 0,
         "actualHits": 0,
         "selectedWithActual": 0
       },
-      "actualIncidentCount": 29,
+      "actualIncidentCount": 35,
       "selectedPredictionCount": 25
     },
     "theft_from_auto": {
       "model": {
-        "hitRate": 0,
-        "precision": 0,
-        "falsePositiveBurden": 25,
-        "brierScore": 0.0012,
-        "predictiveAccuracyIndex": 0,
-        "actualHits": 0,
-        "selectedWithActual": 0
-      },
-      "baseline": {
         "hitRate": 0,
         "precision": 0,
         "falsePositiveBurden": 25,
@@ -49,7 +40,16 @@
         "actualHits": 0,
         "selectedWithActual": 0
       },
-      "actualIncidentCount": 15,
+      "baseline": {
+        "hitRate": 0,
+        "precision": 0,
+        "falsePositiveBurden": 25,
+        "brierScore": 0.0007,
+        "predictiveAccuracyIndex": 0,
+        "actualHits": 0,
+        "selectedWithActual": 0
+      },
+      "actualIncidentCount": 20,
       "selectedPredictionCount": 25
     },
     "stolen_vehicle": {
@@ -71,7 +71,7 @@
         "actualHits": 0,
         "selectedWithActual": 0
       },
-      "actualIncidentCount": 14,
+      "actualIncidentCount": 15,
       "selectedPredictionCount": 25
     }
   },
