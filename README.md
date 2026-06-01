@@ -98,6 +98,7 @@ npm run vehicle-risk:forecast -- --refresh-validations
 ```
 
 When the local API server is running, the Vehicle Risk tab also includes a **Refresh Accuracy** button that reruns the forecast/validation script and updates the readable accuracy report.
+Validation reports include exact 750-foot/6-hour scoring, broader 1,500- and 2,250-foot proximity scoring, 12- and 24-hour diagnostic windows, and a miss-distance map comparing selected forecast cells against actual incidents.
 
 Set `SOCRATA_APP_TOKEN` in `.env` to use the SODA3 query endpoint. If the token is missing or SODA3 is unavailable, the script falls back to the public SODA2 resource endpoint for local prototyping. Forecasts are place/time risk indicators only and must not be used to score people, vehicles, or addresses.
 

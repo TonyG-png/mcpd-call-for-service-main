@@ -25,6 +25,13 @@ const VALIDATION_START_YMD = "2026-05-27";
 const VALIDATION_REFRESH_DAYS = Number(process.env.VEHICLE_RISK_VALIDATION_REFRESH_DAYS || 14);
 const FORCE_REFRESH_VALIDATIONS =
   process.argv.includes("--refresh-validations") || process.env.VEHICLE_RISK_REFRESH_VALIDATIONS === "1";
+const VALIDATION_SCORE_WINDOWS = [
+  { key: "sixHourExact", label: "6h exact 750-ft cell", hours: 6, radiusFeet: 0 },
+  { key: "sixHour1500", label: "6h within 1,500 ft", hours: 6, radiusFeet: 1500 },
+  { key: "sixHour2250", label: "6h within 2,250 ft", hours: 6, radiusFeet: 2250 },
+  { key: "twelveHour1500", label: "12h within 1,500 ft", hours: 12, radiusFeet: 1500 },
+  { key: "twentyFourHour1500", label: "24h within 1,500 ft", hours: 24, radiusFeet: 1500 },
+];
 const NWS_POINT = { latitude: 39.1, longitude: -77.2 };
 const CAVEAT =
   "These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.";
@@ -1018,6 +1025,7 @@ function validateForecast(forecast, actuals, validatedAt) {
   const windows = forecast.windows || [];
   const actualIndex = new Map();
   const totals = { combined: 0, theft_from_auto: 0, stolen_vehicle: 0 };
+  const windowedActuals = [];
 
   for (const actual of actuals) {
     const window = windows.find((candidate) => {
@@ -1027,6 +1035,12 @@ function validateForecast(forecast, actuals, validatedAt) {
       return actualTime >= start && actualTime < end;
     });
     if (!window) continue;
+    const actualWithWindow = {
+      ...actual,
+      windowId: window.id,
+      windowLabel: window.localLabel,
+    };
+    windowedActuals.push(actualWithWindow);
     const groupKey = validationKey(actual.offenseGroup, window.id, actual.cell.id);
     const combinedKey = validationKey("combined", window.id, actual.cell.id);
     increment(actualIndex, groupKey);
@@ -1042,9 +1056,16 @@ function validateForecast(forecast, actuals, validatedAt) {
       .filter((prediction) => prediction.offenseGroup === group)
       .sort((a, b) => b.baselineScore - a.baselineScore)
       .slice(0, VALIDATION_TOP_N);
+    const groupActuals = group === "combined"
+      ? windowedActuals
+      : windowedActuals.filter((actual) => actual.offenseGroup === group);
     groupMetrics[group] = {
       model: scoreSelectedPredictions(modelSelected, actualIndex, totals[group], forecast.metadata?.candidateCellCount || 1),
       baseline: scoreSelectedPredictions(baselineSelected, actualIndex, totals[group], forecast.metadata?.candidateCellCount || 1),
+      diagnosticScores: {
+        model: buildDiagnosticScoreSet(modelSelected, groupActuals, forecast.metadata?.candidateCellCount || 1),
+        baseline: buildDiagnosticScoreSet(baselineSelected, groupActuals, forecast.metadata?.candidateCellCount || 1),
+      },
       actualIncidentCount: totals[group],
       selectedPredictionCount: modelSelected.length,
     };
@@ -1058,8 +1079,9 @@ function validateForecast(forecast, actuals, validatedAt) {
     },
     validatedAt: validatedAt.toISOString(),
     validatedAtEastern: formatEastern(validatedAt),
-    actualIncidentCount: actuals.length,
+    actualIncidentCount: windowedActuals.length,
     metrics: groupMetrics,
+    diagnostics: buildValidationDiagnostics(forecast, windowedActuals),
     caveat: CAVEAT,
   };
 }
@@ -1095,6 +1117,214 @@ function scoreSelectedPredictions(selected, actualIndex, actualTotal, candidateC
     actualHits,
     selectedWithActual,
   };
+}
+
+function buildDiagnosticScoreSet(selected, actuals, candidateCellCount) {
+  return Object.fromEntries(
+    VALIDATION_SCORE_WINDOWS.map((definition) => [
+      definition.key,
+      scoreFlexiblePredictions(selected, actuals, definition, candidateCellCount),
+    ]),
+  );
+}
+
+function scoreFlexiblePredictions(selected, actuals, definition, candidateCellCount) {
+  const targets = dedupeSelectedTargets(selected, definition);
+  let selectedWithActual = 0;
+  const hitActualIds = new Set();
+  const coveredCells = new Set();
+
+  for (const target of targets) {
+    let targetHadActual = false;
+    for (const actual of actuals) {
+      if (!predictionTargetCoversActual(target, actual, definition)) continue;
+      targetHadActual = true;
+      hitActualIds.add(actual.id);
+    }
+    if (targetHadActual) selectedWithActual += 1;
+    addCoveredCells(coveredCells, target.cell, definition.radiusFeet);
+  }
+
+  const hitRate = actuals.length > 0 ? hitActualIds.size / actuals.length : 0;
+  const areaShare = Math.max(1 / candidateCellCount, coveredCells.size / candidateCellCount);
+  return {
+    label: definition.label,
+    hours: definition.hours,
+    radiusFeet: definition.radiusFeet,
+    hitRate: roundMetric(hitRate),
+    precision: targets.length > 0 ? roundMetric(selectedWithActual / targets.length) : 0,
+    falsePositiveBurden: targets.length - selectedWithActual,
+    predictiveAccuracyIndex: roundMetric(hitRate / areaShare),
+    actualHits: hitActualIds.size,
+    selectedWithActual,
+    selectedTargetCount: targets.length,
+    actualIncidentCount: actuals.length,
+  };
+}
+
+function dedupeSelectedTargets(selected, definition) {
+  const targets = new Map();
+  for (const prediction of selected) {
+    const bucket = validationTimeBucket(prediction.windowId, definition.hours);
+    const key = `${bucket}|${prediction.cell.id}`;
+    const existing = targets.get(key);
+    if (!existing || safeNumber(prediction.probability) > safeNumber(existing.probability)) {
+      targets.set(key, {
+        bucket,
+        cell: prediction.cell,
+        probability: prediction.probability,
+        prediction,
+      });
+    }
+  }
+  return Array.from(targets.values());
+}
+
+function predictionTargetCoversActual(target, actual, definition) {
+  if (target.bucket !== validationTimeBucket(actual.windowId, definition.hours)) return false;
+  if (definition.radiusFeet === 0) return target.cell.id === actual.cell.id;
+  return distanceFeet(target.cell.centroid.latitude, target.cell.centroid.longitude, actual.latitude, actual.longitude) <= definition.radiusFeet;
+}
+
+function addCoveredCells(coveredCells, cell, radiusFeet) {
+  if (radiusFeet === 0) {
+    coveredCells.add(cell.id);
+    return;
+  }
+  const radiusCells = Math.ceil(radiusFeet / GRID_SIZE_FEET);
+  for (let dx = -radiusCells; dx <= radiusCells; dx += 1) {
+    for (let dy = -radiusCells; dy <= radiusCells; dy += 1) {
+      const candidate = gridCentroid(cell.x + dx, cell.y + dy);
+      if (distanceFeet(cell.centroid.latitude, cell.centroid.longitude, candidate.latitude, candidate.longitude) <= radiusFeet) {
+        coveredCells.add(`${cell.x + dx}:${cell.y + dy}`);
+      }
+    }
+  }
+}
+
+function validationTimeBucket(windowId, hours) {
+  const match = String(windowId || "").match(/^(\d{4}-\d{2}-\d{2})T(\d{2})$/);
+  if (!match) return String(windowId || "");
+  const [, ymd, hourText] = match;
+  const hour = Number(hourText);
+  if (hours === 24) return ymd;
+  const bucketHour = Math.floor(hour / hours) * hours;
+  return `${ymd}T${pad2(bucketHour)}`;
+}
+
+function buildValidationDiagnostics(forecast, actuals) {
+  const selectedCombined = topForGroup(forecast.predictions || [], "combined", VALIDATION_TOP_N);
+  const actualIncidents = actuals.map((actual) => summarizeActualForValidation(actual, selectedCombined));
+  return {
+    scoreDefinitions: VALIDATION_SCORE_WINDOWS,
+    distanceSummary: summarizeMissDistances(actualIncidents),
+    selectedPredictions: selectedCombined.map(summarizePredictionForValidation),
+    actualIncidents,
+  };
+}
+
+function summarizeActualForValidation(actual, selectedPredictions) {
+  const sameWindowPredictions = selectedPredictions.filter((prediction) => prediction.windowId === actual.windowId);
+  const nearestSameWindow = nearestPrediction(actual, sameWindowPredictions);
+  const nearestAnyWindow = nearestPrediction(actual, selectedPredictions);
+  const sameWindowDistanceFeet = nearestSameWindow ? Math.round(nearestSameWindow.distanceFeet) : null;
+  return {
+    id: actual.id,
+    caseNumber: actual.caseNumber,
+    offenseGroup: actual.offenseGroup,
+    offenseLabel: groupLabel(actual.offenseGroup),
+    startTimeEastern: formatEastern(actual.startDate),
+    windowId: actual.windowId,
+    windowLabel: actual.windowLabel,
+    location: actual.location || "Unknown location",
+    district: actual.district || actual.policeDistrictNumber || "Unknown",
+    beat: actual.beat || actual.sector || "Unknown",
+    place: actual.place || "Unknown",
+    latitude: roundCoord(actual.latitude),
+    longitude: roundCoord(actual.longitude),
+    cellId: actual.cell.id,
+    missCategory: missCategory(sameWindowDistanceFeet, nearestSameWindow?.prediction?.cell.id === actual.cell.id),
+    sameWindowDistanceFeet,
+    nearestPrediction: nearestSameWindow ? summarizeNearestPrediction(nearestSameWindow.prediction, nearestSameWindow.distanceFeet) : null,
+    nearestPredictionAnyWindow: nearestAnyWindow ? summarizeNearestPrediction(nearestAnyWindow.prediction, nearestAnyWindow.distanceFeet) : null,
+    sameBeatInWindow: sameWindowPredictions.some((prediction) => cleanText(prediction.beat).toUpperCase() === cleanText(actual.beat || actual.sector).toUpperCase()),
+    sameDistrictInWindow: sameWindowPredictions.some((prediction) => cleanText(prediction.district).toUpperCase() === cleanText(actual.district || actual.policeDistrictNumber).toUpperCase()),
+  };
+}
+
+function summarizeNearestPrediction(prediction, distance) {
+  return {
+    id: prediction.id,
+    summaryLocation: prediction.summaryLocation || "Forecast cell",
+    windowId: prediction.windowId,
+    windowLabel: prediction.windowLabel,
+    probability: prediction.probability,
+    riskBand: prediction.riskBand,
+    distanceFeet: Math.round(distance),
+    cellId: prediction.cell.id,
+    latitude: prediction.cell.centroid.latitude,
+    longitude: prediction.cell.centroid.longitude,
+  };
+}
+
+function summarizePredictionForValidation(prediction) {
+  return {
+    id: prediction.id,
+    windowId: prediction.windowId,
+    windowLabel: prediction.windowLabel,
+    summaryLocation: prediction.summaryLocation || "Forecast cell",
+    probability: prediction.probability,
+    riskBand: prediction.riskBand,
+    district: prediction.district || "Unknown",
+    beat: prediction.beat || "Unknown",
+    place: prediction.place || "Unknown",
+    cell: {
+      id: prediction.cell.id,
+      centroid: prediction.cell.centroid,
+      bounds: prediction.cell.bounds,
+    },
+  };
+}
+
+function nearestPrediction(actual, predictions) {
+  if (!predictions.length) return null;
+  return predictions
+    .map((prediction) => ({
+      prediction,
+      distanceFeet: distanceFeet(prediction.cell.centroid.latitude, prediction.cell.centroid.longitude, actual.latitude, actual.longitude),
+    }))
+    .sort((a, b) => a.distanceFeet - b.distanceFeet)[0];
+}
+
+function missCategory(distanceFeetValue, exactCellHit) {
+  if (exactCellHit) return "Exact cell";
+  if (!Number.isFinite(distanceFeetValue)) return "No same-window prediction";
+  if (distanceFeetValue <= 1500) return "Within 1,500 ft";
+  if (distanceFeetValue <= 2250) return "Within 2,250 ft";
+  return "Farther away";
+}
+
+function summarizeMissDistances(actualIncidents) {
+  const distances = actualIncidents
+    .map((actual) => actual.sameWindowDistanceFeet)
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+  return {
+    actualIncidentCount: actualIncidents.length,
+    exactCellCount: actualIncidents.filter((actual) => actual.missCategory === "Exact cell").length,
+    within1500FeetCount: actualIncidents.filter((actual) => actual.sameWindowDistanceFeet !== null && actual.sameWindowDistanceFeet <= 1500).length,
+    within2250FeetCount: actualIncidents.filter((actual) => actual.sameWindowDistanceFeet !== null && actual.sameWindowDistanceFeet <= 2250).length,
+    sameBeatSameWindowCount: actualIncidents.filter((actual) => actual.sameBeatInWindow).length,
+    sameDistrictSameWindowCount: actualIncidents.filter((actual) => actual.sameDistrictInWindow).length,
+    noSameWindowPredictionCount: actualIncidents.filter((actual) => actual.sameWindowDistanceFeet === null).length,
+    medianNearestFeet: distances.length ? Math.round(distances[Math.floor(distances.length / 2)]) : null,
+  };
+}
+
+function distanceFeet(latA, lonA, latB, lonB) {
+  const y = (latA - latB) * LAT_FEET_PER_DEGREE;
+  const x = (lonA - lonB) * LON_FEET_PER_DEGREE;
+  return Math.sqrt(x * x + y * y);
 }
 
 async function saveForecastArtifacts(forecast, validations) {
@@ -1216,6 +1446,8 @@ function buildAssessmentMarkdown(forecast, validations) {
         );
       }
       lines.push("");
+      appendBroaderScoreTable(lines, validation);
+      appendMissDistanceSummary(lines, validation);
     }
   }
 
@@ -1244,12 +1476,14 @@ function buildValidationMarkdown(summary) {
 
   lines.push("## Latest Results");
   lines.push("");
-  lines.push("| Forecast | Window | Actual Incidents | Combined Hit Rate | Combined Precision | Combined PAI |");
-  lines.push("| --- | --- | ---: | ---: | ---: | ---: |");
+  lines.push("| Forecast | Window | Actual Incidents | Exact Hit Rate | 6h/1,500 ft | 12h/1,500 ft | 24h/1,500 ft | Median Miss |");
+  lines.push("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |");
   for (const validation of summary.validations) {
     const combined = validation.metrics.combined.model;
+    const diagnostic = validation.metrics.combined.diagnosticScores?.model || {};
+    const miss = validation.diagnostics?.distanceSummary;
     lines.push(
-      `| ${validation.forecastRunDate} | ${validation.forecastWindow.start} through ${validation.forecastWindow.end} | ${validation.actualIncidentCount} | ${formatPct(combined.hitRate)} | ${formatPct(combined.precision)} | ${combined.predictiveAccuracyIndex.toFixed(2)} |`,
+      `| ${validation.forecastRunDate} | ${validation.forecastWindow.start} through ${validation.forecastWindow.end} | ${validation.actualIncidentCount} | ${formatPct(combined.hitRate)} | ${formatPct(diagnostic.sixHour1500?.hitRate || 0)} | ${formatPct(diagnostic.twelveHour1500?.hitRate || 0)} | ${formatPct(diagnostic.twentyFourHour1500?.hitRate || 0)} | ${miss?.medianNearestFeet ? `${miss.medianNearestFeet} ft` : "n/a"} |`,
     );
   }
   lines.push("");
@@ -1269,6 +1503,9 @@ function buildValidationMarkdown(summary) {
       );
     }
     lines.push("");
+    appendBroaderScoreTable(lines, validation);
+    appendMissDistanceSummary(lines, validation);
+    appendClosestMisses(lines, validation);
   }
 
   lines.push("## How To Read This");
@@ -1279,8 +1516,56 @@ function buildValidationMarkdown(summary) {
   lines.push("- Brier score is probability error; lower is better.");
   lines.push("- PAI is concentration efficiency; higher is better.");
   lines.push("- False positives are selected forecast cells with no matching incident.");
+  lines.push("- Broader scores ask whether the same predictions would have helped within a larger patrol area or longer time window.");
+  lines.push("- Miss distance measures how far same-window actual incidents were from the nearest selected combined-risk cell.");
   lines.push("");
   return `${lines.join("\n")}\n`;
+}
+
+function appendBroaderScoreTable(lines, validation) {
+  lines.push("#### Broader Model Scoring");
+  lines.push("");
+  lines.push("| Group | 6h Exact | 6h/1,500 ft | 6h/2,250 ft | 12h/1,500 ft | 24h/1,500 ft |");
+  lines.push("| --- | ---: | ---: | ---: | ---: | ---: |");
+  for (const group of ["combined", "theft_from_auto", "stolen_vehicle"]) {
+    const scores = validation.metrics[group].diagnosticScores?.model || {};
+    lines.push(
+      `| ${groupLabel(group)} | ${formatDiagnosticScore(scores.sixHourExact)} | ${formatDiagnosticScore(scores.sixHour1500)} | ${formatDiagnosticScore(scores.sixHour2250)} | ${formatDiagnosticScore(scores.twelveHour1500)} | ${formatDiagnosticScore(scores.twentyFourHour1500)} |`,
+    );
+  }
+  lines.push("");
+}
+
+function appendMissDistanceSummary(lines, validation) {
+  const summary = validation.diagnostics?.distanceSummary;
+  if (!summary) return;
+  lines.push("#### Combined-Risk Miss Distance");
+  lines.push("");
+  lines.push("| Actual Incidents | Exact Cell | Within 1,500 ft | Within 2,250 ft | Same Beat | Same District | Median Nearest |");
+  lines.push("| ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+  lines.push(
+    `| ${summary.actualIncidentCount} | ${formatCountPct(summary.exactCellCount, summary.actualIncidentCount)} | ${formatCountPct(summary.within1500FeetCount, summary.actualIncidentCount)} | ${formatCountPct(summary.within2250FeetCount, summary.actualIncidentCount)} | ${formatCountPct(summary.sameBeatSameWindowCount, summary.actualIncidentCount)} | ${formatCountPct(summary.sameDistrictSameWindowCount, summary.actualIncidentCount)} | ${summary.medianNearestFeet ? `${summary.medianNearestFeet} ft` : "n/a"} |`,
+  );
+  lines.push("");
+}
+
+function appendClosestMisses(lines, validation) {
+  const incidents = validation.diagnostics?.actualIncidents || [];
+  if (incidents.length === 0) return;
+  const closest = incidents
+    .filter((incident) => incident.sameWindowDistanceFeet !== null)
+    .sort((a, b) => a.sameWindowDistanceFeet - b.sameWindowDistanceFeet)
+    .slice(0, 8);
+  lines.push("#### Closest Same-Window Actuals");
+  lines.push("");
+  lines.push("| Actual Location | Window | Offense | Nearest Forecast Area | Distance | Actual Beat/District |");
+  lines.push("| --- | --- | --- | --- | ---: | --- |");
+  for (const incident of closest) {
+    lines.push(
+      `| ${escapePipe(incident.location)} | ${incident.windowLabel} | ${incident.offenseLabel} | ${escapePipe(incident.nearestPrediction?.summaryLocation || "n/a")} | ${incident.sameWindowDistanceFeet} ft | ${escapePipe([incident.beat, incident.district].filter(Boolean).join(" / "))} |`,
+    );
+  }
+  lines.push("");
 }
 
 function buildHtmlDocument(title, markdown) {
@@ -1294,10 +1579,11 @@ function buildHtmlDocument(title, markdown) {
     :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     body { margin: 0; background: #f8fafc; color: #0f172a; }
     main { max-width: 1180px; margin: 0 auto; padding: 32px 22px 56px; }
-    h1, h2, h3 { letter-spacing: 0; line-height: 1.15; }
+    h1, h2, h3, h4 { letter-spacing: 0; line-height: 1.15; }
     h1 { margin: 0 0 18px; font-size: 30px; }
     h2 { margin-top: 34px; border-top: 1px solid #dbe3ef; padding-top: 22px; font-size: 21px; }
     h3 { margin-top: 24px; font-size: 17px; }
+    h4 { margin-top: 22px; font-size: 15px; }
     p, li { color: #334155; line-height: 1.55; }
     strong { color: #0f172a; }
     table { width: 100%; border-collapse: collapse; margin: 14px 0 24px; background: white; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08); }
@@ -1362,6 +1648,12 @@ function markdownToHtml(markdown) {
       flushParagraph();
       flushList();
       html.push(`<h3>${inlineMarkdown(line.slice(4))}</h3>`);
+      continue;
+    }
+    if (line.startsWith("#### ")) {
+      flushParagraph();
+      flushList();
+      html.push(`<h4>${inlineMarkdown(line.slice(5))}</h4>`);
       continue;
     }
     if (line.startsWith("- ")) {
@@ -1433,6 +1725,16 @@ function groupLabel(group) {
 
 function formatPct(value) {
   return `${(value * 100).toFixed(1)}%`;
+}
+
+function formatDiagnosticScore(score) {
+  if (!score) return "n/a";
+  return `${formatPct(score.hitRate)} / ${formatPct(score.precision)}`;
+}
+
+function formatCountPct(count, total) {
+  const pct = total > 0 ? count / total : 0;
+  return `${count} (${formatPct(pct)})`;
 }
 
 function escapePipe(value) {

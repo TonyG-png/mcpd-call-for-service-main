@@ -60,6 +60,87 @@ interface ForecastValidationMetric {
   selectedWithActual: number;
 }
 
+interface ForecastDiagnosticScore {
+  label: string;
+  hours: number;
+  radiusFeet: number;
+  hitRate: number;
+  precision: number;
+  falsePositiveBurden: number;
+  predictiveAccuracyIndex: number;
+  actualHits: number;
+  selectedWithActual: number;
+  selectedTargetCount: number;
+  actualIncidentCount: number;
+}
+
+interface ForecastDiagnosticScores {
+  sixHourExact?: ForecastDiagnosticScore;
+  sixHour1500?: ForecastDiagnosticScore;
+  sixHour2250?: ForecastDiagnosticScore;
+  twelveHour1500?: ForecastDiagnosticScore;
+  twentyFourHour1500?: ForecastDiagnosticScore;
+}
+
+interface ValidationMapPrediction {
+  id: string;
+  windowId: string;
+  windowLabel: string;
+  summaryLocation: string;
+  probability: number;
+  riskBand: string;
+  district: string;
+  beat: string;
+  cell: {
+    id: string;
+    centroid: {
+      latitude: number;
+      longitude: number;
+    };
+    bounds?: {
+      north: number;
+      south: number;
+      east: number;
+      west: number;
+    };
+  };
+}
+
+interface ValidationActualIncident {
+  id: string;
+  offenseLabel: string;
+  startTimeEastern: string;
+  windowLabel: string;
+  location: string;
+  district: string;
+  beat: string;
+  place: string;
+  latitude: number;
+  longitude: number;
+  missCategory: string;
+  sameWindowDistanceFeet: number | null;
+  nearestPrediction?: {
+    summaryLocation: string;
+    distanceFeet: number;
+    windowLabel: string;
+  } | null;
+}
+
+interface ForecastValidationDiagnostics {
+  distanceSummary: {
+    actualIncidentCount: number;
+    exactCellCount: number;
+    within1500FeetCount: number;
+    within2250FeetCount: number;
+    sameBeatSameWindowCount: number;
+    sameDistrictSameWindowCount: number;
+    noSameWindowPredictionCount: number;
+    medianNearestFeet: number | null;
+  };
+  selectedPredictions: ValidationMapPrediction[];
+  actualIncidents: ValidationActualIncident[];
+}
+
 interface ForecastValidation {
   forecastRunDate: string;
   forecastWindow: {
@@ -71,9 +152,14 @@ interface ForecastValidation {
   metrics: Record<RiskGroup, {
     model: ForecastValidationMetric;
     baseline: ForecastValidationMetric;
+    diagnosticScores?: {
+      model: ForecastDiagnosticScores;
+      baseline: ForecastDiagnosticScores;
+    };
     actualIncidentCount: number;
     selectedPredictionCount: number;
   }>;
+  diagnostics?: ForecastValidationDiagnostics;
 }
 
 interface ValidationSummary {
@@ -200,6 +286,8 @@ export default function VehicleRiskPage() {
   }, [forecast, forecastWindows, selectedGroup, selectedWindowId]);
 
   const latestValidation = validationSummary?.validations?.[0];
+  const latestCombinedDiagnosticScores = latestValidation?.metrics.combined.diagnosticScores?.model;
+  const latestDistanceSummary = latestValidation?.diagnostics?.distanceSummary;
   const highestRisk = selectedPredictions[0];
   const averageProbability = selectedPredictions.length
     ? selectedPredictions.reduce((sum, item) => sum + item.probability, 0) / selectedPredictions.length
@@ -576,6 +664,53 @@ export default function VehicleRiskPage() {
                   </tbody>
                 </table>
               </div>
+              {latestCombinedDiagnosticScores && (
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-xs font-medium text-foreground">Broader Combined Scoring</p>
+                    <p className="text-xs text-muted-foreground">
+                      Shows whether the same top cells would help if scored as larger patrol areas or longer time windows.
+                    </p>
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+                    {[
+                      latestCombinedDiagnosticScores.sixHourExact,
+                      latestCombinedDiagnosticScores.sixHour1500,
+                      latestCombinedDiagnosticScores.sixHour2250,
+                      latestCombinedDiagnosticScores.twelveHour1500,
+                      latestCombinedDiagnosticScores.twentyFourHour1500,
+                    ].filter(Boolean).map((score) => (
+                      <div key={score!.label} className="rounded-md border border-border p-3">
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{score!.label}</p>
+                        <p className="mt-1 text-lg font-bold text-foreground">{formatPercent(score!.hitRate)}</p>
+                        <p className="text-[11px] text-muted-foreground">
+                          {score!.actualHits}/{score!.actualIncidentCount} actuals; {formatPercent(score!.precision)} precision
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {latestDistanceSummary && (
+                <div className="grid gap-2 text-xs sm:grid-cols-2 xl:grid-cols-4">
+                  <div className="rounded-md border border-border p-3">
+                    <p className="font-medium text-foreground">Within 1,500 ft</p>
+                    <p className="mt-1 text-muted-foreground">{latestDistanceSummary.within1500FeetCount}/{latestDistanceSummary.actualIncidentCount} same-window actuals</p>
+                  </div>
+                  <div className="rounded-md border border-border p-3">
+                    <p className="font-medium text-foreground">Within 2,250 ft</p>
+                    <p className="mt-1 text-muted-foreground">{latestDistanceSummary.within2250FeetCount}/{latestDistanceSummary.actualIncidentCount} same-window actuals</p>
+                  </div>
+                  <div className="rounded-md border border-border p-3">
+                    <p className="font-medium text-foreground">Same Beat</p>
+                    <p className="mt-1 text-muted-foreground">{latestDistanceSummary.sameBeatSameWindowCount}/{latestDistanceSummary.actualIncidentCount} actuals</p>
+                  </div>
+                  <div className="rounded-md border border-border p-3">
+                    <p className="font-medium text-foreground">Median Miss</p>
+                    <p className="mt-1 text-muted-foreground">{latestDistanceSummary.medianNearestFeet ? `${latestDistanceSummary.medianNearestFeet.toLocaleString()} ft` : "n/a"}</p>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex gap-3 text-sm text-muted-foreground">
@@ -586,6 +721,74 @@ export default function VehicleRiskPage() {
             </div>
           )}
         </ChartCard>
+        {latestValidation?.diagnostics && (
+          <div className="lg:col-span-2">
+            <ChartCard
+              title="Validation Miss Map"
+              subtitle="Blue boxes are selected combined-risk forecast cells; dots are actual incidents from the validated window."
+            >
+              <div className="mb-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                <span><span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500" /> Exact/near</span>
+                <span><span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" /> Within 2,250 ft</span>
+                <span><span className="inline-block h-2.5 w-2.5 rounded-full bg-red-500" /> Farther away</span>
+                <span><span className="inline-block h-2.5 w-2.5 rounded-full bg-slate-500" /> No same-window prediction</span>
+              </div>
+              <div className="overflow-hidden rounded-md border border-border" style={{ height: 460 }}>
+                <MapContainer
+                  key={`validation-${latestValidation.forecastRunDate}`}
+                  center={validationMapCenter(latestValidation.diagnostics)}
+                  zoom={11}
+                  style={{ height: "100%", width: "100%" }}
+                  scrollWheelZoom={true}
+                >
+                  <TileLayer url={tileUrl} attribution='&copy; <a href="https://carto.com">CARTO</a>' />
+                  {latestValidation.diagnostics.selectedPredictions.map((prediction) => (
+                    <Polygon
+                      key={prediction.id}
+                      positions={getValidationCellCorners(prediction)}
+                      pathOptions={{
+                        color: "#2563eb",
+                        weight: 2,
+                        fillColor: "#3b82f6",
+                        fillOpacity: 0.14,
+                      }}
+                    >
+                      <Popup>
+                        <div className="space-y-1 text-xs">
+                          <p className="font-semibold">{prediction.summaryLocation}</p>
+                          <p><strong>Window:</strong> {prediction.windowLabel}</p>
+                          <p><strong>Risk:</strong> {prediction.riskBand} ({formatPercent(prediction.probability)})</p>
+                          <p><strong>Beat/District:</strong> {[prediction.beat, prediction.district].filter(Boolean).join(" / ")}</p>
+                        </div>
+                      </Popup>
+                    </Polygon>
+                  ))}
+                  {latestValidation.diagnostics.actualIncidents.map((incident) => (
+                    <CircleMarker
+                      key={incident.id}
+                      center={[incident.latitude, incident.longitude]}
+                      radius={7}
+                      color="#ffffff"
+                      weight={1.5}
+                      fillColor={missCategoryColor(incident.missCategory)}
+                      fillOpacity={0.9}
+                    >
+                      <Popup>
+                        <div className="space-y-1 text-xs">
+                          <p className="font-semibold">{incident.location}</p>
+                          <p><strong>Offense:</strong> {incident.offenseLabel}</p>
+                          <p><strong>Time:</strong> {incident.startTimeEastern}</p>
+                          <p><strong>Beat/District:</strong> {[incident.beat, incident.district].filter(Boolean).join(" / ")}</p>
+                          <p><strong>Nearest same-window forecast:</strong> {incident.nearestPrediction ? `${incident.nearestPrediction.summaryLocation} (${incident.sameWindowDistanceFeet?.toLocaleString()} ft)` : "None in top cells"}</p>
+                        </div>
+                      </Popup>
+                    </CircleMarker>
+                  ))}
+                </MapContainer>
+              </div>
+            </ChartCard>
+          </div>
+        )}
         <ChartCard title="Assessment Caveat">
           <div className="flex gap-3 text-sm text-muted-foreground">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -660,6 +863,41 @@ function parseWindowRange(windowId: string) {
     end.setDate(end.getDate() + 1);
   }
   return { start, end };
+}
+
+function validationMapCenter(diagnostics: ForecastValidationDiagnostics): [number, number] {
+  const points = [
+    ...diagnostics.actualIncidents.map((incident) => ({ latitude: incident.latitude, longitude: incident.longitude })),
+    ...diagnostics.selectedPredictions.map((prediction) => prediction.cell.centroid),
+  ].filter((point) => Number.isFinite(point.latitude) && Number.isFinite(point.longitude));
+
+  if (points.length === 0) return [39.08, -77.12];
+  return [
+    points.reduce((sum, point) => sum + point.latitude, 0) / points.length,
+    points.reduce((sum, point) => sum + point.longitude, 0) / points.length,
+  ];
+}
+
+function getValidationCellCorners(prediction: ValidationMapPrediction): [number, number][] {
+  const bounds = prediction.cell.bounds;
+  if (bounds) {
+    return [
+      [bounds.north, bounds.west],
+      [bounds.north, bounds.east],
+      [bounds.south, bounds.east],
+      [bounds.south, bounds.west],
+    ];
+  }
+  return getCellCorners({
+    cell: prediction.cell,
+  } as ForecastPrediction);
+}
+
+function missCategoryColor(category: string) {
+  if (category === "Exact cell" || category === "Within 1,500 ft") return "#22c55e";
+  if (category === "Within 2,250 ft") return "#f59e0b";
+  if (category === "No same-window prediction") return "#64748b";
+  return "#ef4444";
 }
 
 function getCellCorners(prediction: ForecastPrediction): [number, number][] {
