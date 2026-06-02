@@ -1,6 +1,6 @@
 # Vehicle Risk Prediction Accuracy
 
-Generated: 2026-06-01 10:02 America/New_York
+Generated: 2026-06-02 04:31 America/New_York
 
 **Caveat:** These predictions are place/time risk indicators only. They are not reasonable suspicion, probable cause, or a basis to target any person, vehicle, or specific address.
 
@@ -8,8 +8,47 @@ Generated: 2026-06-01 10:02 America/New_York
 
 | Forecast | Window | Actual Incidents | Exact Hit Rate | 6h/1,500 ft | 12h/1,500 ft | 24h/1,500 ft | Median Miss |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2026-05-28 | 2026-05-28 through 2026-05-31 | 26 | 0.0% | 0.0% | 0.0% | 0.0% | 41323 ft |
 | 2026-05-26 | 2026-05-26 through 2026-05-29 | 39 | 0.0% | 0.0% | 0.0% | 0.0% | 29384 ft |
 | 2026-05-22 | 2026-05-22 through 2026-05-25 | 33 | 0.0% | 0.0% | 0.0% | 0.0% | 55154 ft |
+
+## Forecast 2026-05-28
+
+Forecast window: 2026-05-28 through 2026-05-31
+Actual matching incidents: 26
+
+| Group | Actual Incidents | Selected Cells | Model Hit Rate | Baseline Hit Rate | Precision | Brier | PAI | False Positives |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Combined | 26 | 25 | 0.0% | 0.0% | 0.0% | 0.002 | 0.00 | 25 |
+| Theft From Auto | 19 | 25 | 0.0% | 0.0% | 0.0% | 0.001 | 0.00 | 25 |
+| Stolen Vehicle | 7 | 25 | 0.0% | 0.0% | 0.0% | 0.000 | 0.00 | 25 |
+
+#### Broader Model Scoring
+
+| Group | 6h Exact | 6h/1,500 ft | 6h/2,250 ft | 12h/1,500 ft | 24h/1,500 ft |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Combined | 0.0% / 0.0% | 0.0% / 0.0% | 3.9% / 4.0% | 0.0% / 0.0% | 0.0% / 0.0% |
+| Theft From Auto | 0.0% / 0.0% | 0.0% / 0.0% | 0.0% / 0.0% | 0.0% / 0.0% | 0.0% / 0.0% |
+| Stolen Vehicle | 0.0% / 0.0% | 0.0% / 0.0% | 14.3% / 4.0% | 0.0% / 0.0% | 0.0% / 0.0% |
+
+#### Combined-Risk Miss Distance
+
+| Actual Incidents | Exact Cell | Within 1,500 ft | Within 2,250 ft | Same Beat | Same District | Median Nearest |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 26 | 0 (0.0%) | 0 (0.0%) | 1 (3.8%) | 0 (0.0%) | 3 (11.5%) | 41323 ft |
+
+#### Closest Same-Window Actuals
+
+| Actual Location | Window | Offense | Nearest Forecast Area | Distance | Actual Beat/District |
+| --- | --- | --- | --- | ---: | --- |
+| 8900 BLK GEORGIA AVE | 2026-05-28 18:00-00:00 | Stolen Vehicle | 8500 BLK CAMERON ST | 1689 ft | 3G2 / SILVER SPRING |
+| Unknown location | 2026-05-28 18:00-00:00 | Stolen Vehicle | 800 BLK ELLSWORTH DR | 4840 ft | 3G2 / SILVER SPRING |
+| 1100 BLK DUNOON RD | 2026-05-28 18:00-00:00 | Theft From Auto | 11500 BLK LOCKWOOD DR | 6353 ft | 3I3 / SILVER SPRING |
+| 400 BLK LINCOLN AVE | 2026-05-30 18:00-00:00 | Stolen Vehicle | 900 BLK SILVER SPRING AVE | 8229 ft | 8T3 / TAKOMA PARK |
+| 7600 BLK HAMMOND AVE | 2026-05-28 18:00-00:00 | Theft From Auto | 900 BLK SILVER SPRING AVE | 10477 ft | 8T3 / TAKOMA PARK |
+| 15100 BLK DEER VALLEY TER | 2026-05-29 18:00-00:00 | Theft From Auto | 11500 BLK LOCKWOOD DR | 30372 ft | 4K3 / WHEATON |
+| 1100 BLK GRANDIN AVE | 2026-05-29 18:00-00:00 | Stolen Vehicle | 8500 BLK CAMERON ST | 41323 ft | 1A2 / ROCKVILLE |
+| 1 BLK DODGE ST | 2026-05-29 12:00-18:00 | Theft From Auto | 8500 BLK CAMERON ST | 44215 ft | 1A2 / ROCKVILLE |
 
 ## Forecast 2026-05-26
 
