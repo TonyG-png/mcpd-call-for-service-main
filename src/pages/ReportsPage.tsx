@@ -277,7 +277,7 @@ export default function ReportsPage() {
       <div>
         <h2 className="text-xl font-semibold font-display">Reports</h2>
         <p className="text-xs text-muted-foreground">
-          Crime reports and crash reports associated with calls in the selected window.
+          Event reports and crash reports associated with calls in the selected window.
         </p>
       </div>
 
@@ -337,7 +337,7 @@ export default function ReportsPage() {
         />
         {showCrime && (
           <MetricCard
-            title="Crime Reports"
+            title="Event Reports"
             value={stats.crime.toLocaleString()}
             subtitle={pctOfCalls(stats.crime, stats.total)}
             icon={<FileText className="h-4 w-4" />}
@@ -381,11 +381,11 @@ export default function ReportsPage() {
                 }}
                 formatter={(value: number, name: string) => [
                   value.toLocaleString(),
-                  name === "crime" ? "Crime Reports" : "Crash Reports",
+                  name === "crime" ? "Event Reports" : "Crash Reports",
                 ]}
               />
               <Legend
-                formatter={(v: string) => (v === "crime" ? "Crime Reports" : "Crash Reports")}
+                formatter={(v: string) => (v === "crime" ? "Event Reports" : "Crash Reports")}
                 wrapperStyle={{ fontSize: 12 }}
               />
               {showCrime && (
@@ -413,9 +413,9 @@ export default function ReportsPage() {
           icon={<Activity className="h-4 w-4" />}
         />
         <MetricCard
-          title="Total Written Reports"
+          title="Total Written Event / Crash Reports"
           value={truPatrolStats.total.toLocaleString()}
-          subtitle="Crime plus crash reports"
+          subtitle="Event plus crash reports"
           icon={<FileText className="h-4 w-4" />}
         />
       </div>
@@ -463,11 +463,11 @@ export default function ReportsPage() {
                 }}
                 formatter={(value: number, name: string) => [
                   value.toLocaleString(),
-                  name === "crime" ? "Crime Reports" : "Crash Reports",
+                  name === "crime" ? "Event Reports" : "Crash Reports",
                 ]}
               />
               <Legend
-                formatter={(v: string) => (v === "crime" ? "Crime Reports" : "Crash Reports")}
+                formatter={(v: string) => (v === "crime" ? "Event Reports" : "Crash Reports")}
                 wrapperStyle={{ fontSize: 12 }}
               />
               {showCrime && <Bar dataKey="crime" stackId="reports" fill="hsl(var(--primary))" />}
@@ -509,11 +509,11 @@ export default function ReportsPage() {
                   }}
                   formatter={(value: number, name: string) => [
                     value.toLocaleString(),
-                    name === "crime" ? "Crime Reports" : "Crash Reports",
+                    name === "crime" ? "Event Reports" : "Crash Reports",
                   ]}
                 />
                 <Legend
-                  formatter={(v: string) => (v === "crime" ? "Crime Reports" : "Crash Reports")}
+                  formatter={(v: string) => (v === "crime" ? "Event Reports" : "Crash Reports")}
                   wrapperStyle={{ fontSize: 12 }}
                 />
                 {showCrime && <Bar dataKey="crime" stackId="a" fill="hsl(var(--primary))" />}
@@ -553,11 +553,11 @@ export default function ReportsPage() {
                   }}
                   formatter={(value: number, name: string) => [
                     value.toLocaleString(),
-                    name === "crime" ? "Crime Reports" : "Crash Reports",
+                    name === "crime" ? "Event Reports" : "Crash Reports",
                   ]}
                 />
                 <Legend
-                  formatter={(v: string) => (v === "crime" ? "Crime Reports" : "Crash Reports")}
+                  formatter={(v: string) => (v === "crime" ? "Event Reports" : "Crash Reports")}
                   wrapperStyle={{ fontSize: 12 }}
                 />
                 {showCrime && <Bar dataKey="crime" stackId="a" fill="hsl(var(--primary))" />}
@@ -663,15 +663,15 @@ function TruAnalysisView({
           icon={<FileText className="h-4 w-4" />}
         />
         <MetricCard
-          title="TRU Share of Crime Reports"
+          title="TRU Share of Event Reports"
           value={`${analysis.truReportShare.toFixed(1)}%`}
-          subtitle={`${analysis.truReportCount.toLocaleString()} TRU; ${analysis.patrolReportCount.toLocaleString()} patrol of ${analysis.totalCrimeReports.toLocaleString()} unique CR numbers`}
+          subtitle={`${analysis.truReportCount.toLocaleString()} TRU; ${analysis.patrolReportCount.toLocaleString()} patrol of ${analysis.totalCrimeReports.toLocaleString()} unique event report numbers`}
           icon={<BarChart3 className="h-4 w-4" />}
         />
         <MetricCard
-          title="TRS Calls Resulting in a CR"
+          title="TRS Calls Resulting in an Event Report"
           value={`${analysis.conversionRate.toFixed(1)}%`}
-          subtitle={`${analysis.truReportCount.toLocaleString()} of ${analysis.truCalls.length.toLocaleString()} TRS calls resulted in a CR number`}
+          subtitle={`${analysis.truReportCount.toLocaleString()} of ${analysis.truCalls.length.toLocaleString()} TRS calls resulted in an event report`}
           icon={<FileText className="h-4 w-4" />}
         />
       </div>
@@ -721,7 +721,7 @@ function TruAnalysisView({
         </ChartCard>
       </div>
 
-      <ChartCard title="TRS Call and Report Trend" subtitle="TRS calls and unique CR numbers by day">
+      <ChartCard title="TRS Call and Event Report Trend" subtitle="TRS calls and unique event report numbers by day">
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={analysis.dailyTrend} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
@@ -731,7 +731,7 @@ function TruAnalysisView({
               <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               <Line type="monotone" dataKey="calls" name="TRS Calls" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="reports" name="Unique CR Numbers" stroke="hsl(var(--chart-4))" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="reports" name="Unique Event Report Numbers" stroke="hsl(var(--chart-4))" strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
