@@ -10,6 +10,7 @@ import ChartCard from "@/components/dashboard/ChartCard";
 import { isTelephoneReportingUnitCallType } from "@/lib/callTypes";
 import { NormalizedIncident } from "@/types/incident";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { getDateRangeBounds } from "@/lib/dateRanges";
 
 const hasValue = (v: unknown): boolean =>
   v !== undefined && v !== null && String(v).trim() !== "";
@@ -35,7 +36,7 @@ interface TruDurationRecord {
 }
 
 export default function ReportsPage() {
-  const { filteredIncidents, isLoading, availableFields, columns } = useData();
+  const { filteredIncidents, filters, isLoading, availableFields, columns } = useData();
   const [view, setView] = useState<ReportView>("overview");
 
   const showCrime = availableFields.has("crNumber");
@@ -207,6 +208,10 @@ export default function ReportsPage() {
       durationBuckets.find((bucket) => seconds >= bucket.min && seconds < bucket.max)!.calls++;
     });
 
+    const range = getDateRangeBounds(filters.dateRange, new Date(), filters.customStartDate, filters.customEndDate);
+    const rangeEnd = range.end || new Date();
+    const selectedDayCount = Math.max(1, Math.round((rangeEnd.getTime() - range.start.getTime()) / 86400000));
+
     const dailyTrend = Array.from(trendByDate.entries())
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([date, value]) => ({
@@ -218,12 +223,15 @@ export default function ReportsPage() {
 
     return {
       truCalls,
+      totalCalls: filteredIncidents.length,
+      callsWithReports: filteredIncidents.filter((incident) => isCrime(incident) || isCrash(incident)).length,
       truReportCount,
       patrolReportCount,
       totalCrimeReports,
       truReportShare: totalCrimeReports > 0 ? (truReportCount / totalCrimeReports) * 100 : 0,
       conversionRate: truCalls.length > 0 ? (truReportCount / truCalls.length) * 100 : 0,
-      hours,
+      hours: hours.map((entry) => ({ ...entry, averageCalls: entry.calls / selectedDayCount })),
+      selectedDayCount,
       days,
       dailyTrend,
       topTypes: Array.from(typeCounts.entries())
@@ -233,7 +241,10 @@ export default function ReportsPage() {
       durations,
       averageSeconds: durationValues.length ? durationValues.reduce((sum, value) => sum + value, 0) / durationValues.length : null,
       medianSeconds: durationValues.length ? getMedian(durationValues) : null,
-      durationBuckets,
+      durationBuckets: durationBuckets.map((bucket) => ({
+        ...bucket,
+        share: durations.length ? (bucket.calls / durations.length) * 100 : 0,
+      })),
       overThresholds: [3600, 7200, 10800, 14400].map((seconds) => ({
         seconds,
         calls: durations.filter((record) => record.seconds >= seconds).length,
@@ -241,7 +252,7 @@ export default function ReportsPage() {
       })),
       longestCalls: durations.sort((a, b) => b.seconds - a.seconds).slice(0, 10),
     };
-  }, [filteredIncidents]);
+  }, [filteredIncidents, filters.customEndDate, filters.customStartDate, filters.dateRange]);
 
   const pctOfCalls = (n: number, d: number) => (d > 0 ? `${((n / d) * 100).toFixed(1)}% of calls` : undefined);
   const pctOfReportCalls = (n: number, d: number) =>
@@ -606,19 +617,22 @@ function TruAnalysisView({
 }: {
   analysis: {
     truCalls: NormalizedIncident[];
+    totalCalls: number;
+    callsWithReports: number;
     truReportCount: number;
     patrolReportCount: number;
     totalCrimeReports: number;
     truReportShare: number;
     conversionRate: number;
-    hours: { hour: string; calls: number }[];
+    hours: { hour: string; calls: number; averageCalls: number }[];
+    selectedDayCount: number;
     days: { day: string; calls: number }[];
     dailyTrend: { date: string; label: string; calls: number; reports: number }[];
     topTypes: { type: string; count: number; share: number }[];
     durations: TruDurationRecord[];
     averageSeconds: number | null;
     medianSeconds: number | null;
-    durationBuckets: { label: string; min: number; max: number; calls: number }[];
+    durationBuckets: { label: string; min: number; max: number; calls: number; share: number }[];
     overThresholds: { seconds: number; calls: number; share: number }[];
     longestCalls: TruDurationRecord[];
   };
@@ -637,41 +651,56 @@ function TruAnalysisView({
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
-          title="TRU-Designated Reports"
-          value={analysis.truReportCount.toLocaleString()}
-          subtitle={`${analysis.truReportShare.toFixed(1)}% of crime reports`}
-          icon={<FileText className="h-4 w-4" />}
-        />
-        <MetricCard
-          title="Patrol Reports"
-          value={analysis.patrolReportCount.toLocaleString()}
-          subtitle={`${analysis.totalCrimeReports.toLocaleString()} total unique crime reports`}
+          title="Total Calls for Service"
+          value={analysis.totalCalls.toLocaleString()}
+          subtitle="In current filter window"
           icon={<Activity className="h-4 w-4" />}
         />
         <MetricCard
-          title="TRS Calls"
-          value={analysis.truCalls.length.toLocaleString()}
-          subtitle={`${analysis.conversionRate.toFixed(1)}% resulted in a CR number`}
+          title="Calls Requiring a Report"
+          value={analysis.totalCalls > 0 ? `${((analysis.callsWithReports / analysis.totalCalls) * 100).toFixed(1)}%` : "0.0%"}
+          subtitle={`${analysis.callsWithReports.toLocaleString()} calls with a crime or crash report`}
+          icon={<FileText className="h-4 w-4" />}
+        />
+        <MetricCard
+          title="TRU Share of Crime Reports"
+          value={`${analysis.truReportShare.toFixed(1)}%`}
+          subtitle={`${analysis.truReportCount.toLocaleString()} TRU; ${analysis.patrolReportCount.toLocaleString()} patrol of ${analysis.totalCrimeReports.toLocaleString()} unique CR numbers`}
           icon={<BarChart3 className="h-4 w-4" />}
+        />
+        <MetricCard
+          title="TRS Calls Resulting in a CR"
+          value={`${analysis.conversionRate.toFixed(1)}%`}
+          subtitle={`${analysis.truReportCount.toLocaleString()} of ${analysis.truCalls.length.toLocaleString()} TRS calls resulted in a CR number`}
+          icon={<FileText className="h-4 w-4" />}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <MetricCard
+          title="Average CAD Time to Cleared"
+          value={formatDuration(analysis.averageSeconds)}
+          subtitle={`${analysis.durations.length.toLocaleString()} valid TRS timing records`}
+          icon={<Timer className="h-4 w-4" />}
         />
         <MetricCard
           title="Median CAD Time to Cleared"
           value={formatDuration(analysis.medianSeconds)}
-          subtitle={`${analysis.durations.length.toLocaleString()} valid TRS timing records`}
+          subtitle="Less affected by unusually long calls"
           icon={<Timer className="h-4 w-4" />}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ChartCard title="TRS Calls by Hour" subtitle="Call pickup hour; local CFS timestamp">
+        <ChartCard title="Average TRS Calls by Hour" subtitle={`Average per calendar day across ${analysis.selectedDayCount.toLocaleString()} selected day${analysis.selectedDayCount === 1 ? "" : "s"}`}>
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={analysis.hours} margin={{ top: 5, right: 12, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="hour" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} formatter={(value: number) => [value.toLocaleString(), "TRS calls"]} />
-                <Bar dataKey="calls" fill="hsl(var(--primary))" radius={[3, 3, 0, 0]} />
+                <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} formatter={(value: number) => [`${value.toFixed(1)} average calls`, "TRS calls per day"]} />
+                <Bar dataKey="averageCalls" fill="hsl(var(--primary))" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -727,15 +756,15 @@ function TruAnalysisView({
           </div>
         </div>
 
-        <ChartCard title="CAD Time to Cleared Distribution" subtitle="TRS calls with valid CAD timing">
+        <ChartCard title="CAD Time to Cleared Distribution" subtitle={`${analysis.durations.length.toLocaleString()} valid TRS timing records; values shown as percentage of valid records`}>
           <div className="h-[290px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={analysis.durationBuckets} margin={{ top: 5, right: 12, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="label" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} formatter={(value: number) => [value.toLocaleString(), "TRS calls"]} />
-                <Bar dataKey="calls" fill="hsl(var(--chart-4))" radius={[3, 3, 0, 0]} />
+                <YAxis tickFormatter={(value) => `${value}%`} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} formatter={(value: number) => [`${value.toFixed(1)}%`, "Share of valid TRS calls"]} />
+                <Bar dataKey="share" fill="hsl(var(--chart-4))" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -747,8 +776,8 @@ function TruAnalysisView({
           <MetricCard
             key={threshold.seconds}
             title={`Over ${threshold.seconds / 3600} Hour${threshold.seconds > 3600 ? "s" : ""}`}
-            value={threshold.calls.toLocaleString()}
-            subtitle={`${threshold.share.toFixed(1)}% of valid TRS timing records`}
+            value={`${threshold.share.toFixed(1)}%`}
+            subtitle={`${threshold.calls.toLocaleString()} valid TRS timing records`}
             icon={<Clock3 className="h-4 w-4" />}
           />
         ))}
