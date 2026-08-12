@@ -38,11 +38,17 @@ npm run dev
 
 The dashboard date filters include 7 days, 14 days, 28 days, and YTD. These ranges use complete calendar days and exclude the current partial day. Longer historical analysis should use server-side aggregate queries or cached reports instead of loading prior full-year raw records into the browser.
 
-Response time metrics exclude Telephone Reporting Unit (TRU) calls. TRU calls are identified by call-type codes ending in `T`.
+Response time metrics exclude Telephone Reporting Unit (TRU) calls. TRU calls are identified by final call types explicitly marked `TRS` or `Telephone Reporting Unit`.
 
 The Operations dashboard excludes `DT-Detail` calls from its cards and charts.
 
 Operations call-type summaries group by the call-type code before the dash, so values such as `STAB` and `STAB-Stabbing` are treated as the same call type.
+
+## Reports and TRU Analysis
+
+The Reports tab has two views. **Report Overview** shows the broad crime-and-crash report measures. **TRU Analysis** compares unique crime-report case numbers associated with final TRS-designated calls against all other crime reports, then shows TRS call volume by hour and weekday, report-conversion rate, final TRS call types, and CAD time to cleared.
+
+TRU designation is based on the final `close_type` containing `TRS` or `Telephone Reporting Unit`. It is a call-type designation, not confirmation of the individual or unit that completed a report; the public CFS feed does not provide handler/unit attribution. CAD time to cleared is the time from call pickup to the last unit cleared and is not a report-writing completion time.
 
 ## Location Trend Summary
 

@@ -1,0 +1,56 @@
+﻿{
+    "period":  "2026-07-01 through 2026-07-31",
+    "methodology":  "Final close type explicitly containing TRS or Telephone Reporting Unit; DT-Detail excluded.",
+    "dashboard_calls_excluding_DT_detail":  16859,
+    "strict_tru_designated_calls":  1399,
+    "strict_tru_designated_share_of_all_calls":  8.3,
+    "calls_with_a_report":  3449,
+    "strict_tru_designated_calls_with_a_report":  797,
+    "strict_tru_designated_share_of_report_calls":  23.11,
+    "written_report_records":  3485,
+    "strict_tru_designated_written_report_records":  797,
+    "strict_tru_designated_share_of_written_report_records":  22.87,
+    "source_rows_with_CR_number":  797,
+    "unique_CR_numbers":  797,
+    "current_ends_in_T_report_calls":  935,
+    "current_ends_in_T_written_report_records":  936,
+    "current_ends_in_T_report_record_share":  26.86,
+    "strict_tru_call_types":  [
+                                  {
+                                      "close_type":  "THEFTT - TRS THEFT/LARCENY - TELEPHONE REPORTING UNIT",
+                                      "calls":  638
+                                  },
+                                  {
+                                      "close_type":  "STLVEHT - TRS STOLEN VEHICLE - TELEPHONE REPORTING UNIT",
+                                      "calls":  243
+                                  },
+                                  {
+                                      "close_type":  "FRAUDT-TRS FRAUD / DECEPTION - TELEPHONE REPORTING UNIT",
+                                      "calls":  197
+                                  },
+                                  {
+                                      "close_type":  "LOSTT-TRS ADMIN (DOCUMENT, LOST OR FOUND PROP, MESSAGES - TELEPHONE REPORTING UNIT",
+                                      "calls":  145
+                                  },
+                                  {
+                                      "close_type":  "VANDALISM, DAMAGE, MISCHIEF-TRS - TELEPHONE REPORTING UNIT",
+                                      "calls":  106
+                                  },
+                                  {
+                                      "close_type":  "FOLLOWT-TRS / SUPPLEMENTAL INFORMATION - TELEPHONE REPORTING UNIT",
+                                      "calls":  59
+                                  },
+                                  {
+                                      "close_type":  "HARASST-TRS HARASSMENT, STALKING, THREATS - TELEPHONE REPORTING UNIT",
+                                      "calls":  5
+                                  },
+                                  {
+                                      "close_type":  "THREATT - TRS HARASSMENT, STALKING, THREATS - TELEPHONE REPORTING UNIT",
+                                      "calls":  5
+                                  },
+                                  {
+                                      "close_type":  "THEFTFAT - TRS / SUPPLEMENTAL INFORMATION - TELEPHONE REPORTING UNIT",
+                                      "calls":  1
+                                  }
+                              ]
+}

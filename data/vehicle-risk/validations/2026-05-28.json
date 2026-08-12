@@ -4,9 +4,9 @@
     "start": "2026-05-28",
     "end": "2026-05-31"
   },
-  "validatedAt": "2026-06-02T08:31:04.290Z",
-  "validatedAtEastern": "2026-06-02 04:31",
-  "actualIncidentCount": 26,
+  "validatedAt": "2026-06-13T08:32:34.211Z",
+  "validatedAtEastern": "2026-06-13 04:32",
+  "actualIncidentCount": 42,
   "metrics": {
     "combined": {
       "model": {
@@ -40,7 +40,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "sixHour1500": {
             "label": "6h within 1,500 ft",
@@ -53,20 +53,20 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "sixHour2250": {
             "label": "6h within 2,250 ft",
             "hours": 6,
             "radiusFeet": 2250,
-            "hitRate": 0.0385,
+            "hitRate": 0.0238,
             "precision": 0.04,
             "falsePositiveBurden": 24,
-            "predictiveAccuracyIndex": 1.353,
+            "predictiveAccuracyIndex": 0.8376,
             "actualHits": 1,
             "selectedWithActual": 1,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "twelveHour1500": {
             "label": "12h within 1,500 ft",
@@ -79,7 +79,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 16,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "twentyFourHour1500": {
             "label": "24h within 1,500 ft",
@@ -92,7 +92,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 16,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           }
         },
         "baseline": {
@@ -107,7 +107,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "sixHour1500": {
             "label": "6h within 1,500 ft",
@@ -120,7 +120,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "sixHour2250": {
             "label": "6h within 2,250 ft",
@@ -133,7 +133,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "twelveHour1500": {
             "label": "12h within 1,500 ft",
@@ -146,7 +146,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 13,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           },
           "twentyFourHour1500": {
             "label": "24h within 1,500 ft",
@@ -159,11 +159,11 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 7,
-            "actualIncidentCount": 26
+            "actualIncidentCount": 42
           }
         }
       },
-      "actualIncidentCount": 26,
+      "actualIncidentCount": 42,
       "selectedPredictionCount": 25
     },
     "theft_from_auto": {
@@ -198,7 +198,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "sixHour1500": {
             "label": "6h within 1,500 ft",
@@ -211,7 +211,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "sixHour2250": {
             "label": "6h within 2,250 ft",
@@ -224,7 +224,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "twelveHour1500": {
             "label": "12h within 1,500 ft",
@@ -237,7 +237,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 15,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "twentyFourHour1500": {
             "label": "24h within 1,500 ft",
@@ -250,7 +250,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 15,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           }
         },
         "baseline": {
@@ -265,7 +265,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "sixHour1500": {
             "label": "6h within 1,500 ft",
@@ -278,7 +278,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "sixHour2250": {
             "label": "6h within 2,250 ft",
@@ -291,7 +291,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "twelveHour1500": {
             "label": "12h within 1,500 ft",
@@ -304,7 +304,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 13,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           },
           "twentyFourHour1500": {
             "label": "24h within 1,500 ft",
@@ -317,11 +317,11 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 7,
-            "actualIncidentCount": 19
+            "actualIncidentCount": 29
           }
         }
       },
-      "actualIncidentCount": 19,
+      "actualIncidentCount": 29,
       "selectedPredictionCount": 25
     },
     "stolen_vehicle": {
@@ -356,7 +356,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "sixHour1500": {
             "label": "6h within 1,500 ft",
@@ -369,20 +369,20 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "sixHour2250": {
             "label": "6h within 2,250 ft",
             "hours": 6,
             "radiusFeet": 2250,
-            "hitRate": 0.1429,
+            "hitRate": 0.0769,
             "precision": 0.04,
             "falsePositiveBurden": 24,
-            "predictiveAccuracyIndex": 3.5848,
+            "predictiveAccuracyIndex": 1.9303,
             "actualHits": 1,
             "selectedWithActual": 1,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "twelveHour1500": {
             "label": "12h within 1,500 ft",
@@ -395,7 +395,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 19,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "twentyFourHour1500": {
             "label": "24h within 1,500 ft",
@@ -408,7 +408,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 19,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           }
         },
         "baseline": {
@@ -423,7 +423,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "sixHour1500": {
             "label": "6h within 1,500 ft",
@@ -436,7 +436,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "sixHour2250": {
             "label": "6h within 2,250 ft",
@@ -449,7 +449,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 25,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "twelveHour1500": {
             "label": "12h within 1,500 ft",
@@ -462,7 +462,7 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 13,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           },
           "twentyFourHour1500": {
             "label": "24h within 1,500 ft",
@@ -475,11 +475,11 @@
             "actualHits": 0,
             "selectedWithActual": 0,
             "selectedTargetCount": 7,
-            "actualIncidentCount": 7
+            "actualIncidentCount": 13
           }
         }
       },
-      "actualIncidentCount": 7,
+      "actualIncidentCount": 13,
       "selectedPredictionCount": 25
     }
   },
@@ -517,13 +517,13 @@
       }
     ],
     "distanceSummary": {
-      "actualIncidentCount": 26,
+      "actualIncidentCount": 42,
       "exactCellCount": 0,
       "within1500FeetCount": 0,
       "within2250FeetCount": 1,
       "sameBeatSameWindowCount": 0,
-      "sameDistrictSameWindowCount": 3,
-      "noSameWindowPredictionCount": 14,
+      "sameDistrictSameWindowCount": 4,
+      "noSameWindowPredictionCount": 18,
       "medianNearestFeet": 41323
     },
     "selectedPredictions": [
@@ -1130,6 +1130,50 @@
     ],
     "actualIncidents": [
       {
+        "id": "201577289",
+        "caseNumber": "260023757",
+        "offenseGroup": "stolen_vehicle",
+        "offenseLabel": "Stolen Vehicle",
+        "startTimeEastern": "2026-05-30 20:00",
+        "windowId": "2026-05-30T18",
+        "windowLabel": "2026-05-30 18:00-00:00",
+        "location": "9400 BLK HORIZON RUN RD",
+        "district": "MONTGOMERY VILLAGE",
+        "beat": "6R1",
+        "place": "Parking Lot - Residential",
+        "latitude": 39.15677,
+        "longitude": -77.1955,
+        "cellId": "152:173",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 71037,
+        "nearestPrediction": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 71037,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 71037,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
         "id": "201577296",
         "caseNumber": "260023769",
         "offenseGroup": "stolen_vehicle",
@@ -1169,6 +1213,50 @@
           "cellId": "216:93",
           "latitude": 38.992651,
           "longitude": -77.025182
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577541",
+        "caseNumber": "260024018",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-30 19:00",
+        "windowId": "2026-05-30T18",
+        "windowLabel": "2026-05-30 18:00-00:00",
+        "location": "8600 BLK POTOMAC SCHOOL TER",
+        "district": "BETHESDA",
+        "beat": "2E2",
+        "place": "Residence - Driveway",
+        "latitude": 38.99564,
+        "longitude": -77.1889,
+        "cellId": "154:94",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 44749,
+        "nearestPrediction": {
+          "id": "combined|2026-05-30T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0493,
+          "riskBand": "High",
+          "distanceFeet": 44749,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0493,
+          "riskBand": "High",
+          "distanceFeet": 44749,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
         },
         "sameBeatInWindow": false,
         "sameDistrictInWindow": false
@@ -1262,6 +1350,94 @@
         "sameDistrictInWindow": false
       },
       {
+        "id": "201577717",
+        "caseNumber": "260024270",
+        "offenseGroup": "stolen_vehicle",
+        "offenseLabel": "Stolen Vehicle",
+        "startTimeEastern": "2026-05-30 15:00",
+        "windowId": "2026-05-30T12",
+        "windowLabel": "2026-05-30 12:00-18:00",
+        "location": "100 BLK N WASHINGTON ST",
+        "district": "ROCKVILLE",
+        "beat": "1A1",
+        "place": "Parking Lot - Commercial",
+        "latitude": 39.08502,
+        "longitude": -77.1529,
+        "cellId": "168:138",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 48770,
+        "nearestPrediction": {
+          "id": "combined|2026-05-30T12|215:93",
+          "summaryLocation": "1100 BLK BONIFANT ST",
+          "windowId": "2026-05-30T12",
+          "windowLabel": "2026-05-30 12:00-18:00",
+          "probability": 0.0421,
+          "riskBand": "High",
+          "distanceFeet": 48770,
+          "cellId": "215:93",
+          "latitude": 38.992651,
+          "longitude": -77.027837
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0493,
+          "riskBand": "High",
+          "distanceFeet": 47196,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577205",
+        "caseNumber": "260023655",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-30 12:45",
+        "windowId": "2026-05-30T12",
+        "windowLabel": "2026-05-30 12:00-18:00",
+        "location": "4900 BLK CORDELL AVE",
+        "district": "BETHESDA",
+        "beat": "2D2",
+        "place": "Retail - Other",
+        "latitude": 38.9894,
+        "longitude": -77.098,
+        "cellId": "189:91",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 19855,
+        "nearestPrediction": {
+          "id": "combined|2026-05-30T12|215:93",
+          "summaryLocation": "1100 BLK BONIFANT ST",
+          "windowId": "2026-05-30T12",
+          "windowLabel": "2026-05-30 12:00-18:00",
+          "probability": 0.0421,
+          "riskBand": "High",
+          "distanceFeet": 19855,
+          "cellId": "215:93",
+          "latitude": 38.992651,
+          "longitude": -77.027837
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0493,
+          "riskBand": "High",
+          "distanceFeet": 19258,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
         "id": "201577240",
         "caseNumber": "260023700",
         "offenseGroup": "theft_from_auto",
@@ -1323,6 +1499,39 @@
           "cellId": "216:93",
           "latitude": 38.992651,
           "longitude": -77.025182
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577311",
+        "caseNumber": "260023777",
+        "offenseGroup": "stolen_vehicle",
+        "offenseLabel": "Stolen Vehicle",
+        "startTimeEastern": "2026-05-30 10:00",
+        "windowId": "2026-05-30T06",
+        "windowLabel": "2026-05-30 06:00-12:00",
+        "location": "3500 BLK SHEFFIELD MANOR TER",
+        "district": "SILVER SPRING",
+        "beat": "3I2",
+        "place": "Street - Residential",
+        "latitude": 39.08128,
+        "longitude": -76.9354,
+        "cellId": "250:136",
+        "missCategory": "No same-window prediction",
+        "sameWindowDistanceFeet": null,
+        "nearestPrediction": null,
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|231:117",
+          "summaryLocation": "11500 BLK LOCKWOOD DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0506,
+          "riskBand": "High",
+          "distanceFeet": 20063,
+          "cellId": "231:117",
+          "latitude": 39.042102,
+          "longitude": -76.985357
         },
         "sameBeatInWindow": false,
         "sameDistrictInWindow": false
@@ -1405,6 +1614,50 @@
         "sameDistrictInWindow": false
       },
       {
+        "id": "201577242",
+        "caseNumber": "260023703",
+        "offenseGroup": "stolen_vehicle",
+        "offenseLabel": "Stolen Vehicle",
+        "startTimeEastern": "2026-05-29 19:00",
+        "windowId": "2026-05-29T18",
+        "windowLabel": "2026-05-29 18:00-00:00",
+        "location": "12300 BLK CONNECTICUT AVE",
+        "district": "WHEATON",
+        "beat": "4L3",
+        "place": "Other/Unknown",
+        "latitude": 39.0573,
+        "longitude": -77.0739,
+        "cellId": "198:124",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 25215,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-29T18",
+          "windowLabel": "2026-05-29 18:00-00:00",
+          "probability": 0.0465,
+          "riskBand": "High",
+          "distanceFeet": 25215,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 23108,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
         "id": "201577349",
         "caseNumber": "260023835",
         "offenseGroup": "theft_from_auto",
@@ -1441,6 +1694,138 @@
           "probability": 0.0379,
           "riskBand": "Elevated",
           "distanceFeet": 29871,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577155",
+        "caseNumber": "260023559",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-29 18:03",
+        "windowId": "2026-05-29T18",
+        "windowLabel": "2026-05-29 18:00-00:00",
+        "location": "2300 BLK RANDOLPH RD",
+        "district": "WHEATON",
+        "beat": "4L1",
+        "place": "Street - Residential",
+        "latitude": 39.05861,
+        "longitude": -77.0485,
+        "cellId": "207:125",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 18822,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T18|231:117",
+          "summaryLocation": "11500 BLK LOCKWOOD DR",
+          "windowId": "2026-05-29T18",
+          "windowLabel": "2026-05-29 18:00-00:00",
+          "probability": 0.0478,
+          "riskBand": "High",
+          "distanceFeet": 18822,
+          "cellId": "231:117",
+          "latitude": 39.042102,
+          "longitude": -76.985357
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 16629,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577894",
+        "caseNumber": "260024520",
+        "offenseGroup": "stolen_vehicle",
+        "offenseLabel": "Stolen Vehicle",
+        "startTimeEastern": "2026-05-29 17:00",
+        "windowId": "2026-05-29T12",
+        "windowLabel": "2026-05-29 12:00-18:00",
+        "location": "15300 BLK FREDERICK RD",
+        "district": "ROCKVILLE",
+        "beat": "1A1",
+        "place": "Auto Dealership",
+        "latitude": 39.10656,
+        "longitude": -77.1584,
+        "cellId": "166:148",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 53875,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T12|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-29T12",
+          "windowLabel": "2026-05-29 12:00-18:00",
+          "probability": 0.0378,
+          "riskBand": "Elevated",
+          "distanceFeet": 53875,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 52233,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577120",
+        "caseNumber": "260023541",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-29 16:43",
+        "windowId": "2026-05-29T12",
+        "windowLabel": "2026-05-29 12:00-18:00",
+        "location": "3500 BLK BANQUO DR",
+        "district": "WHEATON",
+        "beat": "4K1",
+        "place": "Street - Residential",
+        "latitude": 39.09279,
+        "longitude": -77.07,
+        "cellId": "199:142",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 30201,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T12|231:117",
+          "summaryLocation": "11500 BLK LOCKWOOD DR",
+          "windowId": "2026-05-29T12",
+          "windowLabel": "2026-05-29 12:00-18:00",
+          "probability": 0.039,
+          "riskBand": "Elevated",
+          "distanceFeet": 30201,
+          "cellId": "231:117",
+          "latitude": 39.042102,
+          "longitude": -76.985357
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 28901,
           "cellId": "227:115",
           "latitude": 39.037981,
           "longitude": -76.995977
@@ -1493,6 +1878,138 @@
         "sameDistrictInWindow": false
       },
       {
+        "id": "201577672",
+        "caseNumber": "260024236",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-29 16:00",
+        "windowId": "2026-05-29T12",
+        "windowLabel": "2026-05-29 12:00-18:00",
+        "location": "1 BLK MATEUS WAY",
+        "district": "MONTGOMERY VILLAGE",
+        "beat": "6P2",
+        "place": "Parking Lot - Residential",
+        "latitude": 39.13459,
+        "longitude": -77.2275,
+        "cellId": "140:162",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 74924,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T12|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-29T12",
+          "windowLabel": "2026-05-29 12:00-18:00",
+          "probability": 0.0378,
+          "riskBand": "Elevated",
+          "distanceFeet": 74924,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 74256,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577157",
+        "caseNumber": "260023595",
+        "offenseGroup": "stolen_vehicle",
+        "offenseLabel": "Stolen Vehicle",
+        "startTimeEastern": "2026-05-29 16:00",
+        "windowId": "2026-05-29T12",
+        "windowLabel": "2026-05-29 12:00-18:00",
+        "location": "9800 BLK BRASSIE WAY",
+        "district": "MONTGOMERY VILLAGE",
+        "beat": "6R2",
+        "place": "Parking Lot - Residential",
+        "latitude": 39.17543,
+        "longitude": -77.2025,
+        "cellId": "149:182",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 78216,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T12|231:117",
+          "summaryLocation": "11500 BLK LOCKWOOD DR",
+          "windowId": "2026-05-29T12",
+          "windowLabel": "2026-05-29 12:00-18:00",
+          "probability": 0.039,
+          "riskBand": "Elevated",
+          "distanceFeet": 78216,
+          "cellId": "231:117",
+          "latitude": 39.042102,
+          "longitude": -76.985357
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 76854,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577842",
+        "caseNumber": "260023530",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-29 12:30",
+        "windowId": "2026-05-29T12",
+        "windowLabel": "2026-05-29 12:00-18:00",
+        "location": "5900 BLK OVERLEA RD",
+        "district": "BETHESDA",
+        "beat": "2E2",
+        "place": "Street - Residential",
+        "latitude": 38.95568,
+        "longitude": -77.1178,
+        "cellId": "181:75",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 28756,
+        "nearestPrediction": {
+          "id": "combined|2026-05-29T12|215:93",
+          "summaryLocation": "1100 BLK BONIFANT ST",
+          "windowId": "2026-05-29T12",
+          "windowLabel": "2026-05-29 12:00-18:00",
+          "probability": 0.0449,
+          "riskBand": "High",
+          "distanceFeet": 28756,
+          "cellId": "215:93",
+          "latitude": 38.992651,
+          "longitude": -77.027837
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|215:93",
+          "summaryLocation": "1100 BLK BONIFANT ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0564,
+          "riskBand": "High",
+          "distanceFeet": 28756,
+          "cellId": "215:93",
+          "latitude": 38.992651,
+          "longitude": -77.027837
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
         "id": "201577069",
         "caseNumber": "260023480",
         "offenseGroup": "theft_from_auto",
@@ -1518,6 +2035,39 @@
           "probability": 0.0379,
           "riskBand": "Elevated",
           "distanceFeet": 31402,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201577066",
+        "caseNumber": "260023455",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-29 08:59",
+        "windowId": "2026-05-29T06",
+        "windowLabel": "2026-05-29 06:00-12:00",
+        "location": "1000 BLK CRESTHAVEN DR",
+        "district": "SILVER SPRING",
+        "beat": "3I3",
+        "place": "Residence - Driveway",
+        "latitude": 39.01962,
+        "longitude": -76.9923,
+        "cellId": "228:106",
+        "missCategory": "No same-window prediction",
+        "sameWindowDistanceFeet": null,
+        "nearestPrediction": null,
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 6764,
           "cellId": "227:115",
           "latitude": 39.037981,
           "longitude": -76.995977
@@ -1680,50 +2230,6 @@
         "sameDistrictInWindow": true
       },
       {
-        "id": "201577021",
-        "caseNumber": "260023422",
-        "offenseGroup": "theft_from_auto",
-        "offenseLabel": "Theft From Auto",
-        "startTimeEastern": "2026-05-28 21:00",
-        "windowId": "2026-05-28T18",
-        "windowLabel": "2026-05-28 18:00-00:00",
-        "location": "1400 BLK RESEARCH BLV",
-        "district": "ROCKVILLE",
-        "beat": "1B1",
-        "place": "Parking Lot - Other",
-        "latitude": 39.09084,
-        "longitude": -77.1792,
-        "cellId": "158:141",
-        "missCategory": "Farther away",
-        "sameWindowDistanceFeet": 54194,
-        "nearestPrediction": {
-          "id": "combined|2026-05-28T18|214:95",
-          "summaryLocation": "8500 BLK CAMERON ST",
-          "windowId": "2026-05-28T18",
-          "windowLabel": "2026-05-28 18:00-00:00",
-          "probability": 0.0465,
-          "riskBand": "High",
-          "distanceFeet": 54194,
-          "cellId": "214:95",
-          "latitude": 38.996772,
-          "longitude": -77.030492
-        },
-        "nearestPredictionAnyWindow": {
-          "id": "combined|2026-05-30T18|214:95",
-          "summaryLocation": "8500 BLK CAMERON ST",
-          "windowId": "2026-05-30T18",
-          "windowLabel": "2026-05-30 18:00-00:00",
-          "probability": 0.0493,
-          "riskBand": "High",
-          "distanceFeet": 54194,
-          "cellId": "214:95",
-          "latitude": 38.996772,
-          "longitude": -77.030492
-        },
-        "sameBeatInWindow": false,
-        "sameDistrictInWindow": false
-      },
-      {
         "id": "201577045",
         "caseNumber": "260023437",
         "offenseGroup": "stolen_vehicle",
@@ -1768,6 +2274,50 @@
         "sameDistrictInWindow": true
       },
       {
+        "id": "201577021",
+        "caseNumber": "260023422",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-28 21:00",
+        "windowId": "2026-05-28T18",
+        "windowLabel": "2026-05-28 18:00-00:00",
+        "location": "1400 BLK RESEARCH BLV",
+        "district": "ROCKVILLE",
+        "beat": "1B1",
+        "place": "Parking Lot - Other",
+        "latitude": 39.09084,
+        "longitude": -77.1792,
+        "cellId": "158:141",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 54194,
+        "nearestPrediction": {
+          "id": "combined|2026-05-28T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-28T18",
+          "windowLabel": "2026-05-28 18:00-00:00",
+          "probability": 0.0465,
+          "riskBand": "High",
+          "distanceFeet": 54194,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0493,
+          "riskBand": "High",
+          "distanceFeet": 54194,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
         "id": "201577184",
         "caseNumber": "260023629",
         "offenseGroup": "theft_from_auto",
@@ -1804,6 +2354,50 @@
           "probability": 0.0379,
           "riskBand": "Elevated",
           "distanceFeet": 5326,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": true
+      },
+      {
+        "id": "201577491",
+        "caseNumber": "260023538",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-28 17:41",
+        "windowId": "2026-05-28T12",
+        "windowLabel": "2026-05-28 12:00-18:00",
+        "location": "1100 BLK DEVERE DR",
+        "district": "SILVER SPRING",
+        "beat": "3I3",
+        "place": "Residence - Driveway",
+        "latitude": 39.02173,
+        "longitude": -76.9878,
+        "cellId": "230:107",
+        "missCategory": "Farther away",
+        "sameWindowDistanceFeet": 14951,
+        "nearestPrediction": {
+          "id": "combined|2026-05-28T12|216:93",
+          "summaryLocation": "900 BLK SILVER SPRING AVE",
+          "windowId": "2026-05-28T12",
+          "windowLabel": "2026-05-28 12:00-18:00",
+          "probability": 0.0382,
+          "riskBand": "Elevated",
+          "distanceFeet": 14951,
+          "cellId": "216:93",
+          "latitude": 38.992651,
+          "longitude": -77.025182
+        },
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 6350,
           "cellId": "227:115",
           "latitude": 39.037981,
           "longitude": -76.995977
@@ -1856,6 +2450,39 @@
         "sameDistrictInWindow": false
       },
       {
+        "id": "201576922",
+        "caseNumber": "260023261",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-28 08:00",
+        "windowId": "2026-05-28T06",
+        "windowLabel": "2026-05-28 06:00-12:00",
+        "location": "19700 BLK CRYSTAL ROCK DR",
+        "district": "GERMANTOWN",
+        "beat": "5N1",
+        "place": "Parking Lot - Residential",
+        "latitude": 39.17902,
+        "longitude": -77.2616,
+        "cellId": "127:183",
+        "missCategory": "No same-window prediction",
+        "sameWindowDistanceFeet": null,
+        "nearestPrediction": null,
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|227:115",
+          "summaryLocation": "11200 BLK OAK LEAF DR",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0379,
+          "riskBand": "Elevated",
+          "distanceFeet": 90915,
+          "cellId": "227:115",
+          "latitude": 39.037981,
+          "longitude": -76.995977
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
         "id": "201576876",
         "caseNumber": "260023256",
         "offenseGroup": "theft_from_auto",
@@ -1881,6 +2508,39 @@
           "probability": 0.0493,
           "riskBand": "High",
           "distanceFeet": 40665,
+          "cellId": "214:95",
+          "latitude": 38.996772,
+          "longitude": -77.030492
+        },
+        "sameBeatInWindow": false,
+        "sameDistrictInWindow": false
+      },
+      {
+        "id": "201578100",
+        "caseNumber": "260023584",
+        "offenseGroup": "theft_from_auto",
+        "offenseLabel": "Theft From Auto",
+        "startTimeEastern": "2026-05-28 07:00",
+        "windowId": "2026-05-28T06",
+        "windowLabel": "2026-05-28 06:00-12:00",
+        "location": "8000 BLK GLENDALE RD",
+        "district": "BETHESDA",
+        "beat": "2D1",
+        "place": "Street - Residential",
+        "latitude": 38.99027,
+        "longitude": -77.0751,
+        "cellId": "197:92",
+        "missCategory": "No same-window prediction",
+        "sameWindowDistanceFeet": null,
+        "nearestPrediction": null,
+        "nearestPredictionAnyWindow": {
+          "id": "combined|2026-05-30T18|214:95",
+          "summaryLocation": "8500 BLK CAMERON ST",
+          "windowId": "2026-05-30T18",
+          "windowLabel": "2026-05-30 18:00-00:00",
+          "probability": 0.0493,
+          "riskBand": "High",
+          "distanceFeet": 12821,
           "cellId": "214:95",
           "latitude": 38.996772,
           "longitude": -77.030492
@@ -1922,8 +2582,8 @@
         "sameDistrictInWindow": false
       },
       {
-        "id": "201576891",
-        "caseNumber": "260023271",
+        "id": "201576888",
+        "caseNumber": "260023268",
         "offenseGroup": "theft_from_auto",
         "offenseLabel": "Theft From Auto",
         "startTimeEastern": "2026-05-28 02:10",
@@ -1988,8 +2648,8 @@
         "sameDistrictInWindow": false
       },
       {
-        "id": "201576888",
-        "caseNumber": "260023268",
+        "id": "201576891",
+        "caseNumber": "260023271",
         "offenseGroup": "theft_from_auto",
         "offenseLabel": "Theft From Auto",
         "startTimeEastern": "2026-05-28 02:10",
