@@ -50,6 +50,26 @@ The Reports tab has two views. **Report Overview** shows the broad event-and-cra
 
 TRU designation is based on the final `close_type` containing `TRS` or `Telephone Reporting Unit`. It is a call-type designation, not confirmation of the individual or unit that completed a report; the public CFS feed does not provide handler/unit attribution. CAD time to cleared is the time from call pickup to the last unit cleared and is not a report-writing completion time.
 
+### Eight-Quarter TRU Workload Analysis
+
+The **8-Quarter Trend** view uses a cached analysis of the last eight complete quarters so the browser does not download two years of raw CFS records. Refresh it manually with:
+
+```sh
+npm run tru:quarterly:test
+npm run tru:quarterly
+```
+
+The refresh writes:
+
+- `public/data/tru-quarterly-analysis.json`, used by the Reports dashboard.
+- `public/data/tru-quarterly-analysis.csv`, a flat countywide and district-quarter export for reconciliation.
+
+The JSON and CSV include total CFS, TRU and patrol-estimated calls, calls per day, unique event-report numbers, report shares and conversion rates, CAD time-to-cleared statistics, long-duration percentages, and initial-to-final TRS routing outcomes. The JSON also contains call-type and stable hour/weekday demand profiles. Crash reports are excluded from the event-report comparison.
+
+Event reports are deduplicated by trimmed `cr_number` within each scope and period. If a CR number appears on both TRU- and non-TRU-coded records, it is counted once and attributed to TRU. `Patrol estimate` means non-TRU-coded activity; it is not verified patrol handling because the public feed does not publish a handling-unit field. A TRU call without a CR number is shown as a data outcome only and is not labeled unnecessary or unsuccessful.
+
+The workflow `.github/workflows/refresh-tru-quarterly-analysis.yml` runs monthly, recalculates the full rolling window to capture source corrections, commits both files, and supports a manual `workflow_dispatch` run. The current partial quarter is excluded and enters the analysis after it closes.
+
 ## Location Trend Summary
 
 The Locations tab uses a precomputed static file for fast 12-month detail views:

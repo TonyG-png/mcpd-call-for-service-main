@@ -11,6 +11,7 @@ import { isTelephoneReportingUnitCallType } from "@/lib/callTypes";
 import { NormalizedIncident } from "@/types/incident";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getDateRangeBounds } from "@/lib/dateRanges";
+import TruQuarterlyAnalysis from "@/components/reports/TruQuarterlyAnalysis";
 
 const hasValue = (v: unknown): boolean =>
   v !== undefined && v !== null && String(v).trim() !== "";
@@ -29,6 +30,7 @@ const CHART_TOOLTIP_STYLE = {
 };
 
 type ReportView = "overview" | "tru";
+type TruPeriodView = "current" | "quarterly";
 
 interface TruDurationRecord {
   incident: NormalizedIncident;
@@ -38,6 +40,7 @@ interface TruDurationRecord {
 export default function ReportsPage() {
   const { filteredIncidents, filters, isLoading, availableFields, columns } = useData();
   const [view, setView] = useState<ReportView>("overview");
+  const [truPeriodView, setTruPeriodView] = useState<TruPeriodView>("current");
 
   const showCrime = availableFields.has("crNumber");
   const showCrash = availableFields.has("crashReport");
@@ -317,7 +320,24 @@ export default function ReportsPage() {
       </div>
 
       {view === "tru" ? (
-        <TruAnalysisView analysis={truAnalysis} />
+        <div className="space-y-6">
+          <ToggleGroup
+            type="single"
+            value={truPeriodView}
+            onValueChange={(value) => value && setTruPeriodView(value as TruPeriodView)}
+            variant="outline"
+            className="w-fit rounded-md border border-border bg-card p-1"
+            aria-label="TRU analysis period"
+          >
+            <ToggleGroupItem value="current" aria-label="Current period TRU analysis" className="px-3 text-xs sm:text-sm">
+              Current Period
+            </ToggleGroupItem>
+            <ToggleGroupItem value="quarterly" aria-label="Eight-quarter TRU trend" className="px-3 text-xs sm:text-sm">
+              8-Quarter Trend
+            </ToggleGroupItem>
+          </ToggleGroup>
+          {truPeriodView === "current" ? <TruAnalysisView analysis={truAnalysis} /> : <TruQuarterlyAnalysis />}
+        </div>
       ) : (
         <>
 

@@ -13,6 +13,8 @@
     "locations:summary": "node scripts/refresh-location-summary.mjs",
     "overview:benchmarks": "node scripts/refresh-overview-benchmarks.mjs",
     "response-times:benchmarks": "node scripts/refresh-response-time-benchmarks.mjs",
+    "tru:quarterly": "node scripts/refresh-tru-quarterly-analysis.mjs",
+    "tru:quarterly:test": "node --test scripts/tru-quarterly-core.test.mjs",
     "vehicle-risk:forecast": "node scripts/refresh-vehicle-risk-forecast.mjs",
     "server": "node server/index.mjs",
     "start": "node server/index.mjs",

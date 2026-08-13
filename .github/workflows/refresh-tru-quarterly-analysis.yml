@@ -1,0 +1,38 @@
+name: Refresh TRU quarterly analysis
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 9 3 * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-tru-quarterly-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test TRU quarterly calculations
+        run: npm run tru:quarterly:test
+
+      - name: Refresh TRU quarterly analysis
+        run: npm run tru:quarterly
+
+      - name: Commit refreshed analysis
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Refresh TRU quarterly analysis"
+          file_pattern: public/data/tru-quarterly-analysis.json public/data/tru-quarterly-analysis.csv
