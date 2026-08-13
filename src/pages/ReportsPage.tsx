@@ -12,6 +12,8 @@ import { NormalizedIncident } from "@/types/incident";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getDateRangeBounds } from "@/lib/dateRanges";
 import TruQuarterlyAnalysis from "@/components/reports/TruQuarterlyAnalysis";
+import TruPdfButton from "@/components/reports/TruPdfButton";
+import { createCurrentTruPdf } from "@/lib/truPdfReport";
 
 const hasValue = (v: unknown): boolean =>
   v !== undefined && v !== null && String(v).trim() !== "";
@@ -214,6 +216,8 @@ export default function ReportsPage() {
     const range = getDateRangeBounds(filters.dateRange, new Date(), filters.customStartDate, filters.customEndDate);
     const rangeEnd = range.end || new Date();
     const selectedDayCount = Math.max(1, Math.round((rangeEnd.getTime() - range.start.getTime()) / 86400000));
+    const inclusiveEnd = range.end ? new Date(range.end.getTime() - 86400000) : rangeEnd;
+    const assessmentPeriod = `${formatAssessmentDate(range.start)} through ${formatAssessmentDate(inclusiveEnd)}`;
 
     const dailyTrend = Array.from(trendByDate.entries())
       .sort(([a], [b]) => a.localeCompare(b))
@@ -235,6 +239,7 @@ export default function ReportsPage() {
       conversionRate: truCalls.length > 0 ? (truReportCount / truCalls.length) * 100 : 0,
       hours: hours.map((entry) => ({ ...entry, averageCalls: entry.calls / selectedDayCount })),
       selectedDayCount,
+      assessmentPeriod,
       days,
       dailyTrend,
       topTypes: Array.from(typeCounts.entries())
@@ -632,6 +637,10 @@ function formatDuration(seconds: number | null) {
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes} min`;
 }
 
+function formatAssessmentDate(date: Date) {
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
 function TruAnalysisView({
   analysis,
 }: {
@@ -646,6 +655,7 @@ function TruAnalysisView({
     conversionRate: number;
     hours: { hour: string; calls: number; averageCalls: number }[];
     selectedDayCount: number;
+    assessmentPeriod: string;
     days: { day: string; calls: number }[];
     dailyTrend: { date: string; label: string; calls: number; reports: number }[];
     topTypes: { type: string; count: number; share: number }[];
@@ -667,8 +677,32 @@ function TruAnalysisView({
     );
   }
 
+  const periodLabel = `Assessment Period: ${analysis.assessmentPeriod} (${analysis.selectedDayCount.toLocaleString()} selected complete calendar day${analysis.selectedDayCount === 1 ? "" : "s"})`;
+
   return (
     <div className="space-y-6">
+      <div className="flex justify-end">
+        <TruPdfButton
+          onCreate={() => createCurrentTruPdf({
+            periodLabel,
+            totalCalls: analysis.totalCalls,
+            callsWithReports: analysis.callsWithReports,
+            truCalls: analysis.truCalls.length,
+            truReports: analysis.truReportCount,
+            patrolReports: analysis.patrolReportCount,
+            totalReports: analysis.totalCrimeReports,
+            reportShare: analysis.truReportShare,
+            conversionRate: analysis.conversionRate,
+            averageSeconds: analysis.averageSeconds,
+            medianSeconds: analysis.medianSeconds,
+            durationBuckets: analysis.durationBuckets,
+            thresholds: analysis.overThresholds,
+            topTypes: analysis.topTypes,
+            hours: analysis.hours,
+            days: analysis.days,
+          })}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           title="Total Calls for Service"

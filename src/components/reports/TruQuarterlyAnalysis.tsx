@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Activity, BarChart3, Clock3, Download, FileText, Info, Loader2, Route } from "lucide-react";
+import { Activity, BarChart3, Clock3, FileText, Info, Loader2, Route } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -15,6 +15,8 @@ import {
 import ChartCard from "@/components/dashboard/ChartCard";
 import MetricCard from "@/components/dashboard/MetricCard";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import TruPdfButton from "@/components/reports/TruPdfButton";
+import { createQuarterlyTruPdf } from "@/lib/truPdfReport";
 
 const TOOLTIP_STYLE = {
   backgroundColor: "hsl(var(--card))",
@@ -176,13 +178,16 @@ export default function TruQuarterlyAnalysis() {
                 {districts.map((value) => <SelectItem key={value} value={value}>{value}</SelectItem>)}
               </SelectContent>
             </Select>
-            <a
-              href="/data/tru-quarterly-analysis.csv"
-              download
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-            >
-              <Download className="h-4 w-4" /> Download CSV
-            </a>
+            <TruPdfButton
+              onCreate={() => createQuarterlyTruPdf({
+                scopeName: district,
+                periodLabel: `${formatDate(data.period_start)} through ${formatEndDate(data.period_end_exclusive)}`,
+                generatedAt: data.generated_at,
+                summary,
+                quarters: scope.quarters,
+                districtComparison: data.district_comparison,
+              })}
+            />
           </div>
         </div>
         <div className="mt-3 flex gap-2 border-t border-border/60 pt-3 text-xs text-muted-foreground">

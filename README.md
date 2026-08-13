@@ -44,6 +44,12 @@ The Operations dashboard excludes `DT-Detail` calls from its cards and charts.
 
 Operations call-type summaries group by the call-type code before the dash, so values such as `STAB` and `STAB-Stabbing` are treated as the same call type.
 
+## Website Analytics
+
+The deployed dashboard uses Vercel Web Analytics through `@vercel/analytics`. It measures page views and privacy-preserving unique visitors, including navigation between dashboard tabs, without sending calls-for-service records or dashboard filters to an external analytics provider.
+
+After deploying to Vercel, enable **Web Analytics** for the project in the Vercel dashboard. Traffic will then appear in the project's **Analytics** tab. No environment variables or application configuration are required.
+
 ## Reports and TRU Analysis
 
 The Reports tab has two views. **Report Overview** shows the broad event-and-crash report measures. **TRU Analysis** compares unique event-report case numbers associated with final TRS-designated calls against all other event reports, then shows TRS call volume by hour and weekday, event-report conversion rate, final TRS call types, and CAD time to cleared.
@@ -69,6 +75,8 @@ The JSON and CSV include total CFS, TRU and patrol-estimated calls, calls per da
 Event reports are deduplicated by trimmed `cr_number` within each scope and period. If a CR number appears on both TRU- and non-TRU-coded records, it is counted once and attributed to TRU. `Patrol estimate` means non-TRU-coded activity; it is not verified patrol handling because the public feed does not publish a handling-unit field. A TRU call without a CR number is shown as a data outcome only and is not labeled unnecessary or unsuccessful.
 
 The workflow `.github/workflows/refresh-tru-quarterly-analysis.yml` runs monthly, recalculates the full rolling window to capture source corrections, commits both files, and supports a manual `workflow_dispatch` run. The current partial quarter is excluded and enters the analysis after it closes.
+
+Both TRU Analysis views include a **Create PDF** button. The local browser generates a branded, multi-page Letter-size Operational Intelligence Division report using the MCPD seal. No report data is sent to an external service. The eight-quarter CSV remains available in `public/data/tru-quarterly-analysis.csv` for reconciliation and offline analysis.
 
 ## Location Trend Summary
 
