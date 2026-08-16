@@ -87,6 +87,28 @@ interface OverviewProjection {
   annualAverageTotalCalls: number;
 }
 
+interface OverviewMonthlyRow {
+  month: number;
+  label: string;
+  current: number;
+  baseline: number;
+  delta: number;
+  deltaPercent: number;
+  historical: Record<number, number>;
+}
+
+interface OverviewMonthlyComparison {
+  rows: OverviewMonthlyRow[];
+  years: number[];
+  scopeLabel: string;
+  fullMonthProjection: number;
+  latestMonth: OverviewMonthlyRow;
+  recentMonths: OverviewMonthlyRow[];
+  recentDeltaPercent: number;
+  projectionBeforeRecentMonths: number | null;
+  unavailableReason?: string;
+}
+
 export default function ExecutiveOverview() {
   const { filteredIncidents, availableFields, isLoading, error, filters } = useData();
   const [benchmarks, setBenchmarks] = useState<OverviewBenchmarks | null>(null);
@@ -188,6 +210,8 @@ export default function ExecutiveOverview() {
         error={benchmarkError}
         comparison={benchmarkComparison}
       />
+
+      <MonthlyCfsComparisonPanel comparison={benchmarkComparison?.monthly || null} />
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -395,6 +419,120 @@ function OverviewBenchmarkPanel({
   );
 }
 
+function MonthlyCfsComparisonPanel({ comparison }: { comparison: OverviewMonthlyComparison | null }) {
+  if (!comparison) return null;
+
+  if (comparison.unavailableReason) {
+    return (
+      <div className="dashboard-card p-4 text-sm text-muted-foreground">
+        <div className="font-semibold text-foreground">Monthly CFS Comparison</div>
+        <p className="mt-1 text-xs">{comparison.unavailableReason}</p>
+      </div>
+    );
+  }
+
+  const recentLabels = comparison.recentMonths.map((row) => row.label).join(" and ");
+  const recentDeltaText = comparison.recentDeltaPercent === 0
+    ? "in line with"
+    : comparison.recentDeltaPercent < 0 ? "below" : "above";
+  const projectionDelta = comparison.projectionBeforeRecentMonths === null
+    ? null
+    : comparison.fullMonthProjection - comparison.projectionBeforeRecentMonths;
+
+  return (
+    <section className="space-y-3">
+      <div>
+        <h3 className="text-sm font-semibold font-display">Monthly CFS Comparison</h3>
+        <p className="text-xs text-muted-foreground">
+          Complete 2026 months compared with the same month in {formatBenchmarkYears(comparison.years)} for {comparison.scopeLabel.toLowerCase()}.
+        </p>
+      </div>
+
+      <div className="dashboard-card p-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <MonthlyInsightStat
+            label="Full-Month Pace"
+            value={comparison.fullMonthProjection.toLocaleString()}
+            detail="Projected annual calls from complete months"
+          />
+          <MonthlyInsightStat
+            label={`${comparison.latestMonth.label} vs 3-Year Avg`}
+            value={formatMonthlyDelta(comparison.latestMonth.deltaPercent)}
+            detail={`${comparison.latestMonth.current.toLocaleString()} calls vs ${Math.round(comparison.latestMonth.baseline).toLocaleString()} average`}
+          />
+          <MonthlyInsightStat
+            label="Most Recent Two Months"
+            value={`${Math.abs(comparison.recentDeltaPercent).toFixed(1)}% ${recentDeltaText}`}
+            detail={projectionDelta === null
+              ? `${recentLabels} compared with the same-month 3-year average`
+              : `${formatSignedNumber(projectionDelta)} annual pace after ${recentLabels}`}
+          />
+        </div>
+
+        <p className="mt-4 border-t border-border pt-3 text-xs text-muted-foreground">
+          {recentLabels} ran {Math.abs(comparison.recentDeltaPercent).toFixed(1)}% {recentDeltaText} their same-month 3-year average. {projectionDelta !== null && (
+            <>Including those months moved the complete-month annual pace by {formatSignedNumber(projectionDelta)} calls.</>
+          )}
+        </p>
+      </div>
+
+      <ChartCard title="Monthly Calls for Service" subtitle="2026 and the same months in the prior three years">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={comparison.rows} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <XAxis dataKey="label" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} />
+            <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} />
+            <Tooltip
+              contentStyle={chartTooltipStyle}
+              formatter={(value: number, name: string) => [value.toLocaleString(), name]}
+            />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
+            {comparison.years.map((year, index) => (
+              <Bar key={year} dataKey={String(year)} name={String(year)} fill={COLORS[(index + 4) % COLORS.length]} radius={[2, 2, 0, 0]} />
+            ))}
+            <Bar dataKey="current" name={String(new Date().getFullYear())} fill={COLORS[0]} radius={[2, 2, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </ChartCard>
+
+      <div className="overflow-auto">
+        <table className="w-full min-w-[720px] text-xs">
+          <thead>
+            <tr className="border-b border-border text-left text-muted-foreground">
+              <th className="py-2 pr-3 font-medium">Month</th>
+              <th className="py-2 pr-3 font-medium">{new Date().getFullYear()}</th>
+              {comparison.years.map((year) => <th key={year} className="py-2 pr-3 font-medium">{year}</th>)}
+              <th className="py-2 pr-3 font-medium">3-Year Avg</th>
+              <th className="py-2 font-medium">Delta</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.rows.map((row) => (
+              <tr key={row.month} className="border-b border-border/50">
+                <td className="py-2 pr-3 font-semibold">{row.label}</td>
+                <td className="py-2 pr-3">{row.current.toLocaleString()}</td>
+                {comparison.years.map((year) => <td key={year} className="py-2 pr-3">{(row.historical[year] || 0).toLocaleString()}</td>)}
+                <td className="py-2 pr-3">{Math.round(row.baseline).toLocaleString()}</td>
+                <td className={`py-2 ${getDeltaClass(row.current, row.baseline)}`}>{formatMonthlyDelta(row.deltaPercent)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function MonthlyInsightStat({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div>
+      <div className="text-xs font-medium text-muted-foreground">{label}</div>
+      <div className="mt-1 text-xl font-bold font-display">{value}</div>
+      <div className="text-xs text-muted-foreground">{detail}</div>
+    </div>
+  );
+}
+
 function OverviewAnnualMobileCard({ year }: { year: OverviewAnnualBenchmark }) {
   return (
     <div className="rounded-md border border-border p-3">
@@ -486,6 +624,7 @@ function getOverviewComparison(benchmarks: OverviewBenchmarks, metrics: Overview
   };
   const seasonal = getSeasonalBaseline(benchmarks, filters);
   const projection = getOverviewProjection(annualRows, current);
+  const monthly = getMonthlyCfsComparison(benchmarks, metrics, filters);
 
   return {
     current,
@@ -497,8 +636,112 @@ function getOverviewComparison(benchmarks: OverviewBenchmarks, metrics: Overview
     seasonal,
     projection,
     annualRows,
+    monthly,
     scopeLabel: getDistrictScopeLabel(filters),
   };
+}
+
+function getMonthlyCfsComparison(
+  benchmarks: OverviewBenchmarks,
+  metrics: OverviewCurrentMetrics,
+  filters: FilterState,
+): OverviewMonthlyComparison {
+  const scopeLabel = getDistrictScopeLabel(filters);
+  if (filters.beat.length > 0 || filters.priority || filters.callType) {
+    return {
+      rows: [],
+      years: benchmarks.years,
+      scopeLabel,
+      fullMonthProjection: 0,
+      latestMonth: emptyMonthlyRow(),
+      recentMonths: [],
+      recentDeltaPercent: 0,
+      projectionBeforeRecentMonths: null,
+      unavailableReason: "Monthly comparisons support countywide and district selections. Clear beat, priority, and call-type filters to compare against the cached three-year history.",
+    };
+  }
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const bounds = getDateRangeBounds(filters.dateRange, now, filters.customStartDate, filters.customEndDate);
+  const selectedEnd = bounds.end || now;
+  const completeMonthLimit = new Date(now.getFullYear(), now.getMonth(), 1);
+  const currentByMonth = new Map<number, number>();
+
+  for (const row of metrics.byDay) {
+    const month = Number(row.date.slice(5, 7));
+    if (Number.isFinite(month)) currentByMonth.set(month, (currentByMonth.get(month) || 0) + row.count);
+  }
+
+  const completeMonths = Array.from({ length: 12 }, (_, index) => index + 1).filter((month) => {
+    const monthStart = new Date(currentYear, month - 1, 1);
+    const monthEnd = new Date(currentYear, month, 1);
+    return monthStart >= bounds.start && monthEnd <= selectedEnd && monthEnd <= completeMonthLimit && currentByMonth.has(month);
+  });
+
+  if (!completeMonths.length) {
+    return {
+      rows: [],
+      years: benchmarks.years,
+      scopeLabel,
+      fullMonthProjection: 0,
+      latestMonth: emptyMonthlyRow(),
+      recentMonths: [],
+      recentDeltaPercent: 0,
+      projectionBeforeRecentMonths: null,
+      unavailableReason: "Choose YTD or a date range containing at least one complete calendar month to view the monthly comparison.",
+    };
+  }
+
+  const dailyRows = filters.district.length > 0
+    ? filters.district.flatMap((district) => benchmarks.daily_by_district?.[district] || [])
+    : benchmarks.daily;
+  const historyByYearMonth = new Map<string, number>();
+  for (const row of dailyRows) {
+    const key = `${row.year}-${row.month}`;
+    historyByYearMonth.set(key, (historyByYearMonth.get(key) || 0) + row.call_count);
+  }
+
+  const rows = completeMonths.map((month) => {
+    const historical = Object.fromEntries(benchmarks.years.map((year) => [year, historyByYearMonth.get(`${year}-${month}`) || 0])) as Record<number, number>;
+    const baseline = benchmarks.years.reduce((sum, year) => sum + historical[year], 0) / benchmarks.years.length;
+    const current = currentByMonth.get(month) || 0;
+    return {
+      month,
+      label: new Date(currentYear, month - 1, 1).toLocaleDateString(undefined, { month: "short" }),
+      current,
+      baseline,
+      delta: current - baseline,
+      deltaPercent: baseline > 0 ? ((current - baseline) / baseline) * 100 : 0,
+      historical,
+      ...Object.fromEntries(benchmarks.years.map((year) => [String(year), historical[year]])),
+    };
+  });
+  const recentMonths = rows.slice(-2);
+  const recentCurrent = recentMonths.reduce((sum, row) => sum + row.current, 0);
+  const recentBaseline = recentMonths.reduce((sum, row) => sum + row.baseline, 0);
+  const daysInCompletedMonths = completeMonths.reduce((sum, month) => sum + getDaysInMonth(currentYear, month), 0);
+  const fullMonthProjection = Math.round((rows.reduce((sum, row) => sum + row.current, 0) / daysInCompletedMonths) * getDaysInYear(currentYear));
+  const earlierMonths = rows.slice(0, -2);
+  const earlierDays = earlierMonths.reduce((sum, row) => sum + getDaysInMonth(currentYear, row.month), 0);
+  const projectionBeforeRecentMonths = earlierMonths.length > 0 && earlierDays > 0
+    ? Math.round((earlierMonths.reduce((sum, row) => sum + row.current, 0) / earlierDays) * getDaysInYear(currentYear))
+    : null;
+
+  return {
+    rows,
+    years: benchmarks.years,
+    scopeLabel,
+    fullMonthProjection,
+    latestMonth: rows[rows.length - 1],
+    recentMonths,
+    recentDeltaPercent: recentBaseline > 0 ? ((recentCurrent - recentBaseline) / recentBaseline) * 100 : 0,
+    projectionBeforeRecentMonths,
+  };
+}
+
+function emptyMonthlyRow(): OverviewMonthlyRow {
+  return { month: 0, label: "Latest Month", current: 0, baseline: 0, delta: 0, deltaPercent: 0, historical: {} };
 }
 
 function getBenchmarkAnnualRows(benchmarks: OverviewBenchmarks, filters: FilterState) {
@@ -640,12 +883,25 @@ function getDaysInYear(year: number) {
   return new Date(year, 1, 29).getMonth() === 1 ? 366 : 365;
 }
 
+function getDaysInMonth(year: number, month: number) {
+  return new Date(year, month, 0).getDate();
+}
+
 function formatDateKey(date: Date) {
   return [
     date.getFullYear(),
     String(date.getMonth() + 1).padStart(2, "0"),
     String(date.getDate()).padStart(2, "0"),
   ].join("-");
+}
+
+function formatSignedNumber(value: number) {
+  return `${value >= 0 ? "+" : ""}${value.toLocaleString()}`;
+}
+
+function formatMonthlyDelta(value: number) {
+  if (value === 0) return "0.0%";
+  return `${Math.abs(value).toFixed(1)}% ${value > 0 ? "higher" : "lower"}`;
 }
 
 function formatPercent(value: number) {

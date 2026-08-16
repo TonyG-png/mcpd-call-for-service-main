@@ -269,7 +269,7 @@ async function fetchYear(year) {
   const start = new Date(year, 0, 1);
   const end = new Date(year + 1, 0, 1);
   const baseUrl = `https://${DOMAIN}/resource/${DATASET_ID}.json`;
-  const selectFields = "start_time,initial_type,priority,police_district_number";
+  const selectFields = "start_time,close_type,priority,police_district_number";
   const whereClause = [
     `start_time >= '${formatSocrataDateTime(start)}'`,
     `start_time < '${formatSocrataDateTime(end)}'`,
@@ -296,7 +296,7 @@ async function fetchYear(year) {
     const rows = await response.json();
     for (const row of rows) {
       const priority = row.priority != null ? String(row.priority) : "";
-      const callType = getDisplayCallType(row.initial_type, priority);
+      const callType = getDisplayCallType(row.close_type, priority);
       if (isDetailCallType(callType)) continue;
       if (!row.start_time) continue;
       const startTime = new Date(row.start_time);

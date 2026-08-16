@@ -108,7 +108,7 @@ The Overview tab compares the current filtered period against both a broad 3-yea
 npm run overview:benchmarks
 ```
 
-This writes `public/data/overview-annual-benchmarks.json`. It stores annual totals plus daily summary rows, so the browser can compare YTD, 7-day, 14-day, or 28-day windows against the matching historical calendar window without pulling multiple years of raw records. The workflow `.github/workflows/refresh-overview-benchmarks.yml` refreshes the file monthly and can be run manually from GitHub.
+This writes `public/data/overview-annual-benchmarks.json`. It stores annual totals plus daily summary rows, so the browser can compare YTD, 7-day, 14-day, or 28-day windows against the matching historical calendar window without pulling multiple years of raw records. The Overview tab also uses the cached daily rows to compare complete current-year months with the same months in the prior three years and explain the change in the full-year pace projection. The comparison supports countywide and district selections; clear beat, priority, and call-type filters for a like-for-like historical comparison. The workflow `.github/workflows/refresh-overview-benchmarks.yml` refreshes the file monthly and can be run manually from GitHub.
 
 ## Vehicle Risk Forecasts
 
