@@ -500,8 +500,8 @@ function MonthlyCfsComparisonPanel({ comparison }: { comparison: OverviewMonthly
           <thead>
             <tr className="border-b border-border text-left text-muted-foreground">
               <th className="py-2 pr-3 font-medium">Month</th>
-              <th className="py-2 pr-3 font-medium">{new Date().getFullYear()}</th>
               {comparison.years.map((year) => <th key={year} className="py-2 pr-3 font-medium">{year}</th>)}
+              <th className="bg-primary/10 py-2 pr-3 font-semibold text-primary">{new Date().getFullYear()}</th>
               <th className="py-2 pr-3 font-medium">3-Year Avg</th>
               <th className="py-2 font-medium">Delta</th>
             </tr>
@@ -510,8 +510,8 @@ function MonthlyCfsComparisonPanel({ comparison }: { comparison: OverviewMonthly
             {comparison.rows.map((row) => (
               <tr key={row.month} className="border-b border-border/50">
                 <td className="py-2 pr-3 font-semibold">{row.label}</td>
-                <td className="py-2 pr-3">{row.current.toLocaleString()}</td>
                 {comparison.years.map((year) => <td key={year} className="py-2 pr-3">{(row.historical[year] || 0).toLocaleString()}</td>)}
+                <td className="bg-primary/10 py-2 pr-3 font-semibold text-primary">{row.current.toLocaleString()}</td>
                 <td className="py-2 pr-3">{Math.round(row.baseline).toLocaleString()}</td>
                 <td className={`py-2 ${getDeltaClass(row.current, row.baseline)}`}>{formatMonthlyDelta(row.deltaPercent)}</td>
               </tr>
