@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T00:07:33.292Z",
+  "generated_at": "2026-09-03T13:44:03.317Z",
   "source": {
     "domain": "data.montgomerycountymd.gov",
     "dataset_id": "98cc-bc7d",
@@ -36,15 +36,15 @@
       "patrol_estimate_calls": 366929,
       "tru_calls_per_day": 41.443835616438356,
       "patrol_estimate_calls_per_day": 502.64246575342463,
-      "event_reports_total": 74637,
-      "tru_event_reports": 18521,
-      "patrol_estimate_event_reports": 56116,
+      "event_reports_total": 74643,
+      "tru_event_reports": 18522,
+      "patrol_estimate_event_reports": 56121,
       "tru_share_of_total_calls": 7.617143734751991,
-      "tru_share_of_event_reports": 24.814770154213058,
-      "tru_event_report_conversion": 61.21835129239109,
-      "patrol_estimate_event_report_conversion": 15.293421888158198,
-      "tru_calls_without_event_report": 11733,
-      "tru_calls_without_event_report_share": 38.78164870760891,
+      "tru_share_of_event_reports": 24.81411518829629,
+      "tru_event_report_conversion": 61.221656640444245,
+      "patrol_estimate_event_report_conversion": 15.294784549599513,
+      "tru_calls_without_event_report": 11732,
+      "tru_calls_without_event_report_share": 38.77834335955576,
       "tru_timing": {
         "valid_count": 30168,
         "coverage_share": 99.71574006742911,
@@ -57,15 +57,15 @@
         "over_4_hours_share": 9.645982498011138
       },
       "patrol_estimate_report_call_timing": {
-        "valid_count": 56020,
+        "valid_count": 56025,
         "coverage_share": 100,
-        "average_seconds": 6275.434469832203,
-        "median_seconds": 4847.5,
-        "p90_seconds": 12042.099999999999,
-        "over_1_hour_share": 66.87611567297394,
-        "over_2_hours_share": 28.773652267047485,
-        "over_3_hours_share": 12.997143877186721,
-        "over_4_hours_share": 6.153159585862192
+        "average_seconds": 6275.137813476127,
+        "median_seconds": 4847,
+        "p90_seconds": 12042,
+        "over_1_hour_share": 66.87371709058456,
+        "over_2_hours_share": 28.77286925479697,
+        "over_3_hours_share": 12.995983935742972,
+        "over_4_hours_share": 6.152610441767068
       },
       "routing_outcomes": {
         "remained_tru": 29823,
@@ -127,53 +127,53 @@
       "top_tru_call_types_without_event_report": [
         {
           "type": "Theft",
-          "calls": 3890,
-          "share": 33.15435097588
+          "calls": 3889,
+          "share": 33.14865325605182
         },
         {
           "type": "Fraud",
           "calls": 2464,
-          "share": 21.000596607858178
+          "share": 21.002386634844868
         },
         {
           "type": "Vehicle Theft",
           "calls": 1555,
-          "share": 13.25321742094946
+          "share": 13.254347084896011
         },
         {
           "type": "Administrative / Lost or Found Property",
           "calls": 1448,
-          "share": 12.341259694877696
+          "share": 12.342311626321173
         },
         {
           "type": "Follow Up / Supplemental",
           "calls": 1260,
-          "share": 10.738941447200204
+          "share": 10.739856801909307
         },
         {
           "type": "Vandalism",
           "calls": 794,
-          "share": 6.767237705616637
+          "share": 6.76781452437777
         },
         {
           "type": "Harassment / Threats / Stalking",
           "calls": 284,
-          "share": 2.420523310321316
+          "share": 2.42072962836686
         },
         {
           "type": "Assault",
           "calls": 31,
-          "share": 0.2642120514787352
+          "share": 0.26423457211046714
         },
         {
           "type": "Trespassing / Unwanted",
           "calls": 6,
-          "share": 0.051137816415239075
+          "share": 0.05114217524718718
         },
         {
           "type": "HOMEDTNT- TRS HOME DETENTION - TELEPHONE REPORTING UNIT",
           "calls": 1,
-          "share": 0.008522969402539845
+          "share": 0.008523695874531197
         }
       ],
       "demand_profile": {
@@ -1844,13 +1844,13 @@
         "patrol_estimate_calls": 44883,
         "tru_calls_per_day": 35.44565217391305,
         "patrol_estimate_calls_per_day": 487.85869565217394,
-        "event_reports_total": 8779,
+        "event_reports_total": 8780,
         "tru_event_reports": 1927,
-        "patrol_estimate_event_reports": 6852,
+        "patrol_estimate_event_reports": 6853,
         "tru_share_of_total_calls": 6.773429710867397,
-        "tru_share_of_event_reports": 21.9501082127805,
+        "tru_share_of_event_reports": 21.947608200455583,
         "tru_event_report_conversion": 59.092302974547685,
-        "patrol_estimate_event_report_conversion": 15.266359200588195,
+        "patrol_estimate_event_report_conversion": 15.268587215649578,
         "tru_calls_without_event_report": 1334,
         "tru_calls_without_event_report_share": 40.907697025452315,
         "tru_timing": {
@@ -1865,15 +1865,15 @@
           "over_4_hours_share": 8.914847832769752
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 6840,
+          "valid_count": 6841,
           "coverage_share": 100,
-          "average_seconds": 6256.391374269006,
-          "median_seconds": 4826.5,
-          "p90_seconds": 12089.600000000002,
-          "over_1_hour_share": 67.03216374269006,
-          "over_2_hours_share": 28.874269005847953,
-          "over_3_hours_share": 12.982456140350877,
-          "over_4_hours_share": 6.111111111111111
+          "average_seconds": 6255.485893875164,
+          "median_seconds": 4826,
+          "p90_seconds": 12089,
+          "over_1_hour_share": 67.02236515129367,
+          "over_2_hours_share": 28.870048238561612,
+          "over_3_hours_share": 12.980558397895045,
+          "over_4_hours_share": 6.110217804414559
         },
         "routing_outcomes": {
           "remained_tru": 3215,
@@ -2428,15 +2428,15 @@
         "patrol_estimate_calls": 47423,
         "tru_calls_per_day": 45.15384615384615,
         "patrol_estimate_calls_per_day": 521.1318681318681,
-        "event_reports_total": 9491,
-        "tru_event_reports": 2424,
-        "patrol_estimate_event_reports": 7067,
+        "event_reports_total": 9496,
+        "tru_event_reports": 2425,
+        "patrol_estimate_event_reports": 7071,
         "tru_share_of_total_calls": 7.973686253201893,
-        "tru_share_of_event_reports": 25.539985249183438,
-        "tru_event_report_conversion": 58.99245558530056,
-        "patrol_estimate_event_report_conversion": 14.902051747042574,
-        "tru_calls_without_event_report": 1685,
-        "tru_calls_without_event_report_share": 41.007544414699446,
+        "tru_share_of_event_reports": 25.537068239258637,
+        "tru_event_report_conversion": 59.016792406911655,
+        "patrol_estimate_event_report_conversion": 14.910486472808554,
+        "tru_calls_without_event_report": 1684,
+        "tru_calls_without_event_report_share": 40.983207593088345,
         "tru_timing": {
           "valid_count": 4095,
           "coverage_share": 99.65928449744463,
@@ -2449,15 +2449,15 @@
           "over_4_hours_share": 9.27960927960928
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 7051,
+          "valid_count": 7055,
           "coverage_share": 100,
-          "average_seconds": 6166.260814068926,
+          "average_seconds": 6164.847625797307,
           "median_seconds": 4677,
-          "p90_seconds": 11881,
-          "over_1_hour_share": 65.21060842433697,
-          "over_2_hours_share": 27.613104524180965,
-          "over_3_hours_share": 12.693235002127356,
-          "over_4_hours_share": 6.126790526166501
+          "p90_seconds": 11878.200000000003,
+          "over_1_hour_share": 65.20198440822112,
+          "over_2_hours_share": 27.611622962437988,
+          "over_3_hours_share": 12.686038270729979,
+          "over_4_hours_share": 6.123316796598157
         },
         "routing_outcomes": {
           "remained_tru": 4046,
@@ -2504,38 +2504,38 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 592,
-            "share": 35.133531157270035
+            "calls": 591,
+            "share": 35.09501187648456
           },
           {
             "type": "Fraud",
             "calls": 315,
-            "share": 18.694362017804153
+            "share": 18.705463182897862
           },
           {
             "type": "Administrative / Lost or Found Property",
             "calls": 228,
-            "share": 13.531157270029674
+            "share": 13.539192399049881
           },
           {
             "type": "Vehicle Theft",
             "calls": 210,
-            "share": 12.462908011869436
+            "share": 12.470308788598574
           },
           {
             "type": "Vandalism",
             "calls": 159,
-            "share": 9.43620178041543
+            "share": 9.441805225653207
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 154,
-            "share": 9.13946587537092
+            "share": 9.144893111638956
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 27,
-            "share": 1.6023738872403561
+            "share": 1.6033254156769599
           }
         ],
         "demand_profile": {
@@ -2710,13 +2710,13 @@
         "patrol_estimate_calls": 63944,
         "tru_calls_per_day": 4.838356164383562,
         "patrol_estimate_calls_per_day": 87.59452054794521,
-        "event_reports_total": 11087,
+        "event_reports_total": 11088,
         "tru_event_reports": 2068,
-        "patrol_estimate_event_reports": 9019,
+        "patrol_estimate_event_reports": 9020,
         "tru_share_of_total_calls": 5.2344537316971955,
-        "tru_share_of_event_reports": 18.652475872643638,
+        "tru_share_of_event_reports": 18.650793650793652,
         "tru_event_report_conversion": 58.55039637599094,
-        "patrol_estimate_event_report_conversion": 14.104528962842485,
+        "patrol_estimate_event_report_conversion": 14.106092831227324,
         "tru_calls_without_event_report": 1464,
         "tru_calls_without_event_report_share": 41.449603624009065,
         "tru_timing": {
@@ -2731,15 +2731,15 @@
           "over_4_hours_share": 9.525163491612169
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 8990,
+          "valid_count": 8991,
           "coverage_share": 100,
-          "average_seconds": 6550.681090100111,
+          "average_seconds": 6549.959403848293,
           "median_seconds": 5326,
-          "p90_seconds": 12755.1,
-          "over_1_hour_share": 70.43381535038932,
-          "over_2_hours_share": 32.58064516129032,
-          "over_3_hours_share": 14.53837597330367,
-          "over_4_hours_share": 7.074527252502781
+          "p90_seconds": 12755,
+          "over_1_hour_share": 70.42598153709265,
+          "over_2_hours_share": 32.577021465910356,
+          "over_3_hours_share": 14.536758981203427,
+          "over_4_hours_share": 7.073740407073741
         },
         "routing_outcomes": {
           "remained_tru": 3478,
@@ -4453,13 +4453,13 @@
           "patrol_estimate_calls": 7752,
           "tru_calls_per_day": 4.978260869565218,
           "patrol_estimate_calls_per_day": 84.26086956521739,
-          "event_reports_total": 1340,
+          "event_reports_total": 1341,
           "tru_event_reports": 250,
-          "patrol_estimate_event_reports": 1090,
+          "patrol_estimate_event_reports": 1091,
           "tru_share_of_total_calls": 5.5785627283800245,
-          "tru_share_of_event_reports": 18.65671641791045,
+          "tru_share_of_event_reports": 18.64280387770321,
           "tru_event_report_conversion": 54.58515283842795,
-          "patrol_estimate_event_report_conversion": 14.060887512899898,
+          "patrol_estimate_event_report_conversion": 14.073787409700723,
           "tru_calls_without_event_report": 208,
           "tru_calls_without_event_report_share": 45.414847161572055,
           "tru_timing": {
@@ -4474,15 +4474,15 @@
             "over_4_hours_share": 9.010989010989011
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1087,
+            "valid_count": 1088,
             "coverage_share": 100,
-            "average_seconds": 6333.615455381785,
-            "median_seconds": 5412,
-            "p90_seconds": 11989.199999999997,
-            "over_1_hour_share": 70.56117755289787,
-            "over_2_hours_share": 32.93468261269549,
-            "over_3_hours_share": 13.431462741490341,
-            "over_4_hours_share": 5.335786568537258
+            "average_seconds": 6327.851102941177,
+            "median_seconds": 5409,
+            "p90_seconds": 11979.900000000007,
+            "over_1_hour_share": 70.49632352941177,
+            "over_2_hours_share": 32.904411764705884,
+            "over_3_hours_share": 13.419117647058822,
+            "over_4_hours_share": 5.330882352941177
           },
           "routing_outcomes": {
             "remained_tru": 453,
@@ -5298,15 +5298,15 @@
         "patrol_estimate_calls": 56104,
         "tru_calls_per_day": 7.623287671232877,
         "patrol_estimate_calls_per_day": 76.85479452054794,
-        "event_reports_total": 12856,
-        "tru_event_reports": 3342,
+        "event_reports_total": 12857,
+        "tru_event_reports": 3343,
         "patrol_estimate_event_reports": 9514,
         "tru_share_of_total_calls": 9.023982876323599,
-        "tru_share_of_event_reports": 25.995644057249535,
-        "tru_event_report_conversion": 60.05390835579515,
+        "tru_share_of_event_reports": 26.001400015555724,
+        "tru_event_report_conversion": 60.07187780772686,
         "patrol_estimate_event_report_conversion": 16.957792670754312,
-        "tru_calls_without_event_report": 2223,
-        "tru_calls_without_event_report_share": 39.94609164420485,
+        "tru_calls_without_event_report": 2222,
+        "tru_calls_without_event_report_share": 39.928122192273136,
         "tru_timing": {
           "valid_count": 5544,
           "coverage_share": 99.62264150943396,
@@ -5384,43 +5384,43 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 741,
-            "share": 33.33333333333333
+            "calls": 740,
+            "share": 33.3033303330333
           },
           {
             "type": "Fraud",
             "calls": 522,
-            "share": 23.481781376518217
+            "share": 23.492349234923495
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 284,
-            "share": 12.77552856500225
+            "share": 12.781278127812781
           },
           {
             "type": "Administrative / Lost or Found Property",
             "calls": 274,
-            "share": 12.325686009896536
+            "share": 12.33123312331233
           },
           {
             "type": "Vehicle Theft",
             "calls": 195,
-            "share": 8.771929824561402
+            "share": 8.775877587758776
           },
           {
             "type": "Vandalism",
             "calls": 133,
-            "share": 5.982905982905983
+            "share": 5.985598559855985
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 69,
-            "share": 3.1039136302294197
+            "share": 3.1053105310531053
           },
           {
             "type": "Assault",
             "calls": 5,
-            "share": 0.22492127755285649
+            "share": 0.22502250225022502
           }
         ],
         "demand_profile": {
@@ -7600,15 +7600,15 @@
           "patrol_estimate_calls": 7107,
           "tru_calls_per_day": 7.9010989010989015,
           "patrol_estimate_calls_per_day": 78.0989010989011,
-          "event_reports_total": 1592,
-          "tru_event_reports": 412,
+          "event_reports_total": 1593,
+          "tru_event_reports": 413,
           "patrol_estimate_event_reports": 1180,
           "tru_share_of_total_calls": 9.187324303603374,
-          "tru_share_of_event_reports": 25.879396984924625,
-          "tru_event_report_conversion": 57.301808066759385,
+          "tru_share_of_event_reports": 25.925925925925924,
+          "tru_event_report_conversion": 57.44089012517385,
           "patrol_estimate_event_report_conversion": 16.603348811031378,
-          "tru_calls_without_event_report": 307,
-          "tru_calls_without_event_report_share": 42.698191933240615,
+          "tru_calls_without_event_report": 306,
+          "tru_calls_without_event_report_share": 42.55910987482615,
           "tru_timing": {
             "valid_count": 714,
             "coverage_share": 99.30458970792768,
@@ -7676,38 +7676,38 @@
           "top_tru_call_types_without_event_report": [
             {
               "type": "Theft",
-              "calls": 109,
-              "share": 35.50488599348534
+              "calls": 108,
+              "share": 35.294117647058826
             },
             {
               "type": "Fraud",
               "calls": 59,
-              "share": 19.218241042345277
+              "share": 19.28104575163399
             },
             {
               "type": "Administrative / Lost or Found Property",
               "calls": 48,
-              "share": 15.63517915309446
+              "share": 15.686274509803921
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 33,
-              "share": 10.749185667752444
+              "share": 10.784313725490197
             },
             {
               "type": "Vehicle Theft",
               "calls": 29,
-              "share": 9.446254071661238
+              "share": 9.477124183006536
             },
             {
               "type": "Vandalism",
               "calls": 28,
-              "share": 9.120521172638437
+              "share": 9.15032679738562
             },
             {
               "type": "Harassment / Threats / Stalking",
               "calls": 1,
-              "share": 0.32573289902280134
+              "share": 0.32679738562091504
             }
           ],
           "demand_profile": {
@@ -7881,13 +7881,13 @@
         "patrol_estimate_calls": 72541,
         "tru_calls_per_day": 10.394520547945206,
         "patrol_estimate_calls_per_day": 99.37123287671233,
-        "event_reports_total": 16027,
+        "event_reports_total": 16028,
         "tru_event_reports": 4842,
-        "patrol_estimate_event_reports": 11185,
+        "patrol_estimate_event_reports": 11186,
         "tru_share_of_total_calls": 9.469730060277803,
-        "tru_share_of_event_reports": 30.211518063268233,
+        "tru_share_of_event_reports": 30.209633142001497,
         "tru_event_report_conversion": 63.811280969952556,
-        "patrol_estimate_event_report_conversion": 15.418866572007556,
+        "patrol_estimate_event_report_conversion": 15.420245102769467,
         "tru_calls_without_event_report": 2746,
         "tru_calls_without_event_report_share": 36.188719030047444,
         "tru_timing": {
@@ -7902,15 +7902,15 @@
           "over_4_hours_share": 8.99366085578447
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 11176,
+          "valid_count": 11177,
           "coverage_share": 100,
-          "average_seconds": 6064.7189513242665,
+          "average_seconds": 6064.853359577704,
           "median_seconds": 4467,
-          "p90_seconds": 12051,
-          "over_1_hour_share": 61.85576234788833,
-          "over_2_hours_share": 26.90586972083035,
-          "over_3_hours_share": 12.91159627773801,
-          "over_4_hours_share": 6.182891911238368
+          "p90_seconds": 12050.8,
+          "over_1_hour_share": 61.859175091706184,
+          "over_2_hours_share": 26.91240941218574,
+          "over_3_hours_share": 12.910441084369687,
+          "over_4_hours_share": 6.182338731323253
         },
         "routing_outcomes": {
           "remained_tru": 7486,
@@ -10198,13 +10198,13 @@
           "patrol_estimate_calls": 9138,
           "tru_calls_per_day": 11.945054945054945,
           "patrol_estimate_calls_per_day": 100.41758241758242,
-          "event_reports_total": 2042,
+          "event_reports_total": 2043,
           "tru_event_reports": 679,
-          "patrol_estimate_event_reports": 1363,
+          "patrol_estimate_event_reports": 1364,
           "tru_share_of_total_calls": 10.63080684596577,
-          "tru_share_of_event_reports": 33.25171400587659,
+          "tru_share_of_event_reports": 33.23543808125306,
           "tru_event_report_conversion": 62.4655013799448,
-          "patrol_estimate_event_report_conversion": 14.915736485007661,
+          "patrol_estimate_event_report_conversion": 14.926679798643027,
           "tru_calls_without_event_report": 408,
           "tru_calls_without_event_report_share": 37.534498620055196,
           "tru_timing": {
@@ -10219,15 +10219,15 @@
             "over_4_hours_share": 7.834101382488479
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1361,
+            "valid_count": 1362,
             "coverage_share": 100,
-            "average_seconds": 5882.396032329169,
-            "median_seconds": 4372,
-            "p90_seconds": 11604,
-            "over_1_hour_share": 60.83761939750184,
-            "over_2_hours_share": 25.642909625275536,
-            "over_3_hours_share": 11.829537105069802,
-            "over_4_hours_share": 5.878030859662013
+            "average_seconds": 5883.632892804699,
+            "median_seconds": 4374.5,
+            "p90_seconds": 11602.7,
+            "over_1_hour_share": 60.86637298091042,
+            "over_2_hours_share": 25.697503671071953,
+            "over_3_hours_share": 11.820851688693098,
+            "over_4_hours_share": 5.873715124816446
           },
           "routing_outcomes": {
             "remained_tru": 1067,
@@ -10479,13 +10479,13 @@
         "patrol_estimate_calls": 68624,
         "tru_calls_per_day": 7.96986301369863,
         "patrol_estimate_calls_per_day": 94.0054794520548,
-        "event_reports_total": 13535,
+        "event_reports_total": 13536,
         "tru_event_reports": 3568,
-        "patrol_estimate_event_reports": 9967,
+        "patrol_estimate_event_reports": 9968,
         "tru_share_of_total_calls": 7.815480508315198,
-        "tru_share_of_event_reports": 26.361285555966013,
+        "tru_share_of_event_reports": 26.35933806146572,
         "tru_event_report_conversion": 61.32691646613957,
-        "patrol_estimate_event_report_conversion": 14.524073210538587,
+        "patrol_estimate_event_report_conversion": 14.525530426672884,
         "tru_calls_without_event_report": 2250,
         "tru_calls_without_event_report_share": 38.67308353386043,
         "tru_timing": {
@@ -10500,15 +10500,15 @@
           "over_4_hours_share": 10.609714088873579
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 9951,
+          "valid_count": 9952,
           "coverage_share": 100,
-          "average_seconds": 6302.061702341473,
-          "median_seconds": 4828,
+          "average_seconds": 6301.905345659164,
+          "median_seconds": 4827.5,
           "p90_seconds": 11856,
-          "over_1_hour_share": 66.89779921615919,
-          "over_2_hours_share": 28.65038689578937,
-          "over_3_hours_share": 12.762536428499649,
-          "over_4_hours_share": 5.878806150135665
+          "over_1_hour_share": 66.90112540192926,
+          "over_2_hours_share": 28.647508038585208,
+          "over_3_hours_share": 12.761254019292604,
+          "over_4_hours_share": 5.878215434083602
         },
         "routing_outcomes": {
           "remained_tru": 5751,
@@ -12796,13 +12796,13 @@
           "patrol_estimate_calls": 8640,
           "tru_calls_per_day": 8.274725274725276,
           "patrol_estimate_calls_per_day": 94.94505494505495,
-          "event_reports_total": 1689,
+          "event_reports_total": 1690,
           "tru_event_reports": 439,
-          "patrol_estimate_event_reports": 1250,
+          "patrol_estimate_event_reports": 1251,
           "tru_share_of_total_calls": 8.016608112424144,
-          "tru_share_of_event_reports": 25.991711071640022,
+          "tru_share_of_event_reports": 25.976331360946748,
           "tru_event_report_conversion": 58.300132802124836,
-          "patrol_estimate_event_report_conversion": 14.467592592592593,
+          "patrol_estimate_event_report_conversion": 14.479166666666668,
           "tru_calls_without_event_report": 314,
           "tru_calls_without_event_report_share": 41.699867197875164,
           "tru_timing": {
@@ -12817,15 +12817,15 @@
             "over_4_hours_share": 11.18508655126498
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1249,
+            "valid_count": 1250,
             "coverage_share": 100,
-            "average_seconds": 6171.3082465972775,
-            "median_seconds": 4679,
-            "p90_seconds": 11566.400000000001,
-            "over_1_hour_share": 65.25220176140913,
-            "over_2_hours_share": 26.901521216973578,
-            "over_3_hours_share": 11.849479583666934,
-            "over_4_hours_share": 5.204163330664532
+            "average_seconds": 6170.168,
+            "median_seconds": 4680,
+            "p90_seconds": 11563.200000000004,
+            "over_1_hour_share": 65.28,
+            "over_2_hours_share": 26.88,
+            "over_3_hours_share": 11.84,
+            "over_4_hours_share": 5.2
           },
           "routing_outcomes": {
             "remained_tru": 745,
@@ -13077,13 +13077,13 @@
         "patrol_estimate_calls": 45057,
         "tru_calls_per_day": 4.226027397260274,
         "patrol_estimate_calls_per_day": 61.721917808219175,
-        "event_reports_total": 9620,
+        "event_reports_total": 9621,
         "tru_event_reports": 1845,
-        "patrol_estimate_event_reports": 7775,
+        "patrol_estimate_event_reports": 7776,
         "tru_share_of_total_calls": 6.408125960699597,
-        "tru_share_of_event_reports": 19.178794178794178,
+        "tru_share_of_event_reports": 19.176800748362957,
         "tru_event_report_conversion": 59.80551053484603,
-        "patrol_estimate_event_report_conversion": 17.255920278758015,
+        "patrol_estimate_event_report_conversion": 17.258139689726345,
         "tru_calls_without_event_report": 1240,
         "tru_calls_without_event_report_share": 40.19448946515397,
         "tru_timing": {
@@ -13098,15 +13098,15 @@
           "over_4_hours_share": 10.24390243902439
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 7766,
+          "valid_count": 7767,
           "coverage_share": 100,
-          "average_seconds": 6241.770023177955,
+          "average_seconds": 6241.268572164285,
           "median_seconds": 4780,
-          "p90_seconds": 11922.5,
-          "over_1_hour_share": 66.01854236415143,
-          "over_2_hours_share": 28.18696883852691,
-          "over_3_hours_share": 12.799381921194952,
-          "over_4_hours_share": 6.052021632758177
+          "p90_seconds": 11922.400000000001,
+          "over_1_hour_share": 66.0100424874469,
+          "over_2_hours_share": 28.183339770825288,
+          "over_3_hours_share": 12.797734002832497,
+          "over_4_hours_share": 6.051242435946955
         },
         "routing_outcomes": {
           "remained_tru": 3036,
@@ -15419,13 +15419,13 @@
           "patrol_estimate_calls": 5989,
           "tru_calls_per_day": 4.483516483516484,
           "patrol_estimate_calls_per_day": 65.81318681318682,
-          "event_reports_total": 1272,
+          "event_reports_total": 1273,
           "tru_event_reports": 238,
-          "patrol_estimate_event_reports": 1034,
+          "patrol_estimate_event_reports": 1035,
           "tru_share_of_total_calls": 6.377989682663748,
-          "tru_share_of_event_reports": 18.71069182389937,
+          "tru_share_of_event_reports": 18.695993715632365,
           "tru_event_report_conversion": 58.333333333333336,
-          "patrol_estimate_event_report_conversion": 17.26498580731341,
+          "patrol_estimate_event_report_conversion": 17.281683085657036,
           "tru_calls_without_event_report": 170,
           "tru_calls_without_event_report_share": 41.66666666666667,
           "tru_timing": {
@@ -15440,15 +15440,15 @@
             "over_4_hours_share": 9.558823529411764
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1033,
+            "valid_count": 1034,
             "coverage_share": 100,
-            "average_seconds": 5859.058083252662,
-            "median_seconds": 4450,
-            "p90_seconds": 10752.800000000001,
-            "over_1_hour_share": 61.56824782187803,
-            "over_2_hours_share": 25.169409486931265,
-            "over_3_hours_share": 9.970958373668925,
-            "over_4_hours_share": 5.324298160696999
+            "average_seconds": 5855.661508704062,
+            "median_seconds": 4443.5,
+            "p90_seconds": 10750.2,
+            "over_1_hour_share": 61.50870406189555,
+            "over_2_hours_share": 25.145067698259187,
+            "over_3_hours_share": 9.961315280464216,
+            "over_4_hours_share": 5.319148936170213
           },
           "routing_outcomes": {
             "remained_tru": 401,
@@ -15700,13 +15700,13 @@
         "patrol_estimate_calls": 60643,
         "tru_calls_per_day": 6.384931506849315,
         "patrol_estimate_calls_per_day": 83.07260273972602,
-        "event_reports_total": 11508,
+        "event_reports_total": 11509,
         "tru_event_reports": 2855,
-        "patrol_estimate_event_reports": 8653,
+        "patrol_estimate_event_reports": 8654,
         "tru_share_of_total_calls": 7.1373882151169905,
-        "tru_share_of_event_reports": 24.80882864094543,
+        "tru_share_of_event_reports": 24.806673038491613,
         "tru_event_report_conversion": 61.25295001072731,
-        "patrol_estimate_event_report_conversion": 14.268753194927692,
+        "patrol_estimate_event_report_conversion": 14.270402189865278,
         "tru_calls_without_event_report": 1806,
         "tru_calls_without_event_report_share": 38.74704998927269,
         "tru_timing": {
@@ -15721,15 +15721,15 @@
           "over_4_hours_share": 9.292320929232092
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 8640,
+          "valid_count": 8641,
           "coverage_share": 100,
-          "average_seconds": 6007.47962962963,
-          "median_seconds": 4609.5,
-          "p90_seconds": 11384.000000000004,
-          "over_1_hour_share": 64.52546296296296,
-          "over_2_hours_share": 25.925925925925924,
-          "over_3_hours_share": 11.643518518518519,
-          "over_4_hours_share": 5.439814814814815
+          "average_seconds": 6006.788450410832,
+          "median_seconds": 4607,
+          "p90_seconds": 11383,
+          "over_1_hour_share": 64.51799560236083,
+          "over_2_hours_share": 25.922925587316282,
+          "over_3_hours_share": 11.642171045017937,
+          "over_4_hours_share": 5.439185279481541
         },
         "routing_outcomes": {
           "remained_tru": 4594,
@@ -18037,13 +18037,13 @@
           "patrol_estimate_calls": 8093,
           "tru_calls_per_day": 7.318681318681318,
           "patrol_estimate_calls_per_day": 88.93406593406593,
-          "event_reports_total": 1460,
+          "event_reports_total": 1461,
           "tru_event_reports": 386,
-          "patrol_estimate_event_reports": 1074,
+          "patrol_estimate_event_reports": 1075,
           "tru_share_of_total_calls": 7.603607717776002,
-          "tru_share_of_event_reports": 26.438356164383563,
+          "tru_share_of_event_reports": 26.420260095824776,
           "tru_event_report_conversion": 57.95795795795796,
-          "patrol_estimate_event_report_conversion": 13.27072778944767,
+          "patrol_estimate_event_report_conversion": 13.283084146793525,
           "tru_calls_without_event_report": 280,
           "tru_calls_without_event_report_share": 42.04204204204204,
           "tru_timing": {
@@ -18058,15 +18058,15 @@
             "over_4_hours_share": 9.818731117824774
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1072,
+            "valid_count": 1073,
             "coverage_share": 100,
-            "average_seconds": 5791.389925373134,
-            "median_seconds": 4430.5,
-            "p90_seconds": 11220.3,
-            "over_1_hour_share": 63.80597014925373,
-            "over_2_hours_share": 25,
-            "over_3_hours_share": 11.100746268656717,
-            "over_4_hours_share": 4.9440298507462686
+            "average_seconds": 5786.025163094128,
+            "median_seconds": 4427,
+            "p90_seconds": 11218.6,
+            "over_1_hour_share": 63.74650512581547,
+            "over_2_hours_share": 24.976700838769805,
+            "over_3_hours_share": 11.09040074557316,
+            "over_4_hours_share": 4.9394221808014915
           },
           "routing_outcomes": {
             "remained_tru": 650,
@@ -22173,7 +22173,7 @@
       "tru_calls": 3532,
       "tru_calls_per_day": 4.838356164383562,
       "tru_event_reports": 2068,
-      "tru_share_of_event_reports": 18.652475872643638,
+      "tru_share_of_event_reports": 18.650793650793652,
       "tru_event_report_conversion": 58.55039637599094,
       "median_cad_seconds": 5120,
       "p90_cad_seconds": 14024.400000000001
@@ -22183,9 +22183,9 @@
       "total_cfs": 61669,
       "tru_calls": 5565,
       "tru_calls_per_day": 7.623287671232877,
-      "tru_event_reports": 3342,
-      "tru_share_of_event_reports": 25.995644057249535,
-      "tru_event_report_conversion": 60.05390835579515,
+      "tru_event_reports": 3343,
+      "tru_share_of_event_reports": 26.001400015555724,
+      "tru_event_report_conversion": 60.07187780772686,
       "median_cad_seconds": 5199,
       "p90_cad_seconds": 14077.3
     },
@@ -22195,7 +22195,7 @@
       "tru_calls": 7588,
       "tru_calls_per_day": 10.394520547945206,
       "tru_event_reports": 4842,
-      "tru_share_of_event_reports": 30.211518063268233,
+      "tru_share_of_event_reports": 30.209633142001497,
       "tru_event_report_conversion": 63.811280969952556,
       "median_cad_seconds": 5075,
       "p90_cad_seconds": 13847.7
@@ -22206,7 +22206,7 @@
       "tru_calls": 5818,
       "tru_calls_per_day": 7.96986301369863,
       "tru_event_reports": 3568,
-      "tru_share_of_event_reports": 26.361285555966013,
+      "tru_share_of_event_reports": 26.35933806146572,
       "tru_event_report_conversion": 61.32691646613957,
       "median_cad_seconds": 5228.5,
       "p90_cad_seconds": 14773.5
@@ -22217,7 +22217,7 @@
       "tru_calls": 3085,
       "tru_calls_per_day": 4.226027397260274,
       "tru_event_reports": 1845,
-      "tru_share_of_event_reports": 19.178794178794178,
+      "tru_share_of_event_reports": 19.176800748362957,
       "tru_event_report_conversion": 59.80551053484603,
       "median_cad_seconds": 5218,
       "p90_cad_seconds": 14589.8
@@ -22228,7 +22228,7 @@
       "tru_calls": 4661,
       "tru_calls_per_day": 6.384931506849315,
       "tru_event_reports": 2855,
-      "tru_share_of_event_reports": 24.80882864094543,
+      "tru_share_of_event_reports": 24.806673038491613,
       "tru_event_report_conversion": 61.25295001072731,
       "median_cad_seconds": 5097,
       "p90_cad_seconds": 13823.399999999998
