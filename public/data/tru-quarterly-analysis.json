@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T14:22:52.449Z",
+  "generated_at": "2026-11-03T17:12:18.209Z",
   "source": {
     "domain": "data.montgomerycountymd.gov",
     "dataset_id": "98cc-bc7d",
@@ -36,15 +36,15 @@
       "patrol_estimate_calls": 363880,
       "tru_calls_per_day": 40.536986301369865,
       "patrol_estimate_calls_per_day": 498.4657534246575,
-      "event_reports_total": 73341,
-      "tru_event_reports": 18105,
-      "patrol_estimate_event_reports": 55236,
+      "event_reports_total": 73397,
+      "tru_event_reports": 18132,
+      "patrol_estimate_event_reports": 55265,
       "tru_share_of_total_calls": 7.520738451528953,
-      "tru_share_of_event_reports": 24.686055548738086,
-      "tru_event_report_conversion": 61.18207623682076,
-      "patrol_estimate_event_report_conversion": 15.17972958118061,
-      "tru_calls_without_event_report": 11487,
-      "tru_calls_without_event_report_share": 38.81792376317924,
+      "tru_share_of_event_reports": 24.704006975761953,
+      "tru_event_report_conversion": 61.273317112733174,
+      "patrol_estimate_event_report_conversion": 15.18769924150819,
+      "tru_calls_without_event_report": 11460,
+      "tru_calls_without_event_report_share": 38.726682887266826,
       "tru_timing": {
         "valid_count": 29520,
         "coverage_share": 99.7566909975669,
@@ -57,15 +57,15 @@
         "over_4_hours_share": 8.218157181571815
       },
       "patrol_estimate_report_call_timing": {
-        "valid_count": 55138,
+        "valid_count": 55166,
         "coverage_share": 100,
-        "average_seconds": 6248.91115020494,
+        "average_seconds": 6248.123608744517,
         "median_seconds": 4836,
-        "p90_seconds": 11962.900000000009,
-        "over_1_hour_share": 66.79241176683956,
-        "over_2_hours_share": 28.581014908048896,
-        "over_3_hours_share": 12.793354855090863,
-        "over_4_hours_share": 6.035764808299176
+        "p90_seconds": 11961.5,
+        "over_1_hour_share": 66.78932675923576,
+        "over_2_hours_share": 28.575571910234565,
+        "over_3_hours_share": 12.788674183373816,
+        "over_4_hours_share": 6.034514012253925
       },
       "routing_outcomes": {
         "remained_tru": 29200,
@@ -127,53 +127,53 @@
       "top_tru_call_types_without_event_report": [
         {
           "type": "Theft",
-          "calls": 3760,
-          "share": 32.73265430486637
+          "calls": 3745,
+          "share": 32.67888307155323
         },
         {
           "type": "Fraud",
-          "calls": 2353,
-          "share": 20.484025420040044
+          "calls": 2347,
+          "share": 20.479930191972077
         },
         {
           "type": "Vehicle Theft",
-          "calls": 1576,
-          "share": 13.719857229912074
+          "calls": 1575,
+          "share": 13.743455497382199
         },
         {
           "type": "Administrative / Lost or Found Property",
-          "calls": 1511,
-          "share": 13.154000174109864
+          "calls": 1507,
+          "share": 13.150087260034905
         },
         {
           "type": "Follow Up / Supplemental",
           "calls": 1256,
-          "share": 10.934099416731957
+          "share": 10.959860383944154
         },
         {
           "type": "Vandalism",
-          "calls": 776,
-          "share": 6.755462696961782
+          "calls": 775,
+          "share": 6.7626527050610825
         },
         {
           "type": "Harassment / Threats / Stalking",
           "calls": 233,
-          "share": 2.0283799077217726
+          "share": 2.0331588132635257
         },
         {
           "type": "Assault",
           "calls": 17,
-          "share": 0.1479933838251937
+          "share": 0.14834205933682373
         },
         {
           "type": "Trespassing / Unwanted",
           "calls": 4,
-          "share": 0.03482197266475146
+          "share": 0.034904013961605584
         },
         {
           "type": "HOMEDTNT- TRS HOME DETENTION - TELEPHONE REPORTING UNIT",
           "calls": 1,
-          "share": 0.008705493166187865
+          "share": 0.008726003490401396
         }
       ],
       "demand_profile": {
@@ -349,13 +349,13 @@
         "patrol_estimate_calls": 47619,
         "tru_calls_per_day": 44.17391304347826,
         "patrol_estimate_calls_per_day": 517.5978260869565,
-        "event_reports_total": 9806,
+        "event_reports_total": 9807,
         "tru_event_reports": 2549,
-        "patrol_estimate_event_reports": 7257,
+        "patrol_estimate_event_reports": 7258,
         "tru_share_of_total_calls": 7.863320627672541,
-        "tru_share_of_event_reports": 25.99428921068733,
+        "tru_share_of_event_reports": 25.9916386254716,
         "tru_event_report_conversion": 62.72145669291339,
-        "patrol_estimate_event_report_conversion": 15.23971523971524,
+        "patrol_estimate_event_report_conversion": 15.241815241815242,
         "tru_calls_without_event_report": 1515,
         "tru_calls_without_event_report_share": 37.278543307086615,
         "tru_timing": {
@@ -370,15 +370,15 @@
           "over_4_hours_share": 9.124537607891492
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 7241,
+          "valid_count": 7242,
           "coverage_share": 100,
-          "average_seconds": 6548.2832481701425,
-          "median_seconds": 5059,
-          "p90_seconds": 12532,
-          "over_1_hour_share": 68.34691340975003,
-          "over_2_hours_share": 31.459743129402018,
-          "over_3_hours_share": 14.08645214749344,
-          "over_4_hours_share": 6.946554343322746
+          "average_seconds": 6548.185722176195,
+          "median_seconds": 5060.5,
+          "p90_seconds": 12531.800000000001,
+          "over_1_hour_share": 68.35128417564209,
+          "over_2_hours_share": 31.455399061032864,
+          "over_3_hours_share": 14.084507042253522,
+          "over_4_hours_share": 6.945595139464237
         },
         "routing_outcomes": {
           "remained_tru": 4013,
@@ -2408,15 +2408,15 @@
         "patrol_estimate_calls": 45342,
         "tru_calls_per_day": 39.46739130434783,
         "patrol_estimate_calls_per_day": 492.8478260869565,
-        "event_reports_total": 8669,
-        "tru_event_reports": 2162,
-        "patrol_estimate_event_reports": 6507,
+        "event_reports_total": 8724,
+        "tru_event_reports": 2189,
+        "patrol_estimate_event_reports": 6535,
         "tru_share_of_total_calls": 7.414289506462744,
-        "tru_share_of_event_reports": 24.939439381704926,
-        "tru_event_report_conversion": 59.542825667860086,
-        "patrol_estimate_event_report_conversion": 14.350932909884875,
-        "tru_calls_without_event_report": 1469,
-        "tru_calls_without_event_report_share": 40.45717433213991,
+        "tru_share_of_event_reports": 25.091701054562126,
+        "tru_event_report_conversion": 60.286422473147894,
+        "patrol_estimate_event_report_conversion": 14.412685810065723,
+        "tru_calls_without_event_report": 1442,
+        "tru_calls_without_event_report_share": 39.713577526852106,
         "tru_timing": {
           "valid_count": 3630,
           "coverage_share": 99.97245937758194,
@@ -2429,15 +2429,15 @@
           "over_4_hours_share": 4.793388429752066
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 6496,
+          "valid_count": 6523,
           "coverage_share": 100,
-          "average_seconds": 6248.237068965517,
-          "median_seconds": 4873.5,
-          "p90_seconds": 11780.5,
-          "over_1_hour_share": 67.5954433497537,
-          "over_2_hours_share": 28.23275862068966,
-          "over_3_hours_share": 12.284482758620689,
-          "over_4_hours_share": 5.865147783251231
+          "average_seconds": 6241.64188256937,
+          "median_seconds": 4869,
+          "p90_seconds": 11762.800000000001,
+          "over_1_hour_share": 67.56093821861107,
+          "over_2_hours_share": 28.192549440441518,
+          "over_3_hours_share": 12.24896520006132,
+          "over_4_hours_share": 5.85620113444734
         },
         "routing_outcomes": {
           "remained_tru": 3596,
@@ -2489,43 +2489,43 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 466,
-            "share": 31.722260040844112
+            "calls": 451,
+            "share": 31.27600554785021
           },
           {
             "type": "Fraud",
-            "calls": 299,
-            "share": 20.353982300884958
+            "calls": 293,
+            "share": 20.31900138696255
           },
           {
             "type": "Administrative / Lost or Found Property",
-            "calls": 217,
-            "share": 14.771953710006807
+            "calls": 213,
+            "share": 14.771151178918169
           },
           {
             "type": "Vehicle Theft",
-            "calls": 208,
-            "share": 14.15929203539823
+            "calls": 207,
+            "share": 14.35506241331484
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 150,
-            "share": 10.211027910142954
+            "share": 10.402219140083217
           },
           {
             "type": "Vandalism",
-            "calls": 104,
-            "share": 7.079646017699115
+            "calls": 103,
+            "share": 7.142857142857142
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 24,
-            "share": 1.6337644656228727
+            "share": 1.6643550624133148
           },
           {
             "type": "Trespassing / Unwanted",
             "calls": 1,
-            "share": 0.06807351940095302
+            "share": 0.06934812760055478
           }
         ],
         "demand_profile": {
@@ -2700,15 +2700,15 @@
         "patrol_estimate_calls": 64019,
         "tru_calls_per_day": 4.7027397260273975,
         "patrol_estimate_calls_per_day": 87.6972602739726,
-        "event_reports_total": 11056,
-        "tru_event_reports": 1994,
-        "patrol_estimate_event_reports": 9062,
+        "event_reports_total": 11066,
+        "tru_event_reports": 1997,
+        "patrol_estimate_event_reports": 9069,
         "tru_share_of_total_calls": 5.089545158038309,
-        "tru_share_of_event_reports": 18.03545586107091,
-        "tru_event_report_conversion": 58.08330905913196,
-        "patrol_estimate_event_report_conversion": 14.1551726831097,
-        "tru_calls_without_event_report": 1439,
-        "tru_calls_without_event_report_share": 41.916690940868044,
+        "tru_share_of_event_reports": 18.04626784746069,
+        "tru_event_report_conversion": 58.17069618409554,
+        "patrol_estimate_event_report_conversion": 14.166106937003079,
+        "tru_calls_without_event_report": 1436,
+        "tru_calls_without_event_report_share": 41.82930381590445,
         "tru_timing": {
           "valid_count": 3419,
           "coverage_share": 99.59219341683658,
@@ -2721,15 +2721,15 @@
           "over_4_hours_share": 7.8970459198596075
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 9026,
+          "valid_count": 9033,
           "coverage_share": 100,
-          "average_seconds": 6589.053955240416,
-          "median_seconds": 5379,
-          "p90_seconds": 12758.5,
-          "over_1_hour_share": 70.64037225792156,
-          "over_2_hours_share": 32.86062486151119,
-          "over_3_hours_share": 14.602260137380899,
-          "over_4_hours_share": 7.0241524484821625
+          "average_seconds": 6585.670984169157,
+          "median_seconds": 5377,
+          "p90_seconds": 12757.6,
+          "over_1_hour_share": 70.60777150448357,
+          "over_2_hours_share": 32.8462304882099,
+          "over_3_hours_share": 14.590944315288388,
+          "over_4_hours_share": 7.0187091774604236
         },
         "routing_outcomes": {
           "remained_tru": 3387,
@@ -2787,42 +2787,42 @@
           {
             "type": "Theft",
             "calls": 394,
-            "share": 27.38012508686588
+            "share": 27.437325905292482
           },
           {
             "type": "Fraud",
-            "calls": 379,
-            "share": 26.337734537873526
+            "calls": 377,
+            "share": 26.253481894150415
           },
           {
             "type": "Administrative / Lost or Found Property",
-            "calls": 216,
-            "share": 15.010423905489922
+            "calls": 215,
+            "share": 14.972144846796656
           },
           {
             "type": "Vehicle Theft",
             "calls": 193,
-            "share": 13.412091730368312
+            "share": 13.440111420612814
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 156,
-            "share": 10.840861709520501
+            "share": 10.86350974930362
           },
           {
             "type": "Vandalism",
             "calls": 74,
-            "share": 5.142460041695622
+            "share": 5.153203342618385
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 26,
-            "share": 1.8068102849200833
+            "share": 1.8105849582172702
           },
           {
             "type": "Trespassing / Unwanted",
             "calls": 1,
-            "share": 0.06949270326615706
+            "share": 0.06963788300835655
           }
         ],
         "demand_profile": {
@@ -4992,15 +4992,15 @@
           "patrol_estimate_calls": 8122,
           "tru_calls_per_day": 4.25,
           "patrol_estimate_calls_per_day": 88.28260869565217,
-          "event_reports_total": 1425,
-          "tru_event_reports": 217,
-          "patrol_estimate_event_reports": 1208,
+          "event_reports_total": 1435,
+          "tru_event_reports": 220,
+          "patrol_estimate_event_reports": 1215,
           "tru_share_of_total_calls": 4.592975449312816,
-          "tru_share_of_event_reports": 15.228070175438596,
-          "tru_event_report_conversion": 55.49872122762148,
-          "patrol_estimate_event_report_conversion": 14.873183944841173,
-          "tru_calls_without_event_report": 174,
-          "tru_calls_without_event_report_share": 44.50127877237852,
+          "tru_share_of_event_reports": 15.33101045296167,
+          "tru_event_report_conversion": 56.26598465473146,
+          "patrol_estimate_event_report_conversion": 14.959369613395715,
+          "tru_calls_without_event_report": 171,
+          "tru_calls_without_event_report_share": 43.73401534526854,
           "tru_timing": {
             "valid_count": 391,
             "coverage_share": 100,
@@ -5013,15 +5013,15 @@
             "over_4_hours_share": 3.580562659846547
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1201,
+            "valid_count": 1208,
             "coverage_share": 100,
-            "average_seconds": 6620.363863447127,
-            "median_seconds": 5331,
-            "p90_seconds": 12292,
-            "over_1_hour_share": 71.52373022481265,
-            "over_2_hours_share": 29.891756869275603,
-            "over_3_hours_share": 13.488759367194007,
-            "over_4_hours_share": 6.411323896752706
+            "average_seconds": 6594.885761589404,
+            "median_seconds": 5328.5,
+            "p90_seconds": 12224.799999999996,
+            "over_1_hour_share": 71.27483443708608,
+            "over_2_hours_share": 29.80132450331126,
+            "over_3_hours_share": 13.410596026490065,
+            "over_4_hours_share": 6.3741721854304645
           },
           "routing_outcomes": {
             "remained_tru": 389,
@@ -5068,38 +5068,38 @@
           "top_tru_call_types_without_event_report": [
             {
               "type": "Fraud",
-              "calls": 59,
-              "share": 33.90804597701149
+              "calls": 57,
+              "share": 33.33333333333333
             },
             {
               "type": "Theft",
               "calls": 39,
-              "share": 22.413793103448278
+              "share": 22.807017543859647
             },
             {
               "type": "Administrative / Lost or Found Property",
-              "calls": 23,
-              "share": 13.218390804597702
+              "calls": 22,
+              "share": 12.865497076023392
             },
             {
               "type": "Vehicle Theft",
               "calls": 22,
-              "share": 12.643678160919542
+              "share": 12.865497076023392
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 17,
-              "share": 9.770114942528735
+              "share": 9.941520467836257
             },
             {
               "type": "Vandalism",
               "calls": 8,
-              "share": 4.597701149425287
+              "share": 4.678362573099415
             },
             {
               "type": "Harassment / Threats / Stalking",
               "calls": 6,
-              "share": 3.4482758620689653
+              "share": 3.508771929824561
             }
           ],
           "demand_profile": {
@@ -5273,15 +5273,15 @@
         "patrol_estimate_calls": 55893,
         "tru_calls_per_day": 7.4301369863013695,
         "patrol_estimate_calls_per_day": 76.56575342465753,
-        "event_reports_total": 12567,
-        "tru_event_reports": 3298,
-        "patrol_estimate_event_reports": 9269,
+        "event_reports_total": 12575,
+        "tru_event_reports": 3302,
+        "patrol_estimate_event_reports": 9273,
         "tru_share_of_total_calls": 8.845833944909243,
-        "tru_share_of_event_reports": 26.24333572053792,
-        "tru_event_report_conversion": 60.80383480825958,
-        "patrol_estimate_event_report_conversion": 16.5834719911259,
-        "tru_calls_without_event_report": 2126,
-        "tru_calls_without_event_report_share": 39.19616519174041,
+        "tru_share_of_event_reports": 26.258449304174952,
+        "tru_event_report_conversion": 60.87758112094396,
+        "patrol_estimate_event_report_conversion": 16.590628522355214,
+        "tru_calls_without_event_report": 2122,
+        "tru_calls_without_event_report_share": 39.12241887905605,
         "tru_timing": {
           "valid_count": 5406,
           "coverage_share": 99.66814159292035,
@@ -5294,15 +5294,15 @@
           "over_4_hours_share": 7.806141324454311
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 9252,
+          "valid_count": 9256,
           "coverage_share": 100,
-          "average_seconds": 6483.227518374406,
-          "median_seconds": 5151.5,
-          "p90_seconds": 12137,
-          "over_1_hour_share": 72.0925205361003,
-          "over_2_hours_share": 30.166450497189796,
-          "over_3_hours_share": 13.13229571984436,
-          "over_4_hours_share": 6.22568093385214
+          "average_seconds": 6483.7490276577355,
+          "median_seconds": 5152,
+          "p90_seconds": 12139,
+          "over_1_hour_share": 72.09377700950735,
+          "over_2_hours_share": 30.164217804667242,
+          "over_3_hours_share": 13.13742437337943,
+          "over_4_hours_share": 6.233794295592048
         },
         "routing_outcomes": {
           "remained_tru": 5351,
@@ -5354,43 +5354,43 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 703,
-            "share": 33.06679209783631
+            "calls": 701,
+            "share": 33.034872761545714
           },
           {
             "type": "Fraud",
-            "calls": 479,
-            "share": 22.53057384760113
+            "calls": 477,
+            "share": 22.47879359095193
           },
           {
             "type": "Administrative / Lost or Found Property",
             "calls": 299,
-            "share": 14.063969896519286
+            "share": 14.090480678605088
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 277,
-            "share": 13.029162746942616
+            "share": 13.053722902921772
           },
           {
             "type": "Vehicle Theft",
             "calls": 193,
-            "share": 9.078080903104421
+            "share": 9.095193213949104
           },
           {
             "type": "Vandalism",
             "calls": 115,
-            "share": 5.4092191909689555
+            "share": 5.419415645617342
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 58,
-            "share": 2.7281279397930387
+            "share": 2.7332704995287465
           },
           {
             "type": "Assault",
             "calls": 2,
-            "share": 0.09407337723424271
+            "share": 0.0942507068803016
           }
         ],
         "demand_profile": {
@@ -7555,15 +7555,15 @@
           "patrol_estimate_calls": 6859,
           "tru_calls_per_day": 6.336956521739131,
           "patrol_estimate_calls_per_day": 74.55434782608695,
-          "event_reports_total": 1335,
-          "tru_event_reports": 360,
-          "patrol_estimate_event_reports": 975,
+          "event_reports_total": 1343,
+          "tru_event_reports": 364,
+          "patrol_estimate_event_reports": 979,
           "tru_share_of_total_calls": 7.833915614082236,
-          "tru_share_of_event_reports": 26.96629213483146,
-          "tru_event_report_conversion": 61.74957118353345,
-          "patrol_estimate_event_report_conversion": 14.214900131214463,
-          "tru_calls_without_event_report": 223,
-          "tru_calls_without_event_report_share": 38.25042881646655,
+          "tru_share_of_event_reports": 27.10349962769918,
+          "tru_event_report_conversion": 62.43567753001715,
+          "patrol_estimate_event_report_conversion": 14.273217670214317,
+          "tru_calls_without_event_report": 219,
+          "tru_calls_without_event_report_share": 37.56432246998285,
           "tru_timing": {
             "valid_count": 583,
             "coverage_share": 100,
@@ -7576,15 +7576,15 @@
             "over_4_hours_share": 3.9451114922813035
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 975,
+            "valid_count": 979,
             "coverage_share": 100,
-            "average_seconds": 6167.314871794872,
-            "median_seconds": 4980,
-            "p90_seconds": 11508.800000000003,
-            "over_1_hour_share": 71.28205128205128,
-            "over_2_hours_share": 26.871794871794876,
-            "over_3_hours_share": 11.384615384615385,
-            "over_4_hours_share": 5.0256410256410255
+            "average_seconds": 6173.536261491317,
+            "median_seconds": 4982,
+            "p90_seconds": 11563.6,
+            "over_1_hour_share": 71.29724208375893,
+            "over_2_hours_share": 26.86414708886619,
+            "over_3_hours_share": 11.440245148110318,
+            "over_4_hours_share": 5.107252298263535
           },
           "routing_outcomes": {
             "remained_tru": 582,
@@ -7631,38 +7631,38 @@
           "top_tru_call_types_without_event_report": [
             {
               "type": "Fraud",
-              "calls": 58,
-              "share": 26.00896860986547
+              "calls": 56,
+              "share": 25.570776255707763
             },
             {
               "type": "Administrative / Lost or Found Property",
               "calls": 51,
-              "share": 22.869955156950674
+              "share": 23.28767123287671
             },
             {
               "type": "Theft",
-              "calls": 50,
-              "share": 22.421524663677133
+              "calls": 48,
+              "share": 21.91780821917808
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 26,
-              "share": 11.659192825112108
+              "share": 11.87214611872146
             },
             {
               "type": "Vehicle Theft",
               "calls": 23,
-              "share": 10.31390134529148
+              "share": 10.50228310502283
             },
             {
               "type": "Vandalism",
               "calls": 9,
-              "share": 4.0358744394618835
+              "share": 4.10958904109589
             },
             {
               "type": "Harassment / Threats / Stalking",
               "calls": 6,
-              "share": 2.690582959641256
+              "share": 2.73972602739726
             }
           ],
           "demand_profile": {
@@ -7836,15 +7836,15 @@
         "patrol_estimate_calls": 71280,
         "tru_calls_per_day": 10.331506849315069,
         "patrol_estimate_calls_per_day": 97.64383561643835,
-        "event_reports_total": 15801,
-        "tru_event_reports": 4793,
-        "patrol_estimate_event_reports": 11008,
+        "event_reports_total": 15819,
+        "tru_event_reports": 4804,
+        "patrol_estimate_event_reports": 11015,
         "tru_share_of_total_calls": 9.568394610641699,
-        "tru_share_of_event_reports": 30.333523194734514,
-        "tru_event_report_conversion": 63.550782285865814,
-        "patrol_estimate_event_report_conversion": 15.443322109988777,
-        "tru_calls_without_event_report": 2749,
-        "tru_calls_without_event_report_share": 36.44921771413418,
+        "tru_share_of_event_reports": 30.368544155762056,
+        "tru_event_report_conversion": 63.69663219305224,
+        "patrol_estimate_event_report_conversion": 15.45314253647587,
+        "tru_calls_without_event_report": 2738,
+        "tru_calls_without_event_report_share": 36.30336780694776,
         "tru_timing": {
           "valid_count": 7529,
           "coverage_share": 99.82763192787058,
@@ -7857,15 +7857,15 @@
           "over_4_hours_share": 7.8629300039845935
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 10998,
+          "valid_count": 11005,
           "coverage_share": 100,
-          "average_seconds": 6009.365521003819,
+          "average_seconds": 6008.541844616084,
           "median_seconds": 4464,
-          "p90_seconds": 11987,
-          "over_1_hour_share": 62.01127477723223,
-          "over_2_hours_share": 26.659392616839426,
-          "over_3_hours_share": 12.60229132569558,
-          "over_4_hours_share": 5.973813420621931
+          "p90_seconds": 11985.800000000001,
+          "over_1_hour_share": 62.017264879600184,
+          "over_2_hours_share": 26.651522035438436,
+          "over_3_hours_share": 12.59427532939573,
+          "over_4_hours_share": 5.970013630168106
         },
         "routing_outcomes": {
           "remained_tru": 7445,
@@ -7917,43 +7917,43 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 1041,
-            "share": 37.868315751182244
+            "calls": 1033,
+            "share": 37.72826880934989
           },
           {
             "type": "Vehicle Theft",
-            "calls": 484,
-            "share": 17.606402328119316
+            "calls": 483,
+            "share": 17.640613586559535
           },
           {
             "type": "Fraud",
-            "calls": 368,
-            "share": 13.38668606766097
+            "calls": 366,
+            "share": 13.367421475529584
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 321,
-            "share": 11.67697344488905
+            "share": 11.723886048210373
           },
           {
             "type": "Administrative / Lost or Found Property",
             "calls": 294,
-            "share": 10.694798108403056
+            "share": 10.737764791818845
           },
           {
             "type": "Vandalism",
             "calls": 201,
-            "share": 7.311749727173518
+            "share": 7.341124908692476
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 35,
-            "share": 1.2731902510003639
+            "share": 1.2783053323593865
           },
           {
             "type": "Assault",
             "calls": 5,
-            "share": 0.18188432157148052
+            "share": 0.18261504747991236
           }
         ],
         "demand_profile": {
@@ -10143,15 +10143,15 @@
           "patrol_estimate_calls": 8720,
           "tru_calls_per_day": 10.695652173913043,
           "patrol_estimate_calls_per_day": 94.78260869565217,
-          "event_reports_total": 1885,
-          "tru_event_reports": 602,
-          "patrol_estimate_event_reports": 1283,
+          "event_reports_total": 1903,
+          "tru_event_reports": 613,
+          "patrol_estimate_event_reports": 1290,
           "tru_share_of_total_calls": 10.1401483924155,
-          "tru_share_of_event_reports": 31.93633952254642,
-          "tru_event_report_conversion": 61.17886178861789,
-          "patrol_estimate_event_report_conversion": 14.713302752293577,
-          "tru_calls_without_event_report": 382,
-          "tru_calls_without_event_report_share": 38.82113821138211,
+          "tru_share_of_event_reports": 32.212296374146085,
+          "tru_event_report_conversion": 62.29674796747967,
+          "patrol_estimate_event_report_conversion": 14.793577981651376,
+          "tru_calls_without_event_report": 371,
+          "tru_calls_without_event_report_share": 37.703252032520325,
           "tru_timing": {
             "valid_count": 984,
             "coverage_share": 100,
@@ -10164,15 +10164,15 @@
             "over_4_hours_share": 5.08130081300813
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1282,
+            "valid_count": 1289,
             "coverage_share": 100,
-            "average_seconds": 5996.436037441497,
-            "median_seconds": 4506.5,
-            "p90_seconds": 11744.900000000001,
-            "over_1_hour_share": 63.65054602184087,
-            "over_2_hours_share": 26.67706708268331,
-            "over_3_hours_share": 11.778471138845553,
-            "over_4_hours_share": 5.928237129485179
+            "average_seconds": 5989.474010861132,
+            "median_seconds": 4501,
+            "p90_seconds": 11737.2,
+            "over_1_hour_share": 63.69278510473235,
+            "over_2_hours_share": 26.60977501939488,
+            "over_3_hours_share": 11.714507370054307,
+            "over_4_hours_share": 5.896043444530644
           },
           "routing_outcomes": {
             "remained_tru": 973,
@@ -10214,33 +10214,33 @@
           "top_tru_call_types_without_event_report": [
             {
               "type": "Theft",
-              "calls": 174,
-              "share": 45.54973821989529
+              "calls": 166,
+              "share": 44.74393530997305
             },
             {
               "type": "Vehicle Theft",
-              "calls": 55,
-              "share": 14.397905759162304
+              "calls": 54,
+              "share": 14.555256064690028
             },
             {
               "type": "Fraud",
-              "calls": 45,
-              "share": 11.780104712041885
+              "calls": 43,
+              "share": 11.590296495956872
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 41,
-              "share": 10.732984293193718
+              "share": 11.05121293800539
             },
             {
               "type": "Administrative / Lost or Found Property",
               "calls": 40,
-              "share": 10.471204188481675
+              "share": 10.781671159029651
             },
             {
               "type": "Vandalism",
               "calls": 27,
-              "share": 7.068062827225131
+              "share": 7.277628032345014
             }
           ],
           "demand_profile": {
@@ -10414,15 +10414,15 @@
         "patrol_estimate_calls": 67335,
         "tru_calls_per_day": 7.578082191780822,
         "patrol_estimate_calls_per_day": 92.23972602739725,
-        "event_reports_total": 13101,
-        "tru_event_reports": 3370,
-        "patrol_estimate_event_reports": 9731,
+        "event_reports_total": 13110,
+        "tru_event_reports": 3373,
+        "patrol_estimate_event_reports": 9737,
         "tru_share_of_total_calls": 7.59191403515995,
-        "tru_share_of_event_reports": 25.723227234562245,
-        "tru_event_report_conversion": 60.91829356471439,
-        "patrol_estimate_event_report_conversion": 14.451622484591967,
-        "tru_calls_without_event_report": 2162,
-        "tru_calls_without_event_report_share": 39.08170643528561,
+        "tru_share_of_event_reports": 25.72845156369184,
+        "tru_event_report_conversion": 60.97252349963846,
+        "patrol_estimate_event_report_conversion": 14.460533155119922,
+        "tru_calls_without_event_report": 2159,
+        "tru_calls_without_event_report_share": 39.02747650036154,
         "tru_timing": {
           "valid_count": 5523,
           "coverage_share": 99.83731019522777,
@@ -10435,15 +10435,15 @@
           "over_4_hours_share": 8.926308165851891
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 9716,
+          "valid_count": 9721,
           "coverage_share": 100,
-          "average_seconds": 6269.226018937835,
+          "average_seconds": 6269.107293488324,
           "median_seconds": 4804,
-          "p90_seconds": 11794,
-          "over_1_hour_share": 66.70440510498148,
-          "over_2_hours_share": 28.4273363524084,
-          "over_3_hours_share": 12.515438452037875,
-          "over_4_hours_share": 5.763688760806916
+          "p90_seconds": 11793,
+          "over_1_hour_share": 66.7009566916984,
+          "over_2_hours_share": 28.43328875630079,
+          "over_3_hours_share": 12.509001131570827,
+          "over_4_hours_share": 5.760724205328669
         },
         "routing_outcomes": {
           "remained_tru": 5465,
@@ -10495,43 +10495,43 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 688,
-            "share": 31.822386679000925
+            "calls": 685,
+            "share": 31.727651690597497
           },
           {
             "type": "Fraud",
             "calls": 484,
-            "share": 22.38667900092507
+            "share": 22.417786012042612
           },
           {
             "type": "Administrative / Lost or Found Property",
             "calls": 270,
-            "share": 12.488436632747456
+            "share": 12.505789717461788
           },
           {
             "type": "Vehicle Theft",
             "calls": 267,
-            "share": 12.349676225716928
+            "share": 12.366836498378879
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 247,
-            "share": 11.424606845513413
+            "share": 11.44048170449282
           },
           {
             "type": "Vandalism",
             "calls": 151,
-            "share": 6.984273820536541
+            "share": 6.993978693839741
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 53,
-            "share": 2.4514338575393153
+            "share": 2.454840203798055
           },
           {
             "type": "Assault",
             "calls": 2,
-            "share": 0.09250693802035154
+            "share": 0.09263547938860583
           }
         ],
         "demand_profile": {
@@ -12706,15 +12706,15 @@
           "patrol_estimate_calls": 8243,
           "tru_calls_per_day": 7.25,
           "patrol_estimate_calls_per_day": 89.59782608695652,
-          "event_reports_total": 1501,
-          "tru_event_reports": 389,
-          "patrol_estimate_event_reports": 1112,
+          "event_reports_total": 1510,
+          "tru_event_reports": 392,
+          "patrol_estimate_event_reports": 1118,
           "tru_share_of_total_calls": 7.4859708193041525,
-          "tru_share_of_event_reports": 25.916055962691537,
-          "tru_event_report_conversion": 58.32083958020989,
-          "patrol_estimate_event_report_conversion": 13.490234138056534,
-          "tru_calls_without_event_report": 278,
-          "tru_calls_without_event_report_share": 41.67916041979011,
+          "tru_share_of_event_reports": 25.96026490066225,
+          "tru_event_report_conversion": 58.77061469265368,
+          "patrol_estimate_event_report_conversion": 13.563023171175542,
+          "tru_calls_without_event_report": 275,
+          "tru_calls_without_event_report_share": 41.22938530734633,
           "tru_timing": {
             "valid_count": 667,
             "coverage_share": 100,
@@ -12727,15 +12727,15 @@
             "over_4_hours_share": 5.247376311844078
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1110,
+            "valid_count": 1115,
             "coverage_share": 100,
-            "average_seconds": 6342.966666666666,
-            "median_seconds": 4895,
-            "p90_seconds": 11890.300000000001,
-            "over_1_hour_share": 68.55855855855856,
-            "over_2_hours_share": 29.81981981981982,
-            "over_3_hours_share": 12.702702702702704,
-            "over_4_hours_share": 6.576576576576576
+            "average_seconds": 6341.600896860987,
+            "median_seconds": 4897,
+            "p90_seconds": 11877.400000000001,
+            "over_1_hour_share": 68.5201793721973,
+            "over_2_hours_share": 29.86547085201794,
+            "over_3_hours_share": 12.645739910313903,
+            "over_4_hours_share": 6.547085201793721
           },
           "routing_outcomes": {
             "remained_tru": 658,
@@ -12782,38 +12782,38 @@
           "top_tru_call_types_without_event_report": [
             {
               "type": "Theft",
-              "calls": 77,
-              "share": 27.697841726618705
+              "calls": 74,
+              "share": 26.90909090909091
             },
             {
               "type": "Fraud",
               "calls": 66,
-              "share": 23.741007194244602
+              "share": 24
             },
             {
               "type": "Administrative / Lost or Found Property",
               "calls": 42,
-              "share": 15.107913669064748
+              "share": 15.272727272727273
             },
             {
               "type": "Vehicle Theft",
               "calls": 38,
-              "share": 13.66906474820144
+              "share": 13.818181818181818
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 28,
-              "share": 10.071942446043165
+              "share": 10.181818181818182
             },
             {
               "type": "Vandalism",
               "calls": 22,
-              "share": 7.913669064748201
+              "share": 8
             },
             {
               "type": "Harassment / Threats / Stalking",
               "calls": 5,
-              "share": 1.7985611510791366
+              "share": 1.8181818181818181
             }
           ],
           "demand_profile": {
@@ -12987,15 +12987,15 @@
         "patrol_estimate_calls": 44941,
         "tru_calls_per_day": 4.260273972602739,
         "patrol_estimate_calls_per_day": 61.56301369863014,
-        "event_reports_total": 9513,
-        "tru_event_reports": 1879,
-        "patrol_estimate_event_reports": 7634,
+        "event_reports_total": 9519,
+        "tru_event_reports": 1883,
+        "patrol_estimate_event_reports": 7636,
         "tru_share_of_total_calls": 6.472289858691807,
-        "tru_share_of_event_reports": 19.751918427415116,
-        "tru_event_report_conversion": 60.41800643086817,
-        "patrol_estimate_event_report_conversion": 16.986715916423755,
-        "tru_calls_without_event_report": 1231,
-        "tru_calls_without_event_report_share": 39.58199356913183,
+        "tru_share_of_event_reports": 19.7814896522744,
+        "tru_event_report_conversion": 60.546623794212216,
+        "patrol_estimate_event_report_conversion": 16.99116619567878,
+        "tru_calls_without_event_report": 1227,
+        "tru_calls_without_event_report_share": 39.453376205787784,
         "tru_timing": {
           "valid_count": 3101,
           "coverage_share": 99.71061093247589,
@@ -13008,15 +13008,15 @@
           "over_4_hours_share": 9.029345372460497
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 7626,
+          "valid_count": 7628,
           "coverage_share": 100,
-          "average_seconds": 6157.630474691844,
-          "median_seconds": 4733,
-          "p90_seconds": 11831.5,
-          "over_1_hour_share": 65.4471544715447,
-          "over_2_hours_share": 27.70784159454498,
-          "over_3_hours_share": 12.483608707054811,
-          "over_4_hours_share": 5.809074219774455
+          "average_seconds": 6157.07590456214,
+          "median_seconds": 4731.5,
+          "p90_seconds": 11830.900000000001,
+          "over_1_hour_share": 65.45621394861038,
+          "over_2_hours_share": 27.700576822233874,
+          "over_3_hours_share": 12.480335605663345,
+          "over_4_hours_share": 5.807551127425276
         },
         "routing_outcomes": {
           "remained_tru": 3068,
@@ -13078,53 +13078,53 @@
         "top_tru_call_types_without_event_report": [
           {
             "type": "Theft",
-            "calls": 390,
-            "share": 31.681559707554836
+            "calls": 388,
+            "share": 31.62184189079055
           },
           {
             "type": "Fraud",
             "calls": 286,
-            "share": 23.23314378554021
+            "share": 23.30888345558272
           },
           {
             "type": "Administrative / Lost or Found Property",
-            "calls": 171,
-            "share": 13.89114541023558
+            "calls": 170,
+            "share": 13.854930725346373
           },
           {
             "type": "Vehicle Theft",
             "calls": 157,
-            "share": 12.753858651502844
+            "share": 12.795436022819887
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 104,
-            "share": 8.448415922014622
+            "share": 8.475957620211899
           },
           {
             "type": "Vandalism",
-            "calls": 93,
-            "share": 7.554833468724614
+            "calls": 92,
+            "share": 7.497962510187449
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 24,
-            "share": 1.949634443541836
+            "share": 1.9559902200488997
           },
           {
             "type": "Assault",
             "calls": 3,
-            "share": 0.2437043054427295
+            "share": 0.24449877750611246
           },
           {
             "type": "Trespassing / Unwanted",
             "calls": 2,
-            "share": 0.16246953696181965
+            "share": 0.16299918500407498
           },
           {
             "type": "HOMEDTNT- TRS HOME DETENTION - TELEPHONE REPORTING UNIT",
             "calls": 1,
-            "share": 0.08123476848090982
+            "share": 0.08149959250203749
           }
         ],
         "demand_profile": {
@@ -15314,15 +15314,15 @@
           "patrol_estimate_calls": 5696,
           "tru_calls_per_day": 4.380434782608695,
           "patrol_estimate_calls_per_day": 61.91304347826087,
-          "event_reports_total": 1119,
-          "tru_event_reports": 243,
-          "patrol_estimate_event_reports": 876,
+          "event_reports_total": 1125,
+          "tru_event_reports": 247,
+          "patrol_estimate_event_reports": 878,
           "tru_share_of_total_calls": 6.6076405968191505,
-          "tru_share_of_event_reports": 21.715817694369974,
-          "tru_event_report_conversion": 60.297766749379655,
-          "patrol_estimate_event_report_conversion": 15.379213483146067,
-          "tru_calls_without_event_report": 160,
-          "tru_calls_without_event_report_share": 39.70223325062035,
+          "tru_share_of_event_reports": 21.955555555555556,
+          "tru_event_report_conversion": 61.29032258064516,
+          "patrol_estimate_event_report_conversion": 15.41432584269663,
+          "tru_calls_without_event_report": 156,
+          "tru_calls_without_event_report_share": 38.70967741935484,
           "tru_timing": {
             "valid_count": 403,
             "coverage_share": 100,
@@ -15335,15 +15335,15 @@
             "over_4_hours_share": 4.962779156327544
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 876,
+            "valid_count": 878,
             "coverage_share": 100,
-            "average_seconds": 6227.463470319634,
-            "median_seconds": 4747.5,
-            "p90_seconds": 11941.5,
-            "over_1_hour_share": 65.98173515981736,
-            "over_2_hours_share": 29.68036529680365,
-            "over_3_hours_share": 13.356164383561644,
-            "over_4_hours_share": 5.5936073059360725
+            "average_seconds": 6222.486332574032,
+            "median_seconds": 4746,
+            "p90_seconds": 11932.100000000004,
+            "over_1_hour_share": 66.05922551252847,
+            "over_2_hours_share": 29.6127562642369,
+            "over_3_hours_share": 13.325740318906606,
+            "over_4_hours_share": 5.5808656036446465
           },
           "routing_outcomes": {
             "remained_tru": 400,
@@ -15395,43 +15395,43 @@
           "top_tru_call_types_without_event_report": [
             {
               "type": "Theft",
-              "calls": 47,
-              "share": 29.375
+              "calls": 45,
+              "share": 28.846153846153843
             },
             {
               "type": "Fraud",
               "calls": 30,
-              "share": 18.75
+              "share": 19.230769230769234
             },
             {
               "type": "Administrative / Lost or Found Property",
-              "calls": 29,
-              "share": 18.125
+              "calls": 28,
+              "share": 17.94871794871795
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 19,
-              "share": 11.875
+              "share": 12.179487179487179
             },
             {
               "type": "Vandalism",
-              "calls": 18,
-              "share": 11.25
+              "calls": 17,
+              "share": 10.897435897435898
             },
             {
               "type": "Vehicle Theft",
               "calls": 14,
-              "share": 8.75
+              "share": 8.974358974358974
             },
             {
               "type": "Harassment / Threats / Stalking",
               "calls": 2,
-              "share": 1.25
+              "share": 1.282051282051282
             },
             {
               "type": "Trespassing / Unwanted",
               "calls": 1,
-              "share": 0.625
+              "share": 0.641025641025641
             }
           ],
           "demand_profile": {
@@ -15605,15 +15605,15 @@
         "patrol_estimate_calls": 60395,
         "tru_calls_per_day": 6.227397260273973,
         "patrol_estimate_calls_per_day": 82.73287671232876,
-        "event_reports_total": 11300,
-        "tru_event_reports": 2770,
-        "patrol_estimate_event_reports": 8530,
+        "event_reports_total": 11305,
+        "tru_event_reports": 2772,
+        "patrol_estimate_event_reports": 8533,
         "tru_share_of_total_calls": 7.000200181703392,
-        "tru_share_of_event_reports": 24.513274336283185,
-        "tru_event_report_conversion": 60.93268807743071,
-        "patrol_estimate_event_report_conversion": 14.123685735574137,
-        "tru_calls_without_event_report": 1776,
-        "tru_calls_without_event_report_share": 39.06731192256929,
+        "tru_share_of_event_reports": 24.52012383900929,
+        "tru_event_report_conversion": 60.97668279806423,
+        "patrol_estimate_event_report_conversion": 14.12865303419157,
+        "tru_calls_without_event_report": 1774,
+        "tru_calls_without_event_report_share": 39.02331720193577,
         "tru_timing": {
           "valid_count": 4537,
           "coverage_share": 99.80202375714914,
@@ -15626,15 +15626,15 @@
           "over_4_hours_share": 8.111086621115273
         },
         "patrol_estimate_report_call_timing": {
-          "valid_count": 8518,
+          "valid_count": 8521,
           "coverage_share": 100,
-          "average_seconds": 6003.26203334116,
+          "average_seconds": 6002.782185189531,
           "median_seconds": 4589,
-          "p90_seconds": 11358.6,
-          "over_1_hour_share": 64.45174923691008,
-          "over_2_hours_share": 25.768959849729985,
-          "over_3_hours_share": 11.352430147922048,
-          "over_4_hours_share": 5.376849025592862
+          "p90_seconds": 11358,
+          "over_1_hour_share": 64.45252904588664,
+          "over_2_hours_share": 25.759887337166997,
+          "over_3_hours_share": 11.348433282478583,
+          "over_4_hours_share": 5.374955991080859
         },
         "routing_outcomes": {
           "remained_tru": 4479,
@@ -15692,47 +15692,47 @@
           {
             "type": "Theft",
             "calls": 541,
-            "share": 30.461711711711715
+            "share": 30.496054114994365
           },
           {
             "type": "Fraud",
             "calls": 357,
-            "share": 20.10135135135135
+            "share": 20.12401352874859
           },
           {
             "type": "Vehicle Theft",
             "calls": 282,
-            "share": 15.878378378378377
+            "share": 15.89627959413754
           },
           {
             "type": "Administrative / Lost or Found Property",
-            "calls": 260,
-            "share": 14.63963963963964
+            "calls": 258,
+            "share": 14.543404735062007
           },
           {
             "type": "Follow Up / Supplemental",
             "calls": 151,
-            "share": 8.502252252252253
+            "share": 8.511837655016912
           },
           {
             "type": "Vandalism",
             "calls": 142,
-            "share": 7.995495495495495
+            "share": 8.004509582863585
           },
           {
             "type": "Harassment / Threats / Stalking",
             "calls": 37,
-            "share": 2.083333333333333
+            "share": 2.0856820744081173
           },
           {
             "type": "Assault",
             "calls": 5,
-            "share": 0.28153153153153154
+            "share": 0.2818489289740699
           },
           {
             "type": "Trespassing / Unwanted",
             "calls": 1,
-            "share": 0.05630630630630631
+            "share": 0.05636978579481398
           }
         ],
         "demand_profile": {
@@ -15908,13 +15908,13 @@
           "patrol_estimate_calls": 7727,
           "tru_calls_per_day": 6.771739130434782,
           "patrol_estimate_calls_per_day": 83.98913043478261,
-          "event_reports_total": 1483,
+          "event_reports_total": 1484,
           "tru_event_reports": 390,
-          "patrol_estimate_event_reports": 1093,
+          "patrol_estimate_event_reports": 1094,
           "tru_share_of_total_calls": 7.461077844311377,
-          "tru_share_of_event_reports": 26.298044504383007,
+          "tru_share_of_event_reports": 26.28032345013477,
           "tru_event_report_conversion": 62.60032102728732,
-          "patrol_estimate_event_report_conversion": 14.145205124886761,
+          "patrol_estimate_event_report_conversion": 14.158146758120873,
           "tru_calls_without_event_report": 233,
           "tru_calls_without_event_report_share": 37.39967897271268,
           "tru_timing": {
@@ -15929,15 +15929,15 @@
             "over_4_hours_share": 11.235955056179774
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1090,
+            "valid_count": 1091,
             "coverage_share": 100,
-            "average_seconds": 6238.807339449541,
-            "median_seconds": 4845,
-            "p90_seconds": 11270.5,
-            "over_1_hour_share": 66.14678899082568,
-            "over_2_hours_share": 28.34862385321101,
-            "over_3_hours_share": 11.46788990825688,
-            "over_4_hours_share": 6.238532110091743
+            "average_seconds": 6238.4436296975255,
+            "median_seconds": 4852,
+            "p90_seconds": 11268,
+            "over_1_hour_share": 66.17781851512375,
+            "over_2_hours_share": 28.32263978001833,
+            "over_3_hours_share": 11.45737855178735,
+            "over_4_hours_share": 6.232813932172319
           },
           "routing_outcomes": {
             "remained_tru": 619,
@@ -17932,15 +17932,15 @@
           "patrol_estimate_calls": 7699,
           "tru_calls_per_day": 6.543478260869565,
           "patrol_estimate_calls_per_day": 83.68478260869566,
-          "event_reports_total": 1404,
-          "tru_event_reports": 351,
-          "patrol_estimate_event_reports": 1053,
+          "event_reports_total": 1408,
+          "tru_event_reports": 353,
+          "patrol_estimate_event_reports": 1055,
           "tru_share_of_total_calls": 7.252138296590773,
-          "tru_share_of_event_reports": 25,
-          "tru_event_report_conversion": 58.30564784053156,
-          "patrol_estimate_event_report_conversion": 13.677100922197688,
-          "tru_calls_without_event_report": 251,
-          "tru_calls_without_event_report_share": 41.69435215946844,
+          "tru_share_of_event_reports": 25.07102272727273,
+          "tru_event_report_conversion": 58.63787375415283,
+          "patrol_estimate_event_report_conversion": 13.703078321859982,
+          "tru_calls_without_event_report": 249,
+          "tru_calls_without_event_report_share": 41.36212624584717,
           "tru_timing": {
             "valid_count": 601,
             "coverage_share": 99.83388704318938,
@@ -17953,15 +17953,15 @@
             "over_4_hours_share": 5.324459234608985
           },
           "patrol_estimate_report_call_timing": {
-            "valid_count": 1052,
+            "valid_count": 1054,
             "coverage_share": 100,
-            "average_seconds": 6122.601711026616,
+            "average_seconds": 6118.648956356737,
             "median_seconds": 4733.5,
-            "p90_seconds": 11154.5,
-            "over_1_hour_share": 64.82889733840305,
-            "over_2_hours_share": 26.61596958174905,
-            "over_3_hours_share": 11.02661596958175,
-            "over_4_hours_share": 5.418250950570342
+            "p90_seconds": 11149.500000000002,
+            "over_1_hour_share": 64.80075901328273,
+            "over_2_hours_share": 26.56546489563567,
+            "over_3_hours_share": 11.005692599620494,
+            "over_4_hours_share": 5.407969639468691
           },
           "routing_outcomes": {
             "remained_tru": 593,
@@ -18009,37 +18009,37 @@
             {
               "type": "Theft",
               "calls": 78,
-              "share": 31.07569721115538
+              "share": 31.32530120481928
             },
             {
               "type": "Vehicle Theft",
               "calls": 56,
-              "share": 22.31075697211155
+              "share": 22.48995983935743
             },
             {
               "type": "Fraud",
               "calls": 41,
-              "share": 16.334661354581673
+              "share": 16.46586345381526
             },
             {
               "type": "Administrative / Lost or Found Property",
-              "calls": 32,
-              "share": 12.749003984063744
+              "calls": 30,
+              "share": 12.048192771084338
             },
             {
               "type": "Vandalism",
               "calls": 20,
-              "share": 7.968127490039841
+              "share": 8.032128514056225
             },
             {
               "type": "Follow Up / Supplemental",
               "calls": 19,
-              "share": 7.569721115537849
+              "share": 7.630522088353414
             },
             {
               "type": "Harassment / Threats / Stalking",
               "calls": 5,
-              "share": 1.9920318725099602
+              "share": 2.0080321285140563
             }
           ],
           "demand_profile": {
@@ -20177,9 +20177,9 @@
       "total_cfs": 67452,
       "tru_calls": 3433,
       "tru_calls_per_day": 4.7027397260273975,
-      "tru_event_reports": 1994,
-      "tru_share_of_event_reports": 18.03545586107091,
-      "tru_event_report_conversion": 58.08330905913196,
+      "tru_event_reports": 1997,
+      "tru_share_of_event_reports": 18.04626784746069,
+      "tru_event_report_conversion": 58.17069618409554,
       "median_cad_seconds": 4850,
       "p90_cad_seconds": 13178.000000000002
     },
@@ -20188,9 +20188,9 @@
       "total_cfs": 61317,
       "tru_calls": 5424,
       "tru_calls_per_day": 7.4301369863013695,
-      "tru_event_reports": 3298,
-      "tru_share_of_event_reports": 26.24333572053792,
-      "tru_event_report_conversion": 60.80383480825958,
+      "tru_event_reports": 3302,
+      "tru_share_of_event_reports": 26.258449304174952,
+      "tru_event_report_conversion": 60.87758112094396,
       "median_cad_seconds": 5014,
       "p90_cad_seconds": 12984.5
     },
@@ -20199,9 +20199,9 @@
       "total_cfs": 78822,
       "tru_calls": 7542,
       "tru_calls_per_day": 10.331506849315069,
-      "tru_event_reports": 4793,
-      "tru_share_of_event_reports": 30.333523194734514,
-      "tru_event_report_conversion": 63.550782285865814,
+      "tru_event_reports": 4804,
+      "tru_share_of_event_reports": 30.368544155762056,
+      "tru_event_report_conversion": 63.69663219305224,
       "median_cad_seconds": 4863,
       "p90_cad_seconds": 13001.4
     },
@@ -20210,9 +20210,9 @@
       "total_cfs": 72867,
       "tru_calls": 5532,
       "tru_calls_per_day": 7.578082191780822,
-      "tru_event_reports": 3370,
-      "tru_share_of_event_reports": 25.723227234562245,
-      "tru_event_report_conversion": 60.91829356471439,
+      "tru_event_reports": 3373,
+      "tru_share_of_event_reports": 25.72845156369184,
+      "tru_event_report_conversion": 60.97252349963846,
       "median_cad_seconds": 4966,
       "p90_cad_seconds": 13398.800000000003
     },
@@ -20221,9 +20221,9 @@
       "total_cfs": 48051,
       "tru_calls": 3110,
       "tru_calls_per_day": 4.260273972602739,
-      "tru_event_reports": 1879,
-      "tru_share_of_event_reports": 19.751918427415116,
-      "tru_event_report_conversion": 60.41800643086817,
+      "tru_event_reports": 1883,
+      "tru_share_of_event_reports": 19.7814896522744,
+      "tru_event_report_conversion": 60.546623794212216,
       "median_cad_seconds": 5043,
       "p90_cad_seconds": 13963
     },
@@ -20232,9 +20232,9 @@
       "total_cfs": 64941,
       "tru_calls": 4546,
       "tru_calls_per_day": 6.227397260273973,
-      "tru_event_reports": 2770,
-      "tru_share_of_event_reports": 24.513274336283185,
-      "tru_event_report_conversion": 60.93268807743071,
+      "tru_event_reports": 2772,
+      "tru_share_of_event_reports": 24.52012383900929,
+      "tru_event_report_conversion": 60.97668279806423,
       "median_cad_seconds": 4825,
       "p90_cad_seconds": 12836
     },
